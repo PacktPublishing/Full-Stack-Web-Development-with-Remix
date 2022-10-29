@@ -1,6 +1,6 @@
-import type { HTMLAttributes } from 'react';
+import type { ButtonHTMLAttributes } from 'react';
 
-type ButtonProps = HTMLAttributes<HTMLButtonElement> & {
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   isPrimary?: boolean;
 };
 
@@ -8,7 +8,7 @@ export function ActionBar({ children }: { children: React.ReactNode }) {
   return <div className="w-full flex flex-col md:flex-row gap-3 px-3 items-center justify-center">{children}</div>;
 }
 
-export function Button({ isPrimary = false, className = '', ...props }: ButtonProps) {
+export function Button({ isPrimary = false, className = '', children, ...props }: ButtonProps) {
   return (
     <button
       className={`w-full md:w-auto ${
@@ -18,7 +18,7 @@ export function Button({ isPrimary = false, className = '', ...props }: ButtonPr
       } text-xl font-bold py-2 px-4 rounded ${className}`}
       {...props}
     >
-      {props.children}
+      {children}
     </button>
   );
 }
