@@ -35,9 +35,9 @@ export default function DemoPage() {
       <section className="w-full flex flex-col gap-3 items-center justify-center">
         <Form>
           <H3>Form</H3>
-          <Input type="text" name="email" placeholder="bee.rich@email.com" />
-          <Input type="text" name="name" placeholder="Mr. Bee Rich" />
-          <Input type="password" name="password" />
+          <Input label="Email:" type="text" name="email" placeholder="bee.rich@email.com" />
+          <Input label="Name:" type="text" name="name" placeholder="Mr. Bee Rich" />
+          <Input label="Password:" type="password" name="password" />
           <Button type="submit" isPrimary>
             Submit!
           </Button>
