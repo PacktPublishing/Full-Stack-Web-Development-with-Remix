@@ -1,12 +1,13 @@
 import { ActionBar, Button } from '~/components/buttons';
+import { Card } from '~/components/containers';
 import { Form, Input } from '~/components/forms';
 import { H1, H2, H3, H4 } from '~/components/headings';
 import { ButtonLink, Link } from '~/components/links';
-import { Paragraph } from '~/components/texts';
+import { InlineError, Paragraph } from '~/components/texts';
 
 export default function DemoPage() {
   return (
-    <div className="w-full flex flex-col gap-10 items-center justify-center">
+    <div className="w-full flex flex-col gap-10 items-center justify-center mb-20">
       <section className="w-full flex flex-col gap-3 items-center justify-center">
         <H1>Heading 1</H1>
         <H2>Heading 2</H2>
@@ -32,12 +33,45 @@ export default function DemoPage() {
           </ButtonLink>
         </ActionBar>
       </section>
-      <section className="w-full flex flex-col gap-3 items-center justify-center">
+      <section className="w-full">
         <Form>
           <H3>Form</H3>
           <Input label="Email:" type="text" name="email" placeholder="bee.rich@email.com" />
           <Input label="Name:" type="text" name="name" placeholder="Mr. Bee Rich" />
           <Input label="Password:" type="password" name="password" />
+          <Button type="submit" isPrimary>
+            Submit!
+          </Button>
+        </Form>
+      </section>
+      <section className="w-full">
+        <Card>
+          <H3>Card</H3>
+          <Paragraph>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl nec consectetur tincidunt, nunc
+            nisl aliquam nisl, eget aliquam nisl nunc vel nisl. Sed euismod, nisl nec consectetur tincidunt, nunc nisl
+            aliquam nisl, eget aliquam nisl nunc vel nisl.
+          </Paragraph>
+        </Card>
+      </section>
+      <section className="w-full">
+        <Card>
+          <Form>
+            <H3>Card with Form</H3>
+            <Input label="Email:" type="text" name="email" placeholder="bee.rich@email.com" />
+            <Input label="Name:" type="text" name="name" placeholder="Mr. Bee Rich" />
+            <Input label="Password:" type="password" name="password" />
+            <Button type="submit" isPrimary>
+              Submit!
+            </Button>
+          </Form>
+        </Card>
+      </section>
+      <section className="w-full">
+        <Form>
+          <H3>Form with Error</H3>
+          <Input label="Email:" type="text" name="email" placeholder="bee.rich@email.com" />
+          <InlineError>Wupsi, Email already taken. Could that be you?</InlineError>
           <Button type="submit" isPrimary>
             Submit!
           </Button>

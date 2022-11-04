@@ -23,7 +23,7 @@ type FormProps = RemixFormProps;
 export function Form({ className = '', children, ...props }: FormProps) {
   return (
     <RemixForm
-      className={`w-full lg:max-w-3xl flex flex-col items-center justify-center gap-5 ${className}`}
+      className={`w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5 ${className}`}
       {...props}
     >
       {children}

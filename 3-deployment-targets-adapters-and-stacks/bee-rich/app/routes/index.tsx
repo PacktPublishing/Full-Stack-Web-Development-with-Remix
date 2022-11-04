@@ -1,7 +1,9 @@
+import { H1 } from "~/components/headings";
+
 export default function Index() {
   return (
-    <div>
-      <h1 className="text-8xl text-red-500">BeeRich</h1>
-    </div>
+    <main>
+      <H1>Welcome to BeeRich!</H1>
+    </main>
   );
 }

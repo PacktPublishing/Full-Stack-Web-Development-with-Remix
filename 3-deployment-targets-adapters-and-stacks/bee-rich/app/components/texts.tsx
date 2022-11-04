@@ -9,3 +9,11 @@ export function Paragraph({ className = '', children, ...props }: ParagraphProps
     </p>
   );
 }
+
+export function InlineError({ className = '', children, ...props }: ParagraphProps) {
+  return (
+    <p className={`text-red-600 font-bold ${className}`} {...props}>
+      {children}
+    </p>
+  );
+}
