@@ -2,6 +2,7 @@
   "private": true,
   "sideEffects": false,
   "scripts": {
+    "routes": "remix routes",
     "format": "run-s format:*",
     "format:lint": "npx eslint --fix",
     "build": "run-s \"build:*\"",
