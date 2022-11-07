@@ -11,7 +11,7 @@ export function Input({ label, className = '', ...props }: InputProps) {
     <label className="w-full lg:max-w-md">
       <span className="text-textLight text-sm font-semibold">{label}</span>
       <input
-        className={`mt-1 w-full text-text text-lg font-semibold bg-secondary dark:bg-darkSecondary py-4 px-2 rounded-lg border border-text dark:border-darkText dark:text-darkText ${className}`}
+        className={`mt-1 w-full text-text dark:text-darkText text-lg font-semibold bg-secondary dark:bg-darkSecondary py-4 px-2 rounded-lg border border-secondaryAccent dark:border-darkSecondaryAccent ${className}`}
         {...props}
       />
     </label>
