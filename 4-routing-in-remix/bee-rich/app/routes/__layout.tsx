@@ -19,10 +19,7 @@ export default function Layout() {
           </ul>
         </nav>
       </header>
-      <main
-        id="main-content"
-        className={`p-4 w-full flex justify-center items-center transition-opacity duration-500 ease-in-out`}
-      >
+      <main className="p-4 w-full flex justify-center items-center">
         <Outlet />
       </main>
     </>

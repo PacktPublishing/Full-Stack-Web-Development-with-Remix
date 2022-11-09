@@ -9,19 +9,16 @@ const data = [
     id: 1,
     title: 'Salary October',
     amount: 2500,
-    currencyCode: 'USD',
   },
   {
     id: 2,
     title: 'Salary September',
     amount: 2500,
-    currencyCode: 'USD',
   },
   {
     id: 3,
     title: 'Salary August',
     amount: 2500,
-    currencyCode: 'USD',
   },
 ];
 

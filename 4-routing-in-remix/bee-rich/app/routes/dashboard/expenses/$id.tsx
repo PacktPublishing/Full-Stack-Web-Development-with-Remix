@@ -9,19 +9,16 @@ const data = [
     id: 1,
     title: 'Food',
     amount: 100,
-    currencyCode: 'USD',
   },
   {
     id: 2,
     title: 'Transport',
     amount: 100,
-    currencyCode: 'USD',
   },
   {
     id: 3,
     title: 'Entertainment',
     amount: 100,
-    currencyCode: 'USD',
   },
 ];
 

@@ -1,12 +1,11 @@
 import { Outlet, NavLink as RemixNavLink } from '@remix-run/react';
 import { Container } from '~/components/containers';
-import { H1 } from '~/components/headings';
 import { NavLink } from '~/components/links';
 
 export default function Layout() {
   return (
     <>
-      <main>
+      <header>
         <Container className="p-4 mb-10">
           <nav>
             <ul className="w-full flex flex-row gap-5 font-bold text-lg lg:text-2xl">
@@ -27,9 +26,9 @@ export default function Layout() {
             </ul>
           </nav>
         </Container>
-        <main className="p-4 w-full flex justify-center items-center">
-          <Outlet />
-        </main>
+      </header>
+      <main className="p-4 w-full flex justify-center items-center">
+        <Outlet />
       </main>
     </>
   );
