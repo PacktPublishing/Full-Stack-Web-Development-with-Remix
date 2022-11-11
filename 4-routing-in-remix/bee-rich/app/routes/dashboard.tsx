@@ -1,4 +1,4 @@
-import { Outlet, NavLink as RemixNavLink } from '@remix-run/react';
+import { Outlet, Link as RemixLink } from '@remix-run/react';
 import { Container } from '~/components/containers';
 import { NavLink } from '~/components/links';
 
@@ -10,10 +10,10 @@ export default function Layout() {
           <nav>
             <ul className="w-full flex flex-row gap-5 font-bold text-lg lg:text-2xl">
               <li>
-                <RemixNavLink to="/">BeeRich</RemixNavLink>
+                <RemixLink to="/">BeeRich</RemixLink>
               </li>
               <li className="ml-auto">
-                <RemixNavLink to="/404">Log out</RemixNavLink>
+                <RemixLink to="/404">Log out</RemixLink>
               </li>
             </ul>
             <ul className="mt-10 w-full flex flex-row gap-5">
