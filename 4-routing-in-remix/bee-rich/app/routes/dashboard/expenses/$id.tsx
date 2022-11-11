@@ -1,7 +1,6 @@
 import type { LoaderArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { Container } from '~/components/containers';
 import { H2 } from '~/components/headings';
 
 const data = [
@@ -32,9 +31,9 @@ export function loader({ params }: LoaderArgs) {
 export default function ExpenseDetailsPage() {
   const expense = useLoaderData();
   return (
-    <Container className="h-full p-8">
+    <section className="w-full h-full p-8">
       <H2>{expense.title}</H2>
       <p>${expense.amount}</p>
-    </Container>
+    </section>
   );
 }
