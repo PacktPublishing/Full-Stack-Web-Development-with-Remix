@@ -3,6 +3,7 @@
  * You can find the original blog post here: https://dev.to/gugaguichard/creating-a-github-like-progress-bar-for-your-remix-app-153l
  */
 
+import { clsx } from 'clsx';
 import { useTransition } from '@remix-run/react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -39,11 +40,13 @@ function PageTransitionProgressBar() {
     >
       <div
         ref={ref}
-        className={`h-full bg-gradient-to-r from-primary to-primaryAccent dark:from-darkPrimary dark:to-darkPrimaryAccent transition-all duration-500 ease-in-out ${
-          transition.state === 'idle' && hasAnimationCompleted && 'w-0 opacity-0 transition-none'
-        } ${transition.state === 'submitting' && 'w-4/12'} ${transition.state === 'loading' && 'w-10/12'} ${
-          transition.state === 'idle' && !hasAnimationCompleted && 'w-full'
-        }`}
+        className={clsx(
+          'h-full bg-gradient-to-r from-primary to-primaryAccent dark:from-darkPrimary dark:to-darkPrimaryAccent transition-all duration-500 ease-in-out',
+          transition.state === 'idle' && hasAnimationCompleted && 'w-0 opacity-0 transition-none',
+          transition.state === 'submitting' && 'w-4/12',
+          transition.state === 'loading' && 'w-10/12',
+          transition.state === 'idle' && !hasAnimationCompleted && 'w-full',
+        )}
       />
     </div>
   );
