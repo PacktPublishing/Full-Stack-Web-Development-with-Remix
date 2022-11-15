@@ -1,13 +1,17 @@
+import { clsx } from 'clsx';
 import type { LinkProps as RemixLinkProps } from '@remix-run/react';
 import { Link as RemixLink, NavLink as RemixNavLink } from '@remix-run/react';
 import type { HTMLAttributes } from 'react';
 
 type LinkProps = RemixLinkProps;
 
-export function Link({ className = '', children, ...props }: LinkProps) {
+export function Link({ className, children, ...props }: LinkProps) {
   return (
     <RemixLink
-      className={`font-bold underline decoration-4 underline-offset-2 decoration-primary dark:decoration-darkPrimary hover:decoration-primaryAccent hover:dark:decoration-darkPrimaryAccent ${className}`}
+      className={clsx(
+        'font-bold underline decoration-4 underline-offset-2 decoration-primary dark:decoration-darkPrimary hover:decoration-primaryAccent hover:dark:decoration-darkPrimaryAccent',
+        className,
+      )}
       {...props}
     >
       {children}
@@ -15,15 +19,17 @@ export function Link({ className = '', children, ...props }: LinkProps) {
   );
 }
 
-export function NavLink({ className = '', children, ...props }: LinkProps) {
+export function NavLink({ className, children, ...props }: LinkProps) {
   return (
     <RemixNavLink
       className={({ isActive }) =>
-        `font-bold p-2 text-lg lg:text-2xl ${
+        clsx(
+          'font-bold p-2 text-lg lg:text-2xl',
           isActive
-            ? `bg-primary dark:bg-darkPrimary pointer-events-none`
-            : `border border-secondary dark:border-darkSecondary hover:bg-primaryAccent dark:hover:bg-darkPrimaryAccent`
-        } ${className}`
+            ? 'bg-primary dark:bg-darkPrimary pointer-events-none'
+            : 'border border-secondary dark:border-darkSecondary hover:bg-primaryAccent dark:hover:bg-darkPrimaryAccent',
+          className,
+        )
       }
       {...props}
     >
@@ -39,11 +45,14 @@ type ButtonLinkProps = RemixLinkProps & {
 export function ButtonLink({ isPrimary, className = '', children, ...props }: ButtonLinkProps) {
   return (
     <RemixLink
-      className={`w-full md:w-auto ${
+      className={clsx(
+        'w-full md:w-auto',
         isPrimary
           ? 'bg-primary dark:bg-darkPrimary hover:bg-primaryAccent dark:hover:bg-darkPrimaryAccent'
-          : 'bg-secondary dark:bg-darkSecondary hover:bg-secondaryAccent dark:hover:bg-darkSecondaryAccent'
-      } text-xl font-bold py-2 px-4 rounded ${className}`}
+          : 'bg-secondary dark:bg-darkSecondary hover:bg-secondaryAccent dark:hover:bg-darkSecondaryAccent',
+        'text-xl font-bold py-2 px-4 rounded',
+        className,
+      )}
       {...props}
     >
       {children}
@@ -62,11 +71,12 @@ export function ListLinkItem({ className = '', to, children, ...props }: ListLin
       <RemixNavLink
         to={to}
         className={({ isActive }) =>
-          `block w-full p-4 border ${
+          clsx(
+            'block w-full p-4 border',
             isActive
               ? 'bg-secondary dark:bg-darkSecondary border-bg-secondary dark:border-darkSecondary'
-              : 'hover:bg-backgroundPrimary dark:hover:bg-darkBackgroundPrimary border-background dark:border-darkBackground hover:border-secondary dark:hover:border-darkSecondary'
-          }`
+              : 'hover:bg-backgroundPrimary dark:hover:bg-darkBackgroundPrimary border-background dark:border-darkBackground hover:border-secondary dark:hover:border-darkSecondary',
+          )
         }
       >
         {children}

@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import { useTransition, Outlet } from '@remix-run/react';
 import { ListLinkItem } from '~/components/links';
 import { H1 } from '~/components/headings';
@@ -25,7 +26,7 @@ export default function ExpensesPage() {
             </ListLinkItem>
           </ul>
         </section>
-        <section className={`w-full ${transition.state === 'loading' && 'motion-safe:animate-pulse'}`}>
+        <section className={clsx('w-full', transition.state === 'loading' && 'motion-safe:animate-pulse')}>
           <Outlet />
         </section>
       </div>
