@@ -4,13 +4,15 @@ Learn how Remix can supercharge your React development.
 
 ## Structure
 
-Each folder contains the final code of a chapter. For example, `2-creating-a-new-remix-app` contains the final code of the second chapter "Creating a new Remix App".
+The code for each chapter can be found in the corresponding folder. For example, `2-creating-a-new-remix-app` contains the code for _Chapter 2, Creating a new Remix App_.
 
-Each chapter provides instructions for how to get started and how to incrementally reach the final code.
+Each chapter provides instructions for how to get started and how to incrementally reach the final code. The best starting point is the `README.md` file in each folder. The structure of each chapter may vary, but usually you will find a `start` and a `solution` folder. The `start` folder contains the code that you will start with. The `solution` folder contains the code that you will end up with.
 
-Starting with chapter 3, the code of the previous chapter is used as a starting point for the next chapter. For example, the code of chapter 4 is based on the code of chapter 3.
+Sometimes the `README.md` file may include instructions from how to get from the previous chapter's final solution to the current chapter's starting point.
 
 ## Chapters
 
 2. [Creating a new Remix App](2-creating-a-new-remix-app/)
 3. [Deployment Targets, Adapters, and Stacks](3-deployment-target-adapters-and-stacks/)
+4. [Routing in Remix](4-routing-in-remix/)
+5. [Fetching and Mutating Data](5-fetching-and-mutating-data/)
