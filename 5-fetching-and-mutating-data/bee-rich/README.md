@@ -28,7 +28,9 @@ npm install prisma --save-dev
 npx prisma init --datasource-provider sqlite
 ```
 
-This will add both a `prisma` folder and a `.env` file to your project. The `.env` file contains the database connection string used by Prisma.
+This will add both a `prisma` folder and a `.env` file to your project. The `.env` file contains the database connection string used by Prisma: `DATABASE_URL="file:./dev.db"`.
+
+Please note that the `.env` file is ignored by git based on our `.gitignore` file. This is a good practice to keep your credentials out of version control.
 
 3. **(Optional) Get the Prisma VSCode extension:**
 
@@ -41,18 +43,22 @@ You can find the extension in the [VSCode marketplace](https://marketplace.visua
     "format:db": "npx prisma format",
     "build:db": "npx prisma generate",
     "update:db": "npx prisma db push",
-    "reset:db": "npx prisma db reset"
+    "seed": "npx ts-node prisma/seed.ts",
+    "reset:db": "rimraf ./prisma/dev.db && npm run update:db && npm run seed"
 }
 ```
 
 - `format:db` formats the Prisma schema file
 - `build:db` generates the Prisma client
 - `update:db` updates the database schema of the SQLite database
-- `reset:db` resets the database by dropping all tables and recreating them
+- `seed` seeds the database with some initial mock data
+- `reset:db` deletes the database by removing the `dev.db` file and then recreates it by running `update:db` and `seed`
 
 5. **Update `.gitignore` to ignore the SQLite database file:**
 
-```
+Add the following line to your `.gitignore` file:
+
+```txt
 /prisma/dev.db
 ```
 
@@ -62,18 +68,18 @@ Add the following two data models to the `schema.prisma` file:
 
 ```prisma
 model Expense {
-  id          Int      @id @default(autoincrement())
+  id          String @id @default(uuid())
   title       String
-  description String
+  description String?
   amount      Decimal
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
 model Invoice {
-  id          Int      @id @default(autoincrement())
+  id          String @id @default(uuid())
   title       String
-  description String
+  description String?
   amount      Decimal
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -125,7 +131,177 @@ export { db };
 
 You can find more information about this wrapper in the database section of the [Remix Jokes App Tutorial](https://remix.run/docs/en/v1/tutorials/jokes#connect-to-the-database).
 
-Great! 🥳 We are all set to use Prisma in our project! 🎉
+9. **Seed the database:**
+
+Create a new file `seed.ts` in the `prisma` folder and add the following code:
+
+```ts
+import { PrismaClient } from "@prisma/client";
+const db = new PrismaClient();
+
+const expenses = [
+  {
+    title: "Groceries",
+    amount: 50,
+    date: "2022-12-05",
+  },
+  {
+    title: "Gym Membership",
+    amount: 20,
+    date: "2022-12-03",
+  },
+  {
+    title: "Movies",
+    amount: 20,
+    date: "2022-12-02",
+  },
+  {
+    title: "Mobile Service",
+    amount: 55,
+    date: "2022-11-01",
+  },
+  {
+    title: "Rent December",
+    amount: 1000,
+    date: "2022-12-01",
+  },
+  {
+    title: "Groceries",
+    amount: 55,
+    date: "2022-12-01",
+  },
+  {
+    title: "Takeout",
+    amount: 55,
+    date: "2022-11-30",
+  },
+  {
+    title: "Gym Membership",
+    amount: 20,
+    date: "2022-11-03",
+  },
+  {
+    title: "Groceries",
+    amount: 15,
+    date: "2022-11-02",
+  },
+  {
+    title: "Mobile Service",
+    amount: 55,
+    date: "2022-11-01",
+  },
+  {
+    title: "Rent November",
+    amount: 1000,
+    date: "2022-11-01",
+  },
+  {
+    title: "Groceries",
+    amount: 55,
+    date: "2022-10-30",
+  },
+  {
+    title: "Groceries",
+    amount: 55,
+    date: "2022-10-15",
+  },
+  {
+    title: "Dinner",
+    amount: 40,
+    date: "2022-10-11",
+  },
+  {
+    title: "Gym Membership",
+    amount: 20,
+    date: "2022-10-03",
+  },
+  {
+    title: "Groceries",
+    amount: 25,
+    date: "2022-10-02",
+  },
+  {
+    title: "Mobile Service",
+    amount: 55,
+    date: "2022-10-01",
+  },
+  {
+    title: "Rent October",
+    amount: 1000,
+    date: "2022-10-01",
+  },
+  {
+    title: "Groceries",
+    amount: 55,
+    date: "2022-10-01",
+  },
+];
+
+const income = [
+  {
+    title: "Salary December",
+    amount: 2500,
+    date: "2022-12-30",
+  },
+  {
+    title: "Salary November",
+    amount: 2500,
+    date: "2022-11-30",
+  },
+  {
+    title: "Salary October",
+    amount: 2500,
+    date: "2022-10-30",
+  },
+  {
+    title: "Salary September",
+    amount: 2500,
+    date: "2022-09-30",
+  },
+];
+
+async function seed() {
+  const start = performance.now();
+  const expensePromises = expenses.map((expense) => createExpense(expense));
+  const invoicePromises = income.map((income) => createInvoice(income));
+  await Promise.all([...expensePromises, ...invoicePromises]);
+  const end = performance.now();
+  console.log(`🚀 Seeded the database. Done in ${Math.round(end - start)}ms`);
+}
+
+function createExpense(expenseData: typeof expenses[number]) {
+  return db.expense.create({
+    data: {
+      title: expenseData.title,
+      amount: expenseData.amount,
+      createdAt: new Date(expenseData.date),
+    },
+  });
+}
+
+function createInvoice(incomeData: typeof income[number]) {
+  return db.invoice.create({
+    data: {
+      title: incomeData.title,
+      amount: incomeData.amount,
+      createdAt: new Date(incomeData.date),
+    },
+  });
+}
+
+seed();
+```
+
+This file will seed the database with some sample data. We can execute the script by running the following command:
+
+```bash
+npx ts-node prisma/seed.ts
+```
+
+- We already created a script for it earlier. Run `npm run seed` anytime you want to add the sample data to the database.
+- If you want to reset your database, use `npm run reset:db` to reset and seed the database.
+
+**Great!** 🥳 We are all set to use Prisma in our project! 🎉
 
 Dive into _Chapter 5, Fetching and Mutating Data_ now!
 

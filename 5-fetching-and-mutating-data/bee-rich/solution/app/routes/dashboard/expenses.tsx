@@ -1,10 +1,19 @@
 import { clsx } from 'clsx';
-import { useTransition, Outlet } from '@remix-run/react';
+import { useTransition, Outlet, useLoaderData } from '@remix-run/react';
 import { ListLinkItem } from '~/components/links';
 import { H1 } from '~/components/headings';
+import { db } from '~/db.server';
+import { json } from '@remix-run/node';
+
+export async function loader() {
+  const expenses = await db.expense.findMany({});
+  return json(expenses);
+}
 
 export default function ExpensesPage() {
   const transition = useTransition();
+  const data = useLoaderData();
+  console.log(data);
   return (
     <div className="w-full">
       <H1>Your expenses</H1>
