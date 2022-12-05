@@ -25,6 +25,7 @@ Let's get started! Follow the instructions in _Chapter 3, Deployment Targets, Ad
 - `npm run routes` - prints the routes hierarchy
 - `npm run format` - runs all the formatting scripts
 - `npm run format:lint` - runs eslint and fixes errors
+- `npm run clean` - deletes all generated files and folders and installs dependencies
 - `npm run build` - runs all the build scripts
 - `npm run build:css` - generates the CSS for production
 - `npm run build:remix` - builds the Remix application
@@ -85,19 +86,27 @@ We will use [clsx](https://www.npmjs.com/package/clsx) to conditionally compose 
 npm install clsx
 ```
 
-5. **Reusable UI components**
+5. **Install rimraf**
+
+We use [rimraf](https://www.npmjs.com/package/rimraf) to delete files and folders for cleanup purposes.
+
+```bash
+npm install rimraf --save-dev
+```
+
+6. **Reusable UI components**
 
 BeeRich is scaffolded with a few reusable UI components. You can find them in the `app/components` folder. These will help us build the UI faster.
 
 - Copy-paste the `app/components` folder from the root of this repository into your project.
 
-6. **Existing routes**
+7. **Existing routes**
 
 BeeRich starts off with a few updates to the `app/root.tsx` and `app/routes/index.tsx` files.
 
 - Compare your `app/root.tsx` and `app/routes/index.tsx` files with the ones in the root of this repository. Then copy-paste the changes into your project.
 
-7. **The demo route**
+8. **The demo route**
 
 BeeRich starts off with a demo route that showcases the UI components. You can find the demo route in the `app/routes/demo.tsx` file.
 
@@ -105,7 +114,7 @@ BeeRich starts off with a demo route that showcases the UI components. You can f
 
 To inspect the demo route, run `npm run dev` and visit the demo page at [http://localhost:3000/demo](http://localhost:3000/demo).
 
-8. **Copy-paste the favicon.ico**
+9. **Copy-paste the favicon.ico**
 
 BeeRich uses a custom favicon. You can find the favicon in the `public/favicon.ico` file.
 

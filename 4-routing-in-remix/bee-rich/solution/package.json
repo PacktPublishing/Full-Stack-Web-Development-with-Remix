@@ -5,6 +5,7 @@
     "routes": "remix routes",
     "format": "run-s format:*",
     "format:lint": "npx eslint --fix",
+    "clean": "rimraf package-lock.json ./node_modules .cache ./build ./public/build && npm i",
     "build": "run-s \"build:*\"",
     "build:css": "npm run generate:css -- --minify",
     "build:remix": "remix build",
@@ -41,6 +42,7 @@
     "nodemon": "^2.0.19",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
+    "rimraf": "^3.0.2",
     "tailwindcss": "^3.1.8",
     "typescript": "^4.7.4"
   },
