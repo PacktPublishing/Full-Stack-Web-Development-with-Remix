@@ -1,10 +1,10 @@
 # 3. Deployment Targets, Adapters, and Stacks
 
-In this chapter, we will introduce you to BeeRich, the demo application used throughout this book. BeeRich is a simple personal finance app that allows you to track expenses and your income. Each chapter will add more features to BeeRich and focus on a specific topic.
+In this chapter, we will introduce you to BeeRich, the demo application used throughout this book. BeeRich is a simple personal finance app that allows you to track your expenses and income. Each chapter will add more features to BeeRich and focus on a specific topic.
 
 ## Getting started
 
-**Welcome!** BeeRich is a dashboard-like application that mimics both personal and enterprise use cases. BeeRich is a personal finance management application that helps you stay on top of your bee - pardon me - bookkeeping. Well, at least that’s the goal. There is nothing much there yet. In every chapter, we will add more code to this application.
+**Welcome!** BeeRich is a dashboard-like application that mimics both personal and enterprise use cases. BeeRich is a personal finance management application that helps you stay on top of your beekeep - pardon me - bookkeeping. Well, at least that’s the goal. There is nothing much there yet. In every chapter, we will add more code to this application.
 
 Every chapter has a dedicated folder in this repository. You will find a README.md file in each folder that contains instructions on how to get started. Starting with the next chapter, you will find a `start` folder in each chapter folder. This folder contains the code that you will start with. The `solution` folder contains the code that you will end up with.
 
@@ -26,13 +26,13 @@ Let's get started! Follow the instructions in _Chapter 3, Deployment Targets, Ad
 - `npm run format` - runs all the formatting scripts
 - `npm run format:lint` - runs eslint and fixes errors
 - `npm run clean` - deletes all generated files and folders and installs dependencies
-- `npm run build` - runs all the build scripts
 - `npm run build:css` - generates the CSS for production
 - `npm run build:remix` - builds the Remix application
-- `npm run dev` - runs all the dev scripts in parallel
+- `npm run build` - runs all the build scripts
 - `npm run dev:css` - generates and watches the CSS for development
 - `npm run dev:node` - runs the server in development mode
 - `npm run dev:remix` - runs the Remix watcher
+- `npm run dev` - runs all the dev scripts in parallel
 - `npm run generate:css` - runs the TailwindCSS script to generate the CSS file
 - `npm run start` - runs the server in production mode
 
