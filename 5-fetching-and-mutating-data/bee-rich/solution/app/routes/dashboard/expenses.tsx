@@ -12,8 +12,7 @@ export async function loader() {
 
 export default function ExpensesPage() {
   const transition = useTransition();
-  const data = useLoaderData();
-  console.log(data);
+  const expenses = useLoaderData<typeof loader>();
   return (
     <div className="w-full">
       <H1>Your expenses</H1>
@@ -21,18 +20,21 @@ export default function ExpensesPage() {
         <section className="p-8 w-full">
           <h2 className="sr-only">All expenses</h2>
           <ul className="flex flex-col">
-            <ListLinkItem to={`/dashboard/expenses/1`}>
-              <p className="text-xl font-semibold">Food</p>
-              <p>$100</p>
-            </ListLinkItem>
-            <ListLinkItem to={`/dashboard/expenses/2`}>
-              <p className="text-xl font-semibold">Transport</p>
-              <p>$100</p>
-            </ListLinkItem>
-            <ListLinkItem to={`/dashboard/expenses/3`}>
-              <p className="text-xl font-semibold">Entertainment</p>
-              <p>$100</p>
-            </ListLinkItem>
+            {expenses.map((expense) => (
+              <ListLinkItem key={expense.id} to={`/dashboard/expenses/${expense.id}`}>
+                <p>
+                  <i>{new Date(expense.amount).toLocaleDateString('en-US')}</i>
+                </p>
+                <p className="text-xl font-semibold">{expense.title}</p>
+                <p>
+                  <b>
+                    {Intl.NumberFormat('en-US', { style: 'currency', currency: expense.currencyCode }).format(
+                      expense.amount,
+                    )}
+                  </b>
+                </p>
+              </ListLinkItem>
+            ))}
           </ul>
         </section>
         <section className={clsx('w-full', transition.state === 'loading' && 'motion-safe:animate-pulse')}>
