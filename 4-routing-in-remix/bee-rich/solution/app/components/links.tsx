@@ -46,7 +46,7 @@ export function ButtonLink({ isPrimary, className = '', children, ...props }: Bu
   return (
     <RemixLink
       className={clsx(
-        'w-full md:w-auto',
+        'block w-full md:w-min whitespace-nowrap text-center',
         isPrimary
           ? 'bg-primary dark:bg-darkPrimary hover:bg-primaryAccent dark:hover:bg-darkPrimaryAccent'
           : 'bg-secondary dark:bg-darkSecondary hover:bg-secondaryAccent dark:hover:bg-darkSecondaryAccent',
@@ -57,6 +57,18 @@ export function ButtonLink({ isPrimary, className = '', children, ...props }: Bu
     >
       {children}
     </RemixLink>
+  );
+}
+
+export function FloatingActionLink({ className, children, ...props }: ButtonLinkProps) {
+  return (
+    <ButtonLink
+      {...props}
+      className={clsx('fixed bottom-0 right-0 md:bottom-5 md:right-5 md:rounded-full', className)}
+      isPrimary
+    >
+      {children}
+    </ButtonLink>
   );
 }
 

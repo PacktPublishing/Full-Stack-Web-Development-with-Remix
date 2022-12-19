@@ -13,7 +13,7 @@ export function Button({ isPrimary = false, className, children, ...props }: But
   return (
     <button
       className={clsx(
-        'w-full md:w-auto',
+        'w-full md:w-min whitespace-nowrap',
         isPrimary
           ? 'bg-primary dark:bg-darkPrimary hover:bg-primaryAccent dark:hover:bg-darkPrimaryAccent'
           : 'bg-secondary dark:bg-darkSecondary hover:bg-secondaryAccent dark:hover:bg-darkSecondaryAccent',

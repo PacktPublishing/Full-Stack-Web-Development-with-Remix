@@ -1,8 +1,8 @@
 import { ActionBar, Button } from '~/components/buttons';
 import { Card } from '~/components/containers';
-import { Form, Input } from '~/components/forms';
+import { Form, Input, Textarea } from '~/components/forms';
 import { H1, H2, H3, H4 } from '~/components/headings';
-import { ButtonLink, Link } from '~/components/links';
+import { ButtonLink, FloatingActionLink, Link } from '~/components/links';
 import { InlineError, Paragraph } from '~/components/texts';
 
 export default function DemoPage() {
@@ -38,6 +38,7 @@ export default function DemoPage() {
           <H3>Form</H3>
           <Input label="Email:" type="text" name="email" placeholder="bee.rich@email.com" />
           <Input label="Name:" type="text" name="name" placeholder="Mr. Bee Rich" />
+          <Textarea label="Note:" name="note" />
           <Input label="Password:" type="password" name="password" />
           <Button type="submit" isPrimary>
             Submit!
@@ -59,7 +60,6 @@ export default function DemoPage() {
           <Form>
             <H3>Card with Form</H3>
             <Input label="Email:" type="text" name="email" placeholder="bee.rich@email.com" />
-            <Input label="Name:" type="text" name="name" placeholder="Mr. Bee Rich" />
             <Input label="Password:" type="password" name="password" />
             <Button type="submit" isPrimary>
               Submit!
@@ -77,6 +77,7 @@ export default function DemoPage() {
           </Button>
         </Form>
       </section>
+      <FloatingActionLink to="/demo">Primary action</FloatingActionLink>
     </div>
   );
 }

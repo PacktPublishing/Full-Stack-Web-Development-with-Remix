@@ -13,7 +13,26 @@ export function Input({ label, className, ...props }: InputProps) {
       <span className="text-textLight text-sm font-semibold">{label}</span>
       <input
         className={clsx(
-          'mt-1 w-full text-text dark:text-darkText text-lg font-semibold bg-secondary dark:bg-darkSecondary py-4 px-2 rounded-lg border border-secondaryAccent dark:border-darkSecondaryAccent',
+          'mt-1 w-full text-text dark:text-darkText text-lg font-semibold bg-background dark:bg-darkBackground py-4 px-2 rounded-lg border border-secondaryAccent dark:border-darkSecondaryAccent',
+          className,
+        )}
+        {...props}
+      />
+    </label>
+  );
+}
+
+type TextareaProps = InputHTMLAttributes<HTMLTextAreaElement> & {
+  label: ReactNode;
+};
+
+export function Textarea({ label, className, ...props }: TextareaProps) {
+  return (
+    <label className="w-full lg:max-w-md">
+      <span className="text-textLight text-sm font-semibold">{label}</span>
+      <textarea
+        className={clsx(
+          'mt-1 w-full text-text dark:text-darkText text-lg font-semibold bg-background dark:bg-darkBackground py-4 px-2 rounded-lg border border-secondaryAccent dark:border-darkSecondaryAccent',
           className,
         )}
         {...props}
