@@ -1,12 +1,16 @@
 import { clsx } from 'clsx';
+import { json } from '@remix-run/node';
 import { useTransition, Outlet, useLoaderData } from '@remix-run/react';
 import { ListLinkItem } from '~/components/links';
 import { H1 } from '~/components/headings';
 import { db } from '~/db.server';
-import { json } from '@remix-run/node';
 
 export async function loader() {
-  const expenses = await db.expense.findMany({});
+  const expenses = await db.expense.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
   return json(expenses);
 }
 
@@ -23,7 +27,7 @@ export default function ExpensesPage() {
             {expenses.map((expense) => (
               <ListLinkItem key={expense.id} to={`/dashboard/expenses/${expense.id}`}>
                 <p>
-                  <i>{new Date(expense.amount).toLocaleDateString('en-US')}</i>
+                  <i>{new Date(expense.createdAt).toLocaleDateString('en-US')}</i>
                 </p>
                 <p className="text-xl font-semibold">{expense.title}</p>
                 <p>

@@ -1,8 +1,25 @@
-import { Outlet, Link as RemixLink } from '@remix-run/react';
+import { json } from '@remix-run/node';
+import { Outlet, Link as RemixLink, useLoaderData } from '@remix-run/react';
 import { Container } from '~/components/containers';
 import { NavLink } from '~/components/links';
+import { db } from '~/db.server';
+
+export async function loader() {
+  const firstExpense = await db.expense.findFirst({
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+  const firstInvoice = await db.invoice.findFirst({
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+  return json({ firstExpense, firstInvoice });
+}
 
 export default function Layout() {
+  const { firstExpense, firstInvoice } = useLoaderData<typeof loader>();
   return (
     <>
       <header>
@@ -18,10 +35,14 @@ export default function Layout() {
             </ul>
             <ul className="mt-10 w-full flex flex-row gap-5">
               <li className="ml-auto">
-                <NavLink to="/dashboard/income">Income</NavLink>
+                <NavLink to={firstInvoice ? `/dashboard/income/${firstInvoice.id}` : '/dashboard/income'}>
+                  Income
+                </NavLink>
               </li>
               <li className="mr-auto">
-                <NavLink to="/dashboard/expenses">Expenses</NavLink>
+                <NavLink to={firstExpense ? `/dashboard/expenses/${firstExpense.id}` : '/dashboard/expenses'}>
+                  Expenses
+                </NavLink>
               </li>
             </ul>
           </nav>

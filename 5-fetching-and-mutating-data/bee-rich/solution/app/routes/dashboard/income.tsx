@@ -1,10 +1,22 @@
 import { clsx } from 'clsx';
-import { Outlet, useTransition } from '@remix-run/react';
+import { json } from '@remix-run/node';
+import { Outlet, useLoaderData, useTransition } from '@remix-run/react';
 import { ListLinkItem } from '~/components/links';
 import { H1 } from '~/components/headings';
+import { db } from '~/db.server';
+
+export async function loader() {
+  const invoices = await db.invoice.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+  return json(invoices);
+}
 
 export default function IncomePage() {
   const transition = useTransition();
+  const invoices = useLoaderData<typeof loader>();
   return (
     <div className="w-full">
       <H1>Your income</H1>
@@ -12,18 +24,21 @@ export default function IncomePage() {
         <section className="p-8 w-full">
           <h2 className="sr-only">All your income</h2>
           <ul className="flex flex-col">
-            <ListLinkItem to={`/dashboard/income/1`}>
-              <p className="text-xl font-semibold">Salary October</p>
-              <p>$2500</p>
-            </ListLinkItem>
-            <ListLinkItem to={`/dashboard/income/2`}>
-              <p className="text-xl font-semibold">Salary September</p>
-              <p>$2500</p>
-            </ListLinkItem>
-            <ListLinkItem to={`/dashboard/income/3`}>
-              <p className="text-xl font-semibold">Salary August</p>
-              <p>$2500</p>
-            </ListLinkItem>
+            {invoices.map((invoice) => (
+              <ListLinkItem key={invoice.id} to={`/dashboard/income/${invoice.id}`}>
+                <p>
+                  <i>{new Date(invoice.createdAt).toLocaleDateString('en-US')}</i>
+                </p>
+                <p className="text-xl font-semibold">{invoice.title}</p>
+                <p>
+                  <b>
+                    {Intl.NumberFormat('en-US', { style: 'currency', currency: invoice.currencyCode }).format(
+                      invoice.amount,
+                    )}
+                  </b>
+                </p>
+              </ListLinkItem>
+            ))}
           </ul>
         </section>
         <section className={clsx('w-full', transition.state === 'loading' && 'motion-safe:animate-pulse')}>
