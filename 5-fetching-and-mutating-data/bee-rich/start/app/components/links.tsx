@@ -86,7 +86,7 @@ export function ListLinkItem({ className = '', to, children, ...props }: ListLin
           clsx(
             'block w-full p-4 border',
             isActive
-              ? 'bg-secondary dark:bg-darkSecondary border-bg-secondary dark:border-darkSecondary'
+              ? 'bg-secondary dark:bg-darkSecondary border-secondary dark:border-darkSecondary'
               : 'hover:bg-backgroundPrimary dark:hover:bg-darkBackgroundPrimary border-background dark:border-darkBackground hover:border-secondary dark:hover:border-darkSecondary',
           )
         }
