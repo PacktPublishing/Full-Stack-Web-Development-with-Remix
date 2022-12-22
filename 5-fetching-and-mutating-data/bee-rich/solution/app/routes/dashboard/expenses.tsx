@@ -21,11 +21,18 @@ export default function ExpensesPage() {
     <div className="w-full">
       <H1>Your expenses</H1>
       <div className="mt-10 w-full flex flex-col-reverse lg:flex-row">
-        <section className="p-8 w-full">
+        <section className="p-8 w-full lg:max-w-2xl">
           <h2 className="sr-only">All expenses</h2>
           <ul className="flex flex-col">
             {expenses.map((expense) => (
-              <ListLinkItem key={expense.id} to={`/dashboard/expenses/${expense.id}`}>
+              <ListLinkItem
+                key={expense.id}
+                to={`/dashboard/expenses/${expense.id}`}
+                deleteProps={{
+                  ariaLabel: `Delete expense ${expense.title}`,
+                  action: `/dashboard/expenses/${expense.id}`,
+                }}
+              >
                 <p>
                   <i>{new Date(expense.createdAt).toLocaleDateString('en-US')}</i>
                 </p>
