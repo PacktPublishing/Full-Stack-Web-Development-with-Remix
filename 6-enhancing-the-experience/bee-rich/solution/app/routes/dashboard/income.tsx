@@ -25,7 +25,14 @@ export default function IncomePage() {
           <h2 className="sr-only">All your income</h2>
           <ul className="flex flex-col">
             {invoices.map((invoice) => (
-              <ListLinkItem key={invoice.id} to={`/dashboard/income/${invoice.id}`}>
+              <ListLinkItem
+                key={invoice.id}
+                to={`/dashboard/income/${invoice.id}`}
+                deleteProps={{
+                  ariaLabel: `Delete invoice ${invoice.title}`,
+                  action: `/dashboard/income/${invoice.id}`,
+                }}
+              >
                 <p>
                   <i>{new Date(invoice.createdAt).toLocaleDateString('en-US')}</i>
                 </p>

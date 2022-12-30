@@ -25,7 +25,14 @@ export default function ExpensesPage() {
           <h2 className="sr-only">All expenses</h2>
           <ul className="flex flex-col">
             {expenses.map((expense) => (
-              <ListLinkItem key={expense.id} to={`/dashboard/expenses/${expense.id}`}>
+              <ListLinkItem
+                key={expense.id}
+                to={`/dashboard/expenses/${expense.id}`}
+                deleteProps={{
+                  ariaLabel: `Delete expense ${expense.title}`,
+                  action: `/dashboard/expenses/${expense.id}`,
+                }}
+              >
                 <p>
                   <i>{new Date(expense.createdAt).toLocaleDateString('en-US')}</i>
                 </p>
