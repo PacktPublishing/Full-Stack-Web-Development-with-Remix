@@ -107,6 +107,8 @@ export function ListLinkItem({ isActive, className = '', to, deleteProps, childr
           <button
             type="submit"
             aria-label={deleteProps.ariaLabel}
+            name="intent"
+            value="delete"
             disabled={isPending}
             className={
               isPending

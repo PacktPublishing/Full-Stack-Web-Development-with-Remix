@@ -102,11 +102,7 @@ export function ListLinkItem({ isActive, className = '', to, deleteProps, childr
       </RemixNavLink>
       {deleteProps && (
         <Form className="p-8 ml-auto" method="post" action={deleteProps.action}>
-          <button
-            type="submit"
-            className="hover:text-primary focus:text-primary dark:hover:text-darkPrimary dark:focus:text-darkPrimary"
-            aria-label={deleteProps.ariaLabel}
-          >
+          <button type="submit" aria-label={deleteProps.ariaLabel} name="intent" value="delete">
             <svg className="w-8 h-8 " viewBox="0 0 20 20" fill="currentColor">
               <path
                 fillRule="evenodd"
