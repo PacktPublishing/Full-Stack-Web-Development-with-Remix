@@ -56,7 +56,7 @@ export async function action({ params, request }: ActionArgs) {
   if (intent === 'update') {
     return updateExpense(formData, id);
   }
-  throw new Response('Bad request', { status: 500 });
+  throw new Response('Bad request', { status: 400 });
 }
 
 export async function loader({ params }: LoaderArgs) {
