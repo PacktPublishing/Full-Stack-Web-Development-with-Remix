@@ -20,13 +20,17 @@ export function Link({ className, children, ...props }: LinkProps) {
   );
 }
 
-export function NavLink({ className, children, ...props }: LinkProps) {
+type NavLinkProps = LinkProps & {
+  styleAsActive?: boolean;
+};
+
+export function NavLink({ className, children, styleAsActive = false, ...props }: NavLinkProps) {
   return (
     <RemixNavLink
       className={({ isActive }) =>
         clsx(
           'font-bold p-2 text-lg lg:text-2xl',
-          isActive
+          styleAsActive || isActive
             ? 'bg-primary dark:bg-darkPrimary pointer-events-none'
             : 'border border-secondary dark:border-darkSecondary hover:bg-primaryAccent dark:hover:bg-darkPrimaryAccent',
           className,
@@ -38,7 +42,6 @@ export function NavLink({ className, children, ...props }: LinkProps) {
     </RemixNavLink>
   );
 }
-
 type ButtonLinkProps = RemixLinkProps & {
   isPrimary?: boolean;
 };

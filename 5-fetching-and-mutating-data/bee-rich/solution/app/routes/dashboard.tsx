@@ -1,35 +1,27 @@
-import type { LoaderArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { Outlet, Link as RemixLink, useLoaderData } from '@remix-run/react';
+import { Outlet, Link as RemixLink, useLoaderData, useLocation } from '@remix-run/react';
 import { Container } from '~/components/containers';
 import { NavLink } from '~/components/links';
 import { db } from '~/db.server';
 
-export async function loader({ request }: LoaderArgs) {
-  const url = new URL(request.url);
-  const isOnExpensePage = url.pathname.includes('/expenses');
-  const expenseQuery = isOnExpensePage
-    ? null
-    : db.expense.findFirst({
-        orderBy: {
-          createdAt: 'desc',
-        },
-      });
+export async function loader() {
+  const expenseQuery = db.expense.findFirst({
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+  const invoiceQuery = db.invoice.findFirst({
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
 
-  const isOnIncomePage = url.pathname.includes('income');
-  const invoiceQuery = isOnIncomePage
-    ? null
-    : db.invoice.findFirst({
-        orderBy: {
-          createdAt: 'desc',
-        },
-      });
   const [firstExpense, firstInvoice] = await Promise.all([expenseQuery, invoiceQuery]);
   return json({ firstExpense, firstInvoice });
 }
-
 export default function Layout() {
   const { firstExpense, firstInvoice } = useLoaderData<typeof loader>();
+  const location = useLocation();
   return (
     <>
       <header>
@@ -47,7 +39,7 @@ export default function Layout() {
               <li className="ml-auto">
                 <NavLink
                   to={firstInvoice ? `/dashboard/income/${firstInvoice.id}` : '/dashboard/income'}
-                  prefetch="intent"
+                  styleAsActive={location.pathname.startsWith('/dashboard/income')}
                 >
                   Income
                 </NavLink>
@@ -55,7 +47,7 @@ export default function Layout() {
               <li className="mr-auto">
                 <NavLink
                   to={firstExpense ? `/dashboard/expenses/${firstExpense.id}` : '/dashboard/expenses'}
-                  prefetch="intent"
+                  styleAsActive={location.pathname.startsWith('/dashboard/expenses')}
                 >
                   Expenses
                 </NavLink>
