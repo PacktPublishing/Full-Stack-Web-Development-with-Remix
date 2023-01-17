@@ -1,6 +1,9 @@
+import type { Expense, Invoice } from '@prisma/client';
+import type { SerializeFrom } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { Outlet, Link as RemixLink, useLoaderData, useLocation } from '@remix-run/react';
 import { Container } from '~/components/containers';
+import { H1 } from '~/components/headings';
 import { NavLink } from '~/components/links';
 import { db } from '~/db.server';
 
@@ -20,8 +23,13 @@ export async function loader() {
   return json({ firstExpense, firstInvoice });
 }
 
-export default function Layout() {
-  const { firstExpense, firstInvoice } = useLoaderData<typeof loader>();
+type LayoutProps = {
+  children: React.ReactNode;
+  firstExpense: SerializeFrom<Expense> | null;
+  firstInvoice: SerializeFrom<Invoice> | null;
+};
+
+function Layout({ firstExpense, firstInvoice, children }: LayoutProps) {
   const location = useLocation();
   return (
     <>
@@ -59,9 +67,30 @@ export default function Layout() {
           </nav>
         </Container>
       </header>
-      <main className="p-4 w-full flex justify-center items-center">
-        <Outlet />
-      </main>
+      <main className="p-4 w-full flex justify-center items-center">{children}</main>
     </>
+  );
+}
+
+export default function Dashboard() {
+  const { firstExpense, firstInvoice } = useLoaderData<typeof loader>();
+  return (
+    <Layout firstExpense={firstExpense} firstInvoice={firstInvoice}>
+      <Outlet />
+    </Layout>
+  );
+}
+
+export function ErrorBoundary({ error }: { error: Error }) {
+  return (
+    <Layout firstExpense={null} firstInvoice={null}>
+      <Container className="p-5 lg:p-20 flex flex-col gap-5">
+        <H1>Unexpected Error</H1>
+        <p>We are very sorry. An unexpected error occurred. Please try again or contact us if the problem persists.</p>
+        <div className="border-4 border-red-500 p-10">
+          <p>Error message: {error.message}</p>
+        </div>
+      </Container>
+    </Layout>
   );
 }
