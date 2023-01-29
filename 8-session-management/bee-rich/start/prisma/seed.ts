@@ -1,4 +1,7 @@
+import type { User } from '@prisma/client';
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
+
 const db = new PrismaClient();
 
 const expenses = [
@@ -147,31 +150,40 @@ const income = [
 
 async function seed() {
   const start = performance.now();
-  const expensePromises = expenses.map((expense) => createExpense(expense));
-  const invoicePromises = income.map((income) => createInvoice(income));
+  const user = await db.user.create({
+    data: {
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      password: await bcrypt.hash('BeeRich', 10),
+    },
+  });
+  const expensePromises = expenses.map((expense) => createExpense(expense, user));
+  const invoicePromises = income.map((income) => createInvoice(income, user));
   await Promise.all([...expensePromises, ...invoicePromises]);
   const end = performance.now();
   console.log(`🚀 Seeded the database. Done in ${Math.round(end - start)}ms`);
 }
 
-function createExpense(expenseData: typeof expenses[number]) {
+function createExpense(expenseData: typeof expenses[number], user: User) {
   return db.expense.create({
     data: {
       title: expenseData.title,
       amount: expenseData.amount,
       currencyCode: expenseData.currencyCode,
       createdAt: new Date(expenseData.date),
+      userId: user.id,
     },
   });
 }
 
-function createInvoice(incomeData: typeof income[number]) {
+function createInvoice(incomeData: typeof income[number], user: User) {
   return db.invoice.create({
     data: {
       title: incomeData.title,
       amount: incomeData.amount,
       currencyCode: incomeData.currencyCode,
       createdAt: new Date(incomeData.date),
+      userId: user.id,
     },
   });
 }
