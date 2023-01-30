@@ -1,7 +1,9 @@
 import { clsx } from 'clsx';
 import type { FormProps as RemixFormProps } from '@remix-run/react';
+import { useSubmit } from '@remix-run/react';
 import { Form as RemixForm } from '@remix-run/react';
 import type { InputHTMLAttributes, ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   label: ReactNode;
@@ -39,6 +41,40 @@ export function Textarea({ label, className, ...props }: TextareaProps) {
       />
     </label>
   );
+}
+
+function useDebounce(delay: number): [string, React.Dispatch<React.SetStateAction<string>>] {
+  const [value, setValue] = useState('');
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [value, delay]);
+
+  return [debouncedValue, setValue];
+}
+
+type SearchInputProps = InputProps & {
+  formRef: React.RefObject<HTMLFormElement>;
+};
+
+export function SearchInput({ formRef, ...props }: SearchInputProps) {
+  const [debouncedValue, setValue] = useDebounce(500);
+  const submit = useSubmit();
+
+  useEffect(() => {
+    if (formRef.current) {
+      submit(formRef.current);
+    }
+  }, [formRef, debouncedValue, submit]);
+
+  return <Input {...props} onChange={(e) => setValue(e.target.value)} />;
 }
 
 type FormProps = RemixFormProps;

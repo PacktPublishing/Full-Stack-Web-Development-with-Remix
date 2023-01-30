@@ -41,7 +41,7 @@ export default function IncomePage() {
             ))}
           </ul>
         </section>
-        <section className={clsx('w-full', transition.state === 'loading' && 'motion-safe:animate-pulse')}>
+        <section className={clsx('lg:p-8 w-full', transition.state === 'loading' && 'motion-safe:animate-pulse')}>
           <Outlet />
         </section>
       </div>
