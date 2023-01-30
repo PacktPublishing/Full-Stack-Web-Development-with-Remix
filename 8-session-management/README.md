@@ -130,12 +130,95 @@ The easiest way to do so is to delete the existing database.
 
 Run `npm run reset:db` to execute our reset script. It will delete the dev database, create a new one, and call the seed script.
 
-6. **Start the dev server**
+7. **Start the dev server**
 
 Run `npm run dev`, open a new browser window, and navigate to the dashboard (`http://localhost:3000/dashboard`).
 
 BeeRich should run without issues and the dashboard should display all expenses created with `seed.ts`.
 
-**Great!** 🥳 We are all set to use the `User` model in our project! 🎉
+8. **Create the `session.server.ts` file**
+
+Let's also prepare some code for the register and login flow that we will add to BeeRich in this chapter.
+
+Create a new `session.server.ts` file the in `/app` folder. The `.server` postfix tells Remix to add the file only to the server but not the client bundle.
+
+9. **Implement the `register` and `login` functions**
+
+Add the following code to the `session.server.ts` file:
+
+```ts
+import { db } from "./db.server";
+import bcrypt from "bcryptjs";
+import type { User } from "@prisma/client";
+
+type UserRegistrationData = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export async function registerUser({
+  name,
+  email,
+  password,
+}: UserRegistrationData): Promise<User> {
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const sanitizedEmail = email.trim().toLowerCase();
+  const sanitizedName = name.trim();
+
+  const existingUser = await db.user.findUnique({
+    where: { email: sanitizedEmail },
+  });
+
+  if (existingUser) {
+    throw new Error(`A user with the email ${email} already exists.`);
+  }
+
+  try {
+    return db.user.create({
+      data: {
+        name: sanitizedName,
+        email: sanitizedEmail,
+        password: hashedPassword,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    throw new Error("Unable to create user.");
+  }
+}
+
+type UserLoginData = {
+  email: string;
+  password: string;
+};
+
+export async function loginUser({
+  email,
+  password,
+}: UserLoginData): Promise<User> {
+  const sanitizedEmail = email.trim().toLowerCase();
+
+  const user = await db.user.findUnique({
+    where: { email: sanitizedEmail },
+  });
+
+  if (!user) {
+    throw new Error(`No user found for email: ${email}.`);
+  }
+
+  const passwordValid = await bcrypt.compare(password, user.password);
+
+  if (!passwordValid) {
+    throw new Error("Invalid password.");
+  }
+
+  return user;
+}
+```
+
+Both functions will help us to implement the authentication flow in this chapter. They expect the register and login form data as input and either throw an error or return a user object.
+
+**Great!** 🥳 We are all set to use the `User` model to start implementing the authentication flow in BeeRich! 🎉
 
 It's time to start _Chapter 8, Session Management_!

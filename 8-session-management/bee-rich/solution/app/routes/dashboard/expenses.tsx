@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 import type { LoaderArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { useTransition, Outlet, useLoaderData, useParams, Form } from '@remix-run/react';
+import { useTransition, Outlet, useLoaderData, useParams, Form, useLocation } from '@remix-run/react';
 import { ListLinkItem } from '~/components/links';
 import { H1 } from '~/components/headings';
 import { db } from '~/db.server';
@@ -28,6 +28,7 @@ export default function ExpensesPage() {
   const transition = useTransition();
   const expenses = useLoaderData<typeof loader>();
   const { id } = useParams();
+  const location = useLocation();
   const ref = useRef<HTMLFormElement>(null);
   return (
     <div className="w-full">
@@ -35,7 +36,7 @@ export default function ExpensesPage() {
       <div className="mt-10 w-full flex flex-col-reverse lg:flex-row">
         <section className="lg:p-8 w-full lg:max-w-2xl">
           <h2 className="sr-only">All expenses</h2>
-          <Form ref={ref} method="get" action="/dashboard/expenses">
+          <Form ref={ref} method="get" action={location.pathname}>
             <SearchInput name="q" type="search" label="Search by title" formRef={ref} />
           </Form>
           <ul className="flex flex-col">
