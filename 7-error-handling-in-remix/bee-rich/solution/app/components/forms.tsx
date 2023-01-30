@@ -3,6 +3,7 @@ import type { FormProps as RemixFormProps } from '@remix-run/react';
 import { useSubmit } from '@remix-run/react';
 import { Form as RemixForm } from '@remix-run/react';
 import type { InputHTMLAttributes, ReactNode } from 'react';
+import { useRef } from 'react';
 import { useEffect, useState } from 'react';
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
@@ -67,8 +68,13 @@ type SearchInputProps = InputProps & {
 export function SearchInput({ formRef, ...props }: SearchInputProps) {
   const [debouncedValue, setValue] = useDebounce(500);
   const submit = useSubmit();
+  const initialRender = useRef(true);
 
   useEffect(() => {
+    if (initialRender.current) {
+      initialRender.current = false;
+      return;
+    }
     if (formRef.current) {
       submit(formRef.current);
     }

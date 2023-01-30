@@ -3,6 +3,7 @@ import type { FormProps as RemixFormProps } from '@remix-run/react';
 import { useSubmit } from '@remix-run/react';
 import { Form as RemixForm } from '@remix-run/react';
 import type { InputHTMLAttributes, ReactNode } from 'react';
+import { useRef } from 'react';
 import { useEffect, useState } from 'react';
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
@@ -43,34 +44,39 @@ export function Textarea({ label, className, ...props }: TextareaProps) {
   );
 }
 
-function useDebounce(value: string, delay: number) {
+function useDebounce(delay: number): [string, React.Dispatch<React.SetStateAction<string>>] {
+  const [value, setValue] = useState('');
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
-    const handler = setTimeout(() => {
+    const timeout = setTimeout(() => {
       setDebouncedValue(value);
     }, delay);
 
     return () => {
-      clearTimeout(handler);
+      clearTimeout(timeout);
     };
   }, [value, delay]);
 
-  return debouncedValue;
+  return [debouncedValue, setValue];
 }
 
 type SearchInputProps = InputProps & {
-  formRef: HTMLFormElement | null;
+  formRef: React.RefObject<HTMLFormElement>;
 };
 
 export function SearchInput({ formRef, ...props }: SearchInputProps) {
-  const [value, setValue] = useState('');
-  const debouncedValue = useDebounce(value, 500);
+  const [debouncedValue, setValue] = useDebounce(500);
   const submit = useSubmit();
+  const initialRender = useRef(true);
 
   useEffect(() => {
-    if (formRef && debouncedValue) {
-      submit(formRef);
+    if (initialRender.current) {
+      initialRender.current = false;
+      return;
+    }
+    if (formRef.current) {
+      submit(formRef.current);
     }
   }, [formRef, debouncedValue, submit]);
 
