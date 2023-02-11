@@ -4,8 +4,10 @@ import { useTransition } from '@remix-run/react';
 import { Button } from '~/components/buttons';
 import { Form, Input, Textarea } from '~/components/forms';
 import { db } from '~/db.server';
+import { requireUserId } from '~/session.server';
 
 export async function action({ request }: ActionArgs) {
+  const userId = await requireUserId(request);
   const formData = await request.formData();
   const title = formData.get('title');
   const description = formData.get('description');
@@ -20,6 +22,11 @@ export async function action({ request }: ActionArgs) {
       description,
       amount: amountNumber,
       currencyCode: 'USD',
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
     },
   });
   return redirect(`/dashboard/expenses/${expense.id}`);

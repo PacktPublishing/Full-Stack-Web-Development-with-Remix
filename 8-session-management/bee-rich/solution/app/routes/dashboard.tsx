@@ -1,21 +1,29 @@
 import type { Expense, Invoice } from '@prisma/client';
-import type { SerializeFrom } from '@remix-run/node';
+import type { LoaderArgs, SerializeFrom } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { Outlet, Link as RemixLink, useLoaderData, useLocation } from '@remix-run/react';
+import { Outlet, Link as RemixLink, useLoaderData, useLocation, Form } from '@remix-run/react';
 import { Container } from '~/components/containers';
 import { H1 } from '~/components/headings';
 import { NavLink } from '~/components/links';
 import { db } from '~/db.server';
+import { requireUserId } from '~/session.server';
 
-export async function loader() {
+export async function loader({ request }: LoaderArgs) {
+  const userId = await requireUserId(request);
   const expenseQuery = db.expense.findFirst({
     orderBy: {
       createdAt: 'desc',
+    },
+    where: {
+      userId,
     },
   });
   const invoiceQuery = db.invoice.findFirst({
     orderBy: {
       createdAt: 'desc',
+    },
+    where: {
+      userId,
     },
   });
 
@@ -41,7 +49,9 @@ function Layout({ firstExpense, firstInvoice, children }: LayoutProps) {
                 <RemixLink to="/">BeeRich</RemixLink>
               </li>
               <li className="ml-auto">
-                <RemixLink to="/404">Log out</RemixLink>
+                <Form method="post" action="/logout">
+                  <button type="submit">Log out</button>
+                </Form>
               </li>
             </ul>
             <ul className="mt-10 w-full flex flex-row gap-5">

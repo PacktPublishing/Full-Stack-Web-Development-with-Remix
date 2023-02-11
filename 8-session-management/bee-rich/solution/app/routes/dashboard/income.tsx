@@ -7,8 +7,10 @@ import { H1 } from '~/components/headings';
 import { db } from '~/db.server';
 import { useRef } from 'react';
 import { SearchInput } from '~/components/forms';
+import { requireUserId } from '~/session.server';
 
 export async function loader({ request }: LoaderArgs) {
+  const userId = await requireUserId(request);
   const url = new URL(request.url);
   const searchString = url.searchParams.get('q');
   const invoices = await db.invoice.findMany({
@@ -16,6 +18,7 @@ export async function loader({ request }: LoaderArgs) {
       createdAt: 'desc',
     },
     where: {
+      userId,
       title: {
         contains: searchString ? searchString : '',
       },

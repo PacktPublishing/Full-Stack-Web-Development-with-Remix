@@ -7,8 +7,10 @@ import { H1 } from '~/components/headings';
 import { db } from '~/db.server';
 import { SearchInput } from '~/components/forms';
 import { useRef } from 'react';
+import { requireUserId } from '~/session.server';
 
 export async function loader({ request }: LoaderArgs) {
+  const userId = await requireUserId(request);
   const url = new URL(request.url);
   const searchString = url.searchParams.get('q');
   const expenses = await db.expense.findMany({
@@ -16,6 +18,7 @@ export async function loader({ request }: LoaderArgs) {
       createdAt: 'desc',
     },
     where: {
+      userId,
       title: {
         contains: searchString ? searchString : '',
       },

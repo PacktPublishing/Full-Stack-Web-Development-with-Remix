@@ -6,13 +6,19 @@ import { Button } from '~/components/buttons';
 import { Form, Input, Textarea } from '~/components/forms';
 import { FloatingActionLink } from '~/components/links';
 import { db } from '~/db.server';
+import { requireUserId } from '~/session.server';
 
-async function deleteInvoice(request: Request, id: string): Promise<Response> {
+async function deleteInvoice(request: Request, id: string, userId: string): Promise<Response> {
   const referer = request.headers.get('referer');
   const redirectPath = referer || '/dashboard/income';
 
   try {
-    await db.invoice.delete({ where: { id } });
+    await db.invoice.deleteMany({
+      where: {
+        id,
+        userId,
+      },
+    });
   } catch (err) {
     throw new Response('Not found', { status: 404 });
   }
@@ -23,7 +29,7 @@ async function deleteInvoice(request: Request, id: string): Promise<Response> {
   return redirect(redirectPath);
 }
 
-async function updateInvoice(formData: FormData, id: string): Promise<Response> {
+async function updateInvoice(formData: FormData, id: string, userId: string): Promise<Response> {
   const title = formData.get('title');
   const description = formData.get('description');
   const amount = formData.get('amount');
@@ -31,9 +37,10 @@ async function updateInvoice(formData: FormData, id: string): Promise<Response> 
     throw Error('something went wrong');
   }
   const amountNumber = Number.parseFloat(amount);
-  await db.invoice.update({
+  await db.invoice.updateMany({
     where: {
       id,
+      userId,
     },
     data: {
       title,
@@ -45,23 +52,25 @@ async function updateInvoice(formData: FormData, id: string): Promise<Response> 
 }
 
 export async function action({ params, request }: ActionArgs) {
+  const userId = await requireUserId(request);
   const { id } = params;
   if (!id) throw Error('id route parameter must be defined');
 
   const formData = await request.formData();
   const intent = formData.get('intent');
   if (intent === 'delete') {
-    return deleteInvoice(request, id);
+    return deleteInvoice(request, id, userId);
   }
   if (intent === 'update') {
-    return updateInvoice(formData, id);
+    return updateInvoice(formData, id, userId);
   }
   throw new Response('Bad request', { status: 400 });
 }
 
-export async function loader({ params }: LoaderArgs) {
+export async function loader({ request, params }: LoaderArgs) {
+  const userId = await requireUserId(request);
   const { id } = params;
-  const invoice = await db.invoice.findUnique({ where: { id } });
+  const invoice = await db.invoice.findFirst({ where: { id, userId } });
   if (!invoice) throw new Response('Not found', { status: 404 });
   return json(invoice);
 }
