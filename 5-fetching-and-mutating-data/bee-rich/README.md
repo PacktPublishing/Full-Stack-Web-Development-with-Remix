@@ -1,12 +1,12 @@
 # 5. Fetching and Mutating Data
 
-In this chapter, you will learn how to fetch and mutate data in Remix. We already set up an routing hierarchy in the previous chapter that we will now fill with functionality.
+In this chapter, you will learn how to fetch and mutate data in Remix. We already set up a routing hierarchy in the previous chapter that we will now fill with functionality.
 
 ## Getting started
 
 Please note that the code in the [start](./start/) folder of this chapter is different from our final [solution](/5-fetching-and-mutating-data/bee-rich/solution/) from _Chapter 4, Routing in Remix_. For the start of this chapter, we set up Prisma with SQLite to store our data in a database.
 
-If you want to reuse the code from the previous chapter, then follow the following guide to get to the starting point of this chapter. Otherwise, feel free to checkout the code in the [start](./start/) folder and dive right into _Chapter 5, Fetching and Mutating Data_.
+If you want to reuse the code from the previous chapter, then follow this guide to get to the starting point of this chapter. Otherwise, feel free to checkout the code in the [start](./start/) folder and dive right into _Chapter 5, Fetching and Mutating Data_.
 
 ## Setting up Prisma with SQLite
 
@@ -293,10 +293,10 @@ seed();
 This file will seed the database with some sample data. We can execute the script by running the following command:
 
 ```bash
-npx ts-node prisma/seed.ts
+npm run seed
 ```
 
-- We already created a script for it earlier. Run `npm run seed` anytime you want to add the sample data to the database.
+- Run `npm run seed` anytime you want to add the sample data to the database.
 - If you want to reset your database, use `npm run reset:db` to reset and seed the database.
 
 **Great!** 🥳 We are all set to use Prisma in our project! 🎉
