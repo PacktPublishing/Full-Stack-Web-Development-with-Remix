@@ -16,3 +16,7 @@ Sometimes the `README.md` file may include instructions from how to get from the
 3. [Deployment Targets, Adapters, and Stacks](3-deployment-targets-adapters-and-stacks)
 4. [Routing in Remix](4-routing-in-remix/)
 5. [Fetching and Mutating Data](5-fetching-and-mutating-data/)
+6. [Enhancing the User Experience](6-enhancing-the-user-experience/)
+7. [Error Handling in Remix](7-error-handling-in-remix/)
+8. [Session Management](8-session-management/)
+9. [Assets and Meta Data Handling](9-assets-and-meta-data-handling/)
