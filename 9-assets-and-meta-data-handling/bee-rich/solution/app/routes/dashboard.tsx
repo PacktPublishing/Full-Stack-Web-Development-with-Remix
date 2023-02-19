@@ -1,34 +1,32 @@
 import type { Expense, Invoice } from '@prisma/client';
-import type { LoaderArgs, SerializeFrom } from '@remix-run/node';
+import type { LoaderArgs, MetaFunction, SerializeFrom } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { Outlet, Link as RemixLink, useLoaderData, useLocation, Form } from '@remix-run/react';
 import { Container } from '~/components/containers';
 import { H1 } from '~/components/headings';
 import { NavLink } from '~/components/links';
 import { db } from '~/db.server';
-import { requireUserId } from '~/session.server';
+import { getUser, logout } from '~/session.server';
+
+export const meta: MetaFunction = ({ data }) => {
+  const title = data?.username ? `${data.username}'s Dashboard | BeeRich` : 'Dashboard | BeeRich';
+  return { title, robots: 'noindex' };
+};
 
 export async function loader({ request }: LoaderArgs) {
-  const userId = await requireUserId(request);
+  const user = await getUser(request);
+  if (!user) return logout(request);
   const expenseQuery = db.expense.findFirst({
-    orderBy: {
-      createdAt: 'desc',
-    },
-    where: {
-      userId,
-    },
+    orderBy: { createdAt: 'desc' },
+    where: { userId: user.id },
   });
   const invoiceQuery = db.invoice.findFirst({
-    orderBy: {
-      createdAt: 'desc',
-    },
-    where: {
-      userId,
-    },
+    orderBy: { createdAt: 'desc' },
+    where: { userId: user.id },
   });
 
   const [firstExpense, firstInvoice] = await Promise.all([expenseQuery, invoiceQuery]);
-  return json({ firstExpense, firstInvoice });
+  return json({ firstExpense, firstInvoice, username: user.name });
 }
 
 type LayoutProps = {

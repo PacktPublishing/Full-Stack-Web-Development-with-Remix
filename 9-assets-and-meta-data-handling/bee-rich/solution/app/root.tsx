@@ -9,6 +9,8 @@ export const meta: MetaFunction = () => ({
   charset: 'utf-8',
   title: 'BeeRich',
   viewport: 'width=device-width,initial-scale=1',
+  description:
+    'Bee in control of your finances with BeeRich - the buzzworthy expense and income tracker with a modern interface. Keep your finances organized and make honey with your money!',
 });
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: tailwindCSS }];
