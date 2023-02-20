@@ -1,5 +1,0 @@
-User-agent: *
-Disallow: /dashboard/
-Allow: /login
-Allow: /signup
-Allow: /$

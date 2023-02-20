@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderArgs, MetaFunction } from '@remix-run/node';
+import type { ActionArgs, LinksFunction, LoaderArgs, MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 import { useActionData, useTransition } from '@remix-run/react';
@@ -8,6 +8,9 @@ import { Form, Input } from '~/components/forms';
 import { H1 } from '~/components/headings';
 import { InlineError } from '~/components/texts';
 import { createUserSession, getUserId, loginUser } from '~/session.server';
+import loginCSS from '~/styles/login.css';
+
+export const links: LinksFunction = () => [{ rel: 'stylesheet', href: loginCSS }];
 
 export const meta: MetaFunction = () => ({
   title: 'Log In | BeeRich',

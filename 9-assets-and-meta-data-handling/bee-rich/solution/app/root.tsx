@@ -13,7 +13,15 @@ export const meta: MetaFunction = () => ({
     'Bee in control of your finances with BeeRich - the buzzworthy expense and income tracker with a modern interface. Keep your finances organized and make honey with your money!',
 });
 
-export const links: LinksFunction = () => [{ rel: 'stylesheet', href: tailwindCSS }];
+export const links: LinksFunction = () => [
+  { rel: 'stylesheet', href: tailwindCSS },
+  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+  { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+  {
+    rel: 'stylesheet',
+    href: 'https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap',
+  },
+];
 
 function Document({ children }: { children: React.ReactNode }) {
   return (
