@@ -6,7 +6,7 @@ In this chapter, we will expand on the functionality from the previous chapter a
 
 We need to update the `ListLinkItem` component to support deleting items from the list.
 
-If you want to reuse the code from the previous chapter, then follow the following guide to get to the starting point of this chapter. Otherwise, feel free to checkout the code in the [start](./start/) folder and dive right into _Chapter 6, Enhancing the Experience_.
+If you want to reuse the code from the previous chapter, then follow this guide to get to the starting point of this chapter. Otherwise, feel free to checkout the code in the [start](./start/) folder and dive right into _Chapter 6, Enhancing the Experience_.
 
 ## Updating the `ListLinkItem` component
 
@@ -42,7 +42,7 @@ type ListLinkItemProps = HTMLAttributes<HTMLLIElement> & {
 
 We update the `ListLinkItemProps` type to support a `deleteProps` property that is of type `DeleteProps`.
 
-We also add a `isActive` property to the `ListLinkItemProps` type to style the active/current item differently.
+We also add an `isActive` property to the `ListLinkItemProps` type to style the active/current item differently.
 
 4. **Replace the `ListLinkItem` component**
 
