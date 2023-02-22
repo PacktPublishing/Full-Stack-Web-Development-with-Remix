@@ -99,7 +99,7 @@ export function ListLinkItem({
 
 The updated `ListLinkItem` component supports the deletion of the item by rendering a `Form` component. The `Form` component is rendered only if the `deleteProps` property is provided. The `deleteProps` property contains information for the expense deletion form.
 
-We further updated the styling of the component. Previously, we used the `className` property of Remix's `NavLink` component for styling. Now, we use the `isActive` property to style the active/current item differently.
+We further updated the styling of the component. Previously, we used the `className` property of Remix's `NavLink` component for styling. Now, we use a custom `isActive` property to style the active/current item differently. This is necessary because we now style the outer `li` element and not just the `NavLink` component when the item is active.
 
 Note that we will update the `ListLinkItem` component further in _Chapter 6, Enhancing the Experience_.
 
