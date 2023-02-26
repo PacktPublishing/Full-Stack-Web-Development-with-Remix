@@ -46,8 +46,8 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export default function LoginPage() {
-  const transition = useNavigation();
-  const isSubmitting = transition.state === 'submitting';
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === 'submitting';
   const actionData = useActionData<typeof action>();
   return (
     <Card>

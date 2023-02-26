@@ -4,7 +4,7 @@ import { ListLinkItem } from '~/components/links';
 import { H1 } from '~/components/headings';
 
 export default function ExpensesPage() {
-  const transition = useNavigation();
+  const navigation = useNavigation();
   return (
     <div className="w-full">
       <H1>Your expenses</H1>
@@ -26,7 +26,7 @@ export default function ExpensesPage() {
             </ListLinkItem>
           </ul>
         </section>
-        <section className={clsx('lg:p-8 w-full', transition.state === 'loading' && 'motion-safe:animate-pulse')}>
+        <section className={clsx('lg:p-8 w-full', navigation.state === 'loading' && 'motion-safe:animate-pulse')}>
           <Outlet />
         </section>
       </div>

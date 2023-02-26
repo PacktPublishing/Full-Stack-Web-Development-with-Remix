@@ -15,7 +15,7 @@ export async function loader() {
 }
 
 export default function IncomePage() {
-  const transition = useNavigation();
+  const navigation = useNavigation();
   const invoices = useLoaderData<typeof loader>();
   return (
     <div className="w-full">
@@ -41,7 +41,7 @@ export default function IncomePage() {
             ))}
           </ul>
         </section>
-        <section className={clsx('lg:p-8 w-full', transition.state === 'loading' && 'motion-safe:animate-pulse')}>
+        <section className={clsx('lg:p-8 w-full', navigation.state === 'loading' && 'motion-safe:animate-pulse')}>
           <Outlet />
         </section>
       </div>

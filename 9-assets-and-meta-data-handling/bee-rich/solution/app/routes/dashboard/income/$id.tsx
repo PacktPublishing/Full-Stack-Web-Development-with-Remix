@@ -77,8 +77,8 @@ export async function loader({ request, params }: LoaderArgs) {
 
 export default function IncomeDetailsPage() {
   const invoice = useLoaderData<typeof loader>();
-  const transition = useNavigation();
-  const isSubmitting = transition.state === 'submitting';
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === 'submitting';
   const actionData = useActionData<typeof action>();
 
   return (

@@ -1,6 +1,6 @@
 # 4. Routing in Remix
 
-This chapter introduces you to routing in Remix. You will learn how to add standalone pages, nested routes, and dynamic routes to your app. Additionally, you will learn about index routes and pathless layout routes. You will also practice working with Remix's page transition states.
+This chapter introduces you to routing in Remix. You will learn how to add standalone pages, nested routes, and dynamic routes to your app. Additionally, you will learn about index routes and pathless layout routes. You will also practice working with Remix's page navigation states.
 
 ## Getting started
 

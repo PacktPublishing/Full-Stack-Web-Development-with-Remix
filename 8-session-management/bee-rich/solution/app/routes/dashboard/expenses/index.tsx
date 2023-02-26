@@ -33,8 +33,8 @@ export async function action({ request }: ActionArgs) {
 }
 
 export default function CreateExpensePage() {
-  const transition = useNavigation();
-  const isSubmitting = transition.state === 'submitting';
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === 'submitting';
   return (
     <Form method="post" action="/dashboard/expenses/?index">
       <Input label="Title:" type="text" name="title" placeholder="Dinner for Two" required />
