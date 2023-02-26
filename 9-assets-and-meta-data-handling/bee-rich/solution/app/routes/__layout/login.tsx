@@ -1,7 +1,7 @@
 import type { ActionArgs, LinksFunction, LoaderArgs, MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
-import { useActionData, useTransition } from '@remix-run/react';
+import { useActionData, useNavigation } from '@remix-run/react';
 import { Button } from '~/components/buttons';
 import { Card } from '~/components/containers';
 import { Form, Input } from '~/components/forms';
@@ -46,7 +46,7 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export default function LoginPage() {
-  const transition = useTransition();
+  const transition = useNavigation();
   const isSubmitting = transition.state === 'submitting';
   const actionData = useActionData<typeof action>();
   return (

@@ -1,6 +1,6 @@
 import { clsx } from 'clsx';
 import { json } from '@remix-run/node';
-import { useTransition, Outlet, useLoaderData } from '@remix-run/react';
+import { useNavigation, Outlet, useLoaderData } from '@remix-run/react';
 import { ListLinkItem } from '~/components/links';
 import { H1 } from '~/components/headings';
 import { db } from '~/db.server';
@@ -15,7 +15,7 @@ export async function loader() {
 }
 
 export default function ExpensesPage() {
-  const transition = useTransition();
+  const transition = useNavigation();
   const expenses = useLoaderData<typeof loader>();
   return (
     <div className="w-full">

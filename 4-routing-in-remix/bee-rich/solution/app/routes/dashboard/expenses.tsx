@@ -1,10 +1,10 @@
 import { clsx } from 'clsx';
-import { useTransition, Outlet } from '@remix-run/react';
+import { useNavigation, Outlet } from '@remix-run/react';
 import { ListLinkItem } from '~/components/links';
 import { H1 } from '~/components/headings';
 
 export default function ExpensesPage() {
-  const transition = useTransition();
+  const transition = useNavigation();
   return (
     <div className="w-full">
       <H1>Your expenses</H1>

@@ -1,7 +1,7 @@
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { useActionData, useLoaderData, useTransition } from '@remix-run/react';
+import { useActionData, useLoaderData, useNavigation } from '@remix-run/react';
 import { Button } from '~/components/buttons';
 import { Form, Input, Textarea } from '~/components/forms';
 import { FloatingActionLink } from '~/components/links';
@@ -68,7 +68,7 @@ export async function loader({ params }: LoaderArgs) {
 
 export default function IncomeDetailsPage() {
   const invoice = useLoaderData<typeof loader>();
-  const transition = useTransition();
+  const transition = useNavigation();
   const isSubmitting = transition.state === 'submitting';
   const actionData = useActionData<typeof action>();
 

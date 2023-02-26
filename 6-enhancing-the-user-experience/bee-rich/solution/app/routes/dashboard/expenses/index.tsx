@@ -1,6 +1,6 @@
 import type { ActionArgs } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
-import { useTransition } from '@remix-run/react';
+import { useNavigation } from '@remix-run/react';
 import { Button } from '~/components/buttons';
 import { Form, Input, Textarea } from '~/components/forms';
 import { db } from '~/db.server';
@@ -26,7 +26,7 @@ export async function action({ request }: ActionArgs) {
 }
 
 export default function CreateExpensePage() {
-  const transition = useTransition();
+  const transition = useNavigation();
   const isSubmitting = transition.state === 'submitting';
   return (
     <Form method="post" action="/dashboard/expenses/?index">

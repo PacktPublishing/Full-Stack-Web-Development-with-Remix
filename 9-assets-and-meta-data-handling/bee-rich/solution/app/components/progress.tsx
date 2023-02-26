@@ -4,14 +4,14 @@
  */
 
 import { clsx } from 'clsx';
-import { useTransition } from '@remix-run/react';
+import { useNavigation } from '@remix-run/react';
 import { useEffect, useRef, useState } from 'react';
 
 function PageTransitionProgressBar() {
   const ref = useRef<HTMLDivElement>(null);
   const [hasAnimationCompleted, setHasAnimationCompleted] = useState(true);
 
-  const transition = useTransition();
+  const transition = useNavigation();
   const isTransitioning = transition.state !== 'idle';
 
   useEffect(() => {

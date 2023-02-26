@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 import type { LoaderArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { useTransition, Outlet, useLoaderData, useParams, Form, useLocation } from '@remix-run/react';
+import { useNavigation, Outlet, useLoaderData, useParams, Form, useLocation } from '@remix-run/react';
 import { ListLinkItem } from '~/components/links';
 import { H1 } from '~/components/headings';
 import { db } from '~/db.server';
@@ -28,7 +28,7 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export default function ExpensesPage() {
-  const transition = useTransition();
+  const transition = useNavigation();
   const expenses = useLoaderData<typeof loader>();
   const { id } = useParams();
   const location = useLocation();

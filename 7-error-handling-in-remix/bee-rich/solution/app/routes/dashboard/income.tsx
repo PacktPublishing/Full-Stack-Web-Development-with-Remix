@@ -1,6 +1,6 @@
 import { clsx } from 'clsx';
 import { json } from '@remix-run/node';
-import { Outlet, useLoaderData, useParams, useTransition } from '@remix-run/react';
+import { Outlet, useLoaderData, useParams, useNavigation } from '@remix-run/react';
 import { ListLinkItem } from '~/components/links';
 import { H1 } from '~/components/headings';
 import { db } from '~/db.server';
@@ -15,7 +15,7 @@ export async function loader() {
 }
 
 export default function IncomePage() {
-  const transition = useTransition();
+  const transition = useNavigation();
   const invoices = useLoaderData<typeof loader>();
   const { id } = useParams();
   return (
