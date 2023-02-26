@@ -23,24 +23,24 @@
   },
   "dependencies": {
     "@prisma/client": "^4.7.0",
-    "@remix-run/express": "^1.7.2",
-    "@remix-run/node": "^1.7.2",
-    "@remix-run/react": "^1.7.2",
+    "@remix-run/express": "^1.13.0",
+    "@remix-run/node": "^1.13.0",
+    "@remix-run/react": "^1.13.0",
     "bcryptjs": "^2.4.3",
     "clsx": "^1.2.1",
     "compression": "^1.7.4",
     "cross-env": "^7.0.3",
-    "express": "^4.18.1",
+    "express": "^4.18.2",
     "morgan": "^1.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@remix-run/dev": "^1.7.2",
-    "@remix-run/eslint-config": "^1.7.2",
+    "@remix-run/dev": "^1.13.0",
+    "@remix-run/eslint-config": "^1.13.0",
     "@types/bcryptjs": "^2.4.2",
-    "@types/react": "^18.0.15",
-    "@types/react-dom": "^18.0.6",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-html": "^7.1.0",
@@ -53,7 +53,7 @@
     "prisma": "^4.7.0",
     "rimraf": "^3.0.2",
     "tailwindcss": "^3.1.8",
-    "typescript": "^4.7.4"
+    "typescript": "^4.9.5"
   },
   "engines": {
     "node": ">=14"
