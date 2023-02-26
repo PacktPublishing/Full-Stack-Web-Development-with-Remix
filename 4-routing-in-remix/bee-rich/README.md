@@ -1,12 +1,13 @@
 # 4. Routing in Remix
 
-In this chapter, you will learn about routing in Remix. You will learn how to create standalone pages, nested routes, and dynamic routes in Remix. Additionally, you will learn about index routes and pathless layout routes. You will also be introduced to page transition states.
+This chapter introduces you to routing in Remix. You will learn how to add standalone pages, nested routes, and dynamic routes to your app. Additionally, you will learn about index routes and pathless layout routes. You will also practice working with Remix's page transition states.
 
 ## Getting started
 
-In the previous chapter you were introduced to BeeRich. You can start right where you left off and use the code from the previous chapter to get started with _Chapter 4, Routing in Remix_.
+In the previous chapter, you were introduced to BeeRich - the demo app for this book. To get started with this chapter, you can pick up the code where you left off.
 
-- If you want to start from scratch, use the [solution code from the previous chapter](../../3-deployment-targets-adapters-and-stacks/bee-rich/).
-- If you are stuck or need a hint, check the [solution code for this chapter](./solution/).
+You can find the solution code from the previous chapter [here](../../3-deployment-targets-adapters-and-stacks/bee-rich/).
+
+If you get stuck while working on _Chapter 4, Routing in Remix_, you can review the final solution code for this chapter [here](./solution/).
 
 Happy coding!
