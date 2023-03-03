@@ -29,7 +29,7 @@ export function loader({ params }: LoaderArgs) {
 }
 
 export default function ExpenseDetailsPage() {
-  const expense = useLoaderData();
+  const expense = useLoaderData<typeof loader>();
   return (
     <section className="w-full h-full p-8">
       <H2>{expense.title}</H2>

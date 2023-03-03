@@ -13,7 +13,7 @@ export async function loader({ params }: LoaderArgs) {
 }
 
 export default function ExpenseDetailsPage() {
-  const expense = useLoaderData();
+  const expense = useLoaderData<typeof loader>();
   return (
     <>
       <section className="w-full h-full p-8">
