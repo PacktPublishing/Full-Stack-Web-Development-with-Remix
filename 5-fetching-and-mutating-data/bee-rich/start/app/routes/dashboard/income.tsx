@@ -12,15 +12,15 @@ export default function IncomePage() {
         <section className="lg:p-8 w-full lg:max-w-2xl">
           <h2 className="sr-only">All your income</h2>
           <ul className="flex flex-col">
-            <ListLinkItem to={`/dashboard/income/1`}>
+            <ListLinkItem to="/dashboard/income/1">
               <p className="text-xl font-semibold">Salary October</p>
               <p>$2500</p>
             </ListLinkItem>
-            <ListLinkItem to={`/dashboard/income/2`}>
+            <ListLinkItem to="/dashboard/income/2">
               <p className="text-xl font-semibold">Salary September</p>
               <p>$2500</p>
             </ListLinkItem>
-            <ListLinkItem to={`/dashboard/income/3`}>
+            <ListLinkItem to="/dashboard/income/3">
               <p className="text-xl font-semibold">Salary August</p>
               <p>$2500</p>
             </ListLinkItem>

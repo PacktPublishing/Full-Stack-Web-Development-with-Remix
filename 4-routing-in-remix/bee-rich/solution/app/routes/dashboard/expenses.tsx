@@ -12,15 +12,15 @@ export default function ExpensesPage() {
         <section className="lg:p-8 w-full lg:max-w-2xl">
           <h2 className="sr-only">All expenses</h2>
           <ul className="flex flex-col">
-            <ListLinkItem to={`/dashboard/expenses/1`}>
+            <ListLinkItem to="/dashboard/expenses/1">
               <p className="text-xl font-semibold">Food</p>
               <p>$100</p>
             </ListLinkItem>
-            <ListLinkItem to={`/dashboard/expenses/2`}>
+            <ListLinkItem to="/dashboard/expenses/2">
               <p className="text-xl font-semibold">Transport</p>
               <p>$100</p>
             </ListLinkItem>
-            <ListLinkItem to={`/dashboard/expenses/3`}>
+            <ListLinkItem to="/dashboard/expenses/3">
               <p className="text-xl font-semibold">Entertainment</p>
               <p>$100</p>
             </ListLinkItem>
