@@ -68,10 +68,7 @@ export function ListLinkItem({
       )}
       {...props}
     >
-      <RemixNavLink
-        to={to}
-        className={clsx("block w-full p-4", isActive && "pointer-events-none")}
-      >
+      <RemixNavLink to={to} className="block w-full p-4">
         {children}
       </RemixNavLink>
       {deleteProps && (

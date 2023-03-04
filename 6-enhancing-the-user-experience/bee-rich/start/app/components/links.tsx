@@ -31,7 +31,7 @@ export function NavLink({ className, children, styleAsActive = false, ...props }
         clsx(
           'font-bold p-2 text-lg lg:text-2xl',
           styleAsActive || isActive
-            ? 'bg-primary dark:bg-darkPrimary pointer-events-none'
+            ? 'bg-primary dark:bg-darkPrimary'
             : 'border border-secondary dark:border-darkSecondary hover:bg-primaryAccent dark:hover:bg-darkPrimaryAccent',
           className,
         )
@@ -101,7 +101,7 @@ export function ListLinkItem({ isActive, className = '', to, deleteProps, childr
       )}
       {...props}
     >
-      <RemixNavLink to={to} className={clsx('block w-full p-4', isActive && 'pointer-events-none')}>
+      <RemixNavLink to={to} className="block w-full p-4">
         {children}
       </RemixNavLink>
       {deleteProps && (

@@ -30,7 +30,7 @@ export function NavLink({ className, children, styleAsActive = false, ...props }
         clsx(
           'font-bold p-2 text-lg lg:text-2xl',
           styleAsActive || isActive
-            ? 'bg-primary dark:bg-darkPrimary pointer-events-none'
+            ? 'bg-primary dark:bg-darkPrimary'
             : 'border border-secondary dark:border-darkSecondary hover:bg-primaryAccent dark:hover:bg-darkPrimaryAccent',
           className,
         )
