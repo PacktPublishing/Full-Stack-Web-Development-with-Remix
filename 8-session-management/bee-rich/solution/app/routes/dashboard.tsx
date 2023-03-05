@@ -11,20 +11,12 @@ import { requireUserId } from '~/session.server';
 export async function loader({ request }: LoaderArgs) {
   const userId = await requireUserId(request);
   const expenseQuery = db.expense.findFirst({
-    orderBy: {
-      createdAt: 'desc',
-    },
-    where: {
-      userId,
-    },
+    orderBy: { createdAt: 'desc' },
+    where: { userId },
   });
   const invoiceQuery = db.invoice.findFirst({
-    orderBy: {
-      createdAt: 'desc',
-    },
-    where: {
-      userId,
-    },
+    orderBy: { createdAt: 'desc' },
+    where: { userId },
   });
 
   const [firstExpense, firstInvoice] = await Promise.all([expenseQuery, invoiceQuery]);

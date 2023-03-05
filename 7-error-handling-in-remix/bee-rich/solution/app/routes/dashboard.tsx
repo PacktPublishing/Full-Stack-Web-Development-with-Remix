@@ -9,14 +9,10 @@ import { db } from '~/db.server';
 
 export async function loader() {
   const expenseQuery = db.expense.findFirst({
-    orderBy: {
-      createdAt: 'desc',
-    },
+    orderBy: { createdAt: 'desc' },
   });
   const invoiceQuery = db.invoice.findFirst({
-    orderBy: {
-      createdAt: 'desc',
-    },
+    orderBy: { createdAt: 'desc' },
   });
 
   const [firstExpense, firstInvoice] = await Promise.all([expenseQuery, invoiceQuery]);

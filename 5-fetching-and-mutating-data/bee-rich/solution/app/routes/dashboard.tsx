@@ -15,6 +15,7 @@ export async function loader() {
   const [firstExpense, firstInvoice] = await Promise.all([expenseQuery, invoiceQuery]);
   return json({ firstExpense, firstInvoice });
 }
+
 export default function Layout() {
   const { firstExpense, firstInvoice } = useLoaderData<typeof loader>();
   const location = useLocation();
