@@ -33,6 +33,9 @@ async function updateExpense(formData: FormData, id: string, userId: string): Pr
     throw Error('something went wrong');
   }
   const amountNumber = Number.parseFloat(amount);
+  if (Number.isNaN(amountNumber)) {
+    throw Error('something went wrong');
+  }
   await db.expense.updateMany({
     where: {
       id,

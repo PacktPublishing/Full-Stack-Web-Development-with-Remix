@@ -16,6 +16,9 @@ export async function action({ request }: ActionArgs) {
     throw Error('something went wrong');
   }
   const amountNumber = Number.parseFloat(amount);
+  if (Number.isNaN(amountNumber)) {
+    throw Error('something went wrong');
+  }
   const invoice = await db.invoice.create({
     data: {
       title,
