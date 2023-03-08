@@ -6,7 +6,7 @@ In this chapter, you will learn about session management in Remix. First, we wil
 
 Note that the code in the [start](./start/) folder of this chapter is different from our final [solution](/7-error-handling-in-remix/bee-rich/solution/) from _Chapter 7, Error Handling in Remix_.
 
-If you want to reuse the code from the previous chapter, then follow the following guide to get to the starting point of this chapter. Otherwise, feel free to checkout the code in the [start](./start/) folder and dive right into _Chapter 8, Session Management_.
+If you want to reuse the code from the previous chapter, then follow this guide before starting this chapter. Otherwise, feel free to checkout the code in the [start](./start/) folder and dive right into _Chapter 8, Session Management_.
 
 ## Introducing users to BeeRich
 
@@ -42,7 +42,7 @@ Add the following two fields to both the `Expense` and `Invoice` models:
   userId       String
 ```
 
-We add a `userId` field to both the `Expense` and `Invoice` model. The `userId` field specifies that each expense and invoice is associated with exactly one user.
+This adds a `userId` field to both the `Expense` and `Invoice` model. The `userId` field specifies that each expense and invoice is associated to exactly one user.
 
 The `@relation` definition is used to specify the relation between the `User` and `Expense` and `Invoice` models. In the `Expense` and `Invoice` models, the `userId` field is used as the foreign key to refer to the `User` model. The `userId` field points to the `id` field of the `User` model. We also specify that on deletion of the user object, all referenced expenses and invoices should be deleted as well (cascade).
 
@@ -50,11 +50,11 @@ The `@relation` definition is used to specify the relation between the `User` an
 
 Run `npm run build:db` to create the new database model.
 
-Make sure to run `npm i` before running `npm run build` if you haven't already.
+Make sure to run `npm i` before running `npm run build:db` if you haven't already.
 
 4. **Install bcryptjs**
 
-Now that we store user passwords in our database, we must ensure that they are not stored in plain text. To do so, we will use the [bcryptjs](https://www.npmjs.com/package/bcryptjs) package.
+Now that we are going to store user passwords in our database, we must ensure that they are not stored in plain text. To do so, we will use the [bcryptjs](https://www.npmjs.com/package/bcryptjs) package.
 
 Run `npm i bcryptjs` to install the package.
 
@@ -86,6 +86,8 @@ async function seed() {
 + });
 + const expensePromises = expenses.map((expense) => createExpense(expense, user));
 + const invoicePromises = income.map((income) => createInvoice(income, user));
+- const expensePromises = expenses.map((expense) => createExpense(expense));
+- const invoicePromises = income.map((income) => createInvoice(income));
   await Promise.all([...expensePromises, ...invoicePromises]);
   const end = performance.now();
   console.log(`🚀 Seeded the database. Done in ${Math.round(end - start)}ms`);
@@ -97,7 +99,7 @@ The updated `seed` function creates a mock user. It then passed the mock user as
 Update the `createExpense` and `createInvoice` helper functions to accept a user object. Update the creation query to connect the created expense and invoice objects to the user:
 
 ```diff
-+function createExpense(expenseData: typeof expenses[number], user: User) {
++ function createExpense(expenseData: typeof expenses[number], user: User) {
   return db.expense.create({
     data: {
       title: expenseData.title,
@@ -109,7 +111,7 @@ Update the `createExpense` and `createInvoice` helper functions to accept a user
   });
 }
 
-+function createInvoice(incomeData: typeof income[number], user: User) {
++ function createInvoice(incomeData: typeof income[number], user: User) {
   return db.invoice.create({
     data: {
       title: incomeData.title,
@@ -124,17 +126,17 @@ Update the `createExpense` and `createInvoice` helper functions to accept a user
 
 6. **Reset the database**
 
-Now that we updated the seed script, it's time to commit the changes to our database schema to our dev database.
+Now that we updated the seed script, it's time to commit our schema changes to our dev database.
 
 The easiest way to do so is to delete the existing database.
 
-Run `npm run reset:db` to execute our reset script. It will delete the dev database, create a new one, and call the seed script.
+Run `npm run reset:db` to execute our reset script. It will delete the dev database, create a new one, and run the seed script.
 
 7. **Start the dev server**
 
-Run `npm run dev`, open a new browser window, and navigate to the dashboard (`http://localhost:3000/dashboard`).
+Run `npm run dev`, open a new browser window, and navigate to the dashboard (http://localhost:3000/dashboard).
 
-BeeRich should run without issues and the dashboard should display all expenses created with `seed.ts`.
+BeeRich should run without issues and the dashboard should display all expenses created by `seed.ts`.
 
 8. **Create the `session.server.ts` file**
 
@@ -217,7 +219,7 @@ export async function loginUser({
 }
 ```
 
-Both functions will help us to implement the authentication flow in this chapter. They expect the register and login form data as input and either throw an error or return a user object.
+Both functions will help us to implement the authentication flow in this chapter. These functions take the register and login form data as arguments and either throw an error or return a user object.
 
 **Great!** 🥳 We are all set to use the `User` model to start implementing the authentication flow in BeeRich! 🎉
 
