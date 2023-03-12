@@ -8,6 +8,44 @@ Note that the code in the [start](./start/) folder of this chapter is different 
 
 If you want to reuse the code from the previous chapter, then follow this guide before starting this chapter. Otherwise, feel free to checkout the code in the [start](./start/) folder and dive right into _Chapter 8, Session Management_.
 
+### Run the application
+
+First, follow the section below to update the Prisma schema and introduce a `User` model to the database. After that, you can run the application.
+
+Follow these steps to get your application up and running:
+
+1. Make sure you have a `.env` file in the root of your project and that it contains the following line:
+
+```text
+DATABASE_URL="file:./dev.db"
+```
+
+2. Install the dependencies.
+
+```bash
+npm install
+```
+
+3. Generate the Prisma client
+
+```bash
+npm run build
+```
+
+4. Update the MySQL database schema
+
+```bash
+npm run update:db
+```
+
+5. Start the development server
+
+```bash
+npm run dev
+```
+
+This starts the development server on port `3000`. You can now open the application in your browser at [http://localhost:3000](http://localhost:3000).
+
 ## Introducing users to BeeRich
 
 So, far we don't have a concept of users in BeeRich. To change that, let's first update our database model.
@@ -220,6 +258,8 @@ export async function loginUser({
 ```
 
 Both functions will help us to implement the authentication flow in this chapter. These functions take the register and login form data as arguments and either throw an error or return a user object.
+
+**Note:** The updated Prisma schema introduces some errors in our `action` functions. We will need to update the code to add the `userId` to the `expense` and `invoice` objects. We will do so in the chapter's exercises.
 
 **Great!** 🥳 We are all set to use the `User` model to start implementing the authentication flow in BeeRich! 🎉
 

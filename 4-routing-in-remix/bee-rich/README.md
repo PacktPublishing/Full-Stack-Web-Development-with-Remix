@@ -11,3 +11,16 @@ You can find the solution code from the previous chapter [here](../../3-deployme
 If you get stuck while working on _Chapter 4, Routing in Remix_, you can review the final solution code for this chapter [here](./solution/).
 
 Happy coding!
+
+### Run the application
+
+To run the application, you need to install the dependencies and start the development server:
+
+```sh
+npm install
+npm run dev
+```
+
+This will start the development server on port `3000`. You can now open the application in your browser at [http://localhost:3000](http://localhost:3000).
+
+Great! You are now ready to start working on _Chapter 4, Routing in Remix_! Dive into the world of routing in Remix!

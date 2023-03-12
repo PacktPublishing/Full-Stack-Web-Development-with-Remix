@@ -6,14 +6,26 @@ In this chapter, we will introduce you to BeeRich, the demo application used thr
 
 **Welcome!** BeeRich is a dashboard-like application that mimics both personal and enterprise use cases. BeeRich is a personal finance management application that helps you stay on top of your beekeep - pardon me - bookkeeping. Well, at least that’s the goal. There is nothing much there yet. In every chapter, we will add more code to this application.
 
-Every chapter has a dedicated folder in this repository. You will find a README.md file in each folder that contains instructions on how to get started. Starting with the next chapter, you will find a `start` folder in each chapter folder. This folder contains the code that you will start with. The `solution` folder contains the code that you will end up with.
+Every chapter has a dedicated folder in this repository. You will find one or several `README.md` files in each chapter's folder that contain instructions on how to get started with the chapter.
 
-You will find the following sections in each README.md file:
+Starting with the next chapter, there will be a `bee-rich/start` and `bee-rich/solution` folder code for the chapter.
 
-- **Getting started** - Instructions on how to get started with the code in the chapter.
-- **Setting up** - Instructions that will help you get from the previous chapter's final code to the beginning of the current chapter.
+Each `bee-rich` folder contains a `README.md` file that contains a **Getting started** section (just like this one!). Additionally, there might be additional sections to help you get started with the chapter.
 
-Let's get started! Follow the instructions in _Chapter 3, Deployment Targets, Adapters, and Stacks_ to get started with BeeRich. You can also refer to the [REMIX_README.md](./REMIX_README.md) file for more information about how to work with Remix and the Express.js starter template.
+For this chapter, you can jump right into the book's content. However, if you want to explore the BeeRich application, you can find an overview of its dependencies, available scripts, and recommended VSCode settings below.
+
+Also, if you want to set up BeeRich yourself, you can follow the instructions in the [Setting up BeeRich from scratch](#setting-up-beerich-from-scratch) section.
+
+### Run the application
+
+To run the application, you need to install the dependencies and start the development server:
+
+```sh
+npm install
+npm run dev
+```
+
+This will start the development server on port `3000`. You can now open the application in your browser at [http://localhost:3000](http://localhost:3000).
 
 ### New dependencies
 
@@ -45,9 +57,11 @@ If you are using VS Code, we recommend installing the following extensions:
 
 Inspect the [`.vscode/settings.json`](./.vscode/extensions.json) file to see the recommended settings for VS Code. Feel free to alter these settings based on your own preferences.
 
-## Setting up BeeRich
+## Setting up BeeRich from scratch
 
-In case you want to start from scratch, you can follow the following steps to set up BeeRich yourself:
+Follow the instructions in _Chapter 3, Deployment Targets, Adapters, and Stacks_ to get started with BeeRich.
+
+If you want to set up BeeRich yourself, you can follow the following instructions.
 
 1. **Use the Remix CLI to create a new Remix project**
 
@@ -57,7 +71,7 @@ npx create-remix@latest ./bee-rich
 
 - Select [TypeScript](https://www.typescriptlang.org/) and the Express.js Server as your deployment target.
 
-Please refer to _Chapter 2, Creating a new Remix app_ for more information about the `create-remix` script.
+Please refer to _Chapter 2, Creating a new Remix app_ for more information about the `create-remix` script. You can also refer to the [REMIX_README.md](./REMIX_README.md) file for more information about how to work with Remix and the Express.js starter template.
 
 2. **Set up Prettier and ESLint**
 

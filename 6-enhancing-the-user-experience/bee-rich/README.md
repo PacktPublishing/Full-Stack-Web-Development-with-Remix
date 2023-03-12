@@ -8,6 +8,42 @@ We need to update the `ListLinkItem` component to support deleting items from th
 
 If you want to reuse the code from the previous chapter, then follow this guide to get to the starting point of this chapter. Otherwise, feel free to checkout the code in the [start](./start/) folder and dive right into _Chapter 6, Enhancing the Experience_.
 
+### Run the application
+
+Follow these steps to get your application up and running:
+
+1. Make sure you have a `.env` file in the root of your project and that it contains the following line:
+
+```text
+DATABASE_URL="file:./dev.db"
+```
+
+2. Install the dependencies.
+
+```bash
+npm install
+```
+
+3. Generate the Prisma client
+
+```bash
+npm run build
+```
+
+4. Update the MySQL database schema
+
+```bash
+npm run update:db
+```
+
+5. Start the development server
+
+```bash
+npm run dev
+```
+
+This starts the development server on port `3000`. You can now open the application in your browser at [http://localhost:3000](http://localhost:3000).
+
 ## Updating the `ListLinkItem` component
 
 1. **Open `app/components/links.tsx` in your editor**

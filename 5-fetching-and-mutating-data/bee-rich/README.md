@@ -8,6 +8,44 @@ Please note that the code in the [start](./start/) folder of this chapter is dif
 
 If you want to reuse the code from the previous chapter, then follow this guide to get to the starting point of this chapter. Otherwise, feel free to checkout the code in the [start](./start/) folder and dive right into _Chapter 5, Fetching and Mutating Data_.
 
+### Run the application
+
+To run the application, you will first need to follow the steps in the [Setting up Prisma with SQLite](#setting-up-prisma-with-sqlite) section below. After that, you should be all set.
+
+In case you want to use the [start code](./start) instead, follow these steps to get your application up and running:
+
+1. Make sure you have a `.env` file in the root of your project and that it contains the following line:
+
+```text
+DATABASE_URL="file:./dev.db"
+```
+
+2. Install the dependencies.
+
+```bash
+npm install
+```
+
+3. Generate the Prisma client
+
+```bash
+npm run build
+```
+
+4. Update the MySQL database schema
+
+```bash
+npm run update:db
+```
+
+5. Start the development server
+
+```bash
+npm run dev
+```
+
+This starts the development server on port `3000`. You can now open the application in your browser at [http://localhost:3000](http://localhost:3000).
+
 ## Setting up Prisma with SQLite
 
 Prisma is a database toolkit that is popular with the Remix community. In this chapter, we will use Prisma to add a SQLite database to BeeRich. SQLite is a file-based database that is easy to set up and use.
