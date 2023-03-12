@@ -15,12 +15,12 @@ You will find the following sections in each README.md file:
 
 Let's get started! Follow the instructions in _Chapter 3, Deployment Targets, Adapters, and Stacks_ to get started with BeeRich. You can also refer to the [REMIX_README.md](./REMIX_README.md) file for more information about how to work with Remix and the Express.js starter template.
 
-### New Dependencies
+### New dependencies
 
 - [clsx](https://www.npmjs.com/package/clsx): A helper for constructing className strings conditionally.
 - [tailwindcss](https://tailwindcss.com/): A utility-first CSS framework.
 
-### New Scripts
+### New scripts
 
 - `npm run routes` - prints the routes hierarchy
 - `npm run format` - runs all the formatting scripts
@@ -35,6 +35,15 @@ Let's get started! Follow the instructions in _Chapter 3, Deployment Targets, Ad
 - `npm run dev` - runs all the dev scripts in parallel
 - `npm run generate:css` - runs the TailwindCSS script to generate the CSS file
 - `npm run start` - runs the server in production mode
+
+### Recommended VS Code settings and extensions
+
+If you are using VS Code, we recommend installing the following extensions:
+
+- [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+
+Inspect the [`.vscode/settings.json`](./.vscode/extensions.json) file to see the recommended settings for VS Code. Feel free to alter these settings based on your own preferences.
 
 ## Setting up BeeRich
 
@@ -63,6 +72,8 @@ npm install --save-dev eslint prettier eslint-config-prettier eslint-plugin-html
 - Copy-paste the Prettier and ESLint configurations from the [.prettierrc](./.prettierrc.js) and [.eslintrc](./.eslintrc.js) files in the root of this repository into your project.
 
 Please feel free to alter the Prettier configuration and add more ESLint packages and rules based on your own preferences.
+
+- Copy-paste the [.vscode/settings.json](./.vscode/settings.json) file from the root of this repository into your project.
 
 3. **Set up Tailwind CSS**
 
