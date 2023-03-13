@@ -32,6 +32,9 @@ async function updateInvoice(formData: FormData, id: string, userId: string): Pr
     throw Error('something went wrong');
   }
   const amountNumber = Number.parseFloat(amount);
+  if (Number.isNaN(amountNumber)) {
+    throw Error('something went wrong');
+  }
   await db.invoice.update({
     where: { id_userId: { id, userId } },
     data: { title, description, amount: amountNumber },
