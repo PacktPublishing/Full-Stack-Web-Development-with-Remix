@@ -13,12 +13,7 @@ async function deleteInvoice(request: Request, id: string, userId: string): Prom
   const redirectPath = referer || '/dashboard/income';
 
   try {
-    await db.invoice.deleteMany({
-      where: {
-        id,
-        userId,
-      },
-    });
+    await db.invoice.delete({ where: { id_userId: { id, userId } } });
   } catch (err) {
     throw new Response('Not found', { status: 404 });
   }
@@ -37,16 +32,12 @@ async function updateInvoice(formData: FormData, id: string, userId: string): Pr
     throw Error('something went wrong');
   }
   const amountNumber = Number.parseFloat(amount);
-  await db.invoice.updateMany({
-    where: {
-      id,
-      userId,
-    },
-    data: {
-      title,
-      description,
-      amount: amountNumber,
-    },
+  if (Number.isNaN(amountNumber)) {
+    throw Error('something went wrong');
+  }
+  await db.invoice.update({
+    where: { id_userId: { id, userId } },
+    data: { title, description, amount: amountNumber },
   });
   return json({ success: true });
 }

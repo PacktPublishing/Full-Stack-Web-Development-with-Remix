@@ -14,7 +14,7 @@ async function deleteExpense(request: Request, id: string, userId: string): Prom
   const redirectPath = referer || '/dashboard/expenses';
 
   try {
-    await db.expense.deleteMany({ where: { id, userId } });
+    await db.expense.delete({ where: { id_userId: { id, userId } } });
   } catch (err) {
     throw new Response('Not found', { status: 404 });
   }
@@ -36,16 +36,9 @@ async function updateExpense(formData: FormData, id: string, userId: string): Pr
   if (Number.isNaN(amountNumber)) {
     throw Error('something went wrong');
   }
-  await db.expense.updateMany({
-    where: {
-      id,
-      userId,
-    },
-    data: {
-      title,
-      description,
-      amount: amountNumber,
-    },
+  await db.expense.update({
+    where: { id_userId: { id, userId } },
+    data: { title, description, amount: amountNumber },
   });
   return json({ success: true });
 }
@@ -69,7 +62,8 @@ export async function action({ params, request }: ActionArgs) {
 export async function loader({ request, params }: LoaderArgs) {
   const userId = await requireUserId(request);
   const { id } = params;
-  const expense = await db.expense.findFirst({ where: { id, userId } });
+  if (!id) throw Error('id route parameter must be defined');
+  const expense = await db.expense.findUnique({ where: { id_userId: { id, userId } } });
   if (!expense) throw new Response('Not found', { status: 404 });
   return json(expense);
 }

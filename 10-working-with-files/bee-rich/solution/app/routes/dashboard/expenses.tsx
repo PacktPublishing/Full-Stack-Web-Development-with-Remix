@@ -50,7 +50,7 @@ export default function ExpensesPage() {
                 isActive={expense.id === id}
                 deleteProps={{
                   ariaLabel: `Delete expense ${expense.title}`,
-                  action: `/dashboard/expenses/${expense.id}`,
+                  action: `/dashboard/expenses/${expense.id}?index`,
                 }}
               >
                 <p>
