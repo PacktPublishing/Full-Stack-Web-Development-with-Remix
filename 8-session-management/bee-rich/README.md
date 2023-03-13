@@ -84,13 +84,25 @@ This adds a `userId` field to both the `Expense` and `Invoice` model. The `userI
 
 The `@relation` definition is used to specify the relation between the `User` and `Expense` and `Invoice` models. In the `Expense` and `Invoice` models, the `userId` field is used as the foreign key to refer to the `User` model. The `userId` field points to the `id` field of the `User` model. We also specify that on deletion of the user object, all referenced expenses and invoices should be deleted as well (cascade).
 
-3. **Build the new database schema**
+3. **Mark the combination of id and userId as a unique key**
+
+We also want to make sure that each expense and invoice is unique for a specific user. To do so, we can mark the combination of the `id` and `userId` fields as a unique key.
+
+Add the following line to the `Expense` and `Invoice` models:
+
+```prisma
+@@unique([id, userId])
+```
+
+This allows us to query for a unique expense or invoice by a `id` and `userId` field combination. This is useful when we want to query for a unique expense or invoice for a specific user.
+
+4. **Build the new database schema**
 
 Run `npm run build:db` to create the new database model.
 
 Make sure to run `npm i` before running `npm run build:db` if you haven't already.
 
-4. **Install bcryptjs**
+5. **Install bcryptjs**
 
 Now that we are going to store user passwords in our database, we must ensure that they are not stored in plain text. To do so, we will use the [bcryptjs](https://www.npmjs.com/package/bcryptjs) package.
 
@@ -98,7 +110,7 @@ Run `npm i bcryptjs` to install the package.
 
 Next, run `npm install --save-dev @types/bcryptjs` to install the TypeScript types for the package.
 
-5. **Update the seed script**
+6. **Update the seed script**
 
 Let's also update the `/prisma/seed.ts` script. Every expense and invoice object in our database now requires a reference to a user.
 
@@ -162,7 +174,7 @@ Update the `createExpense` and `createInvoice` helper functions to accept a user
 }
 ```
 
-6. **Reset the database**
+7. **Reset the database**
 
 Now that we updated the seed script, it's time to commit our schema changes to our dev database.
 
@@ -170,19 +182,19 @@ The easiest way to do so is to delete the existing database.
 
 Run `npm run reset:db` to execute our reset script. It will delete the dev database, create a new one, and run the seed script.
 
-7. **Start the dev server**
+8. **Start the dev server**
 
 Run `npm run dev`, open a new browser window, and navigate to the dashboard (http://localhost:3000/dashboard).
 
 BeeRich should run without issues and the dashboard should display all expenses created by `seed.ts`.
 
-8. **Create the `session.server.ts` file**
+9. **Create the `session.server.ts` file**
 
 Let's also prepare some code for the register and login flow that we will add to BeeRich in this chapter.
 
 Create a new `session.server.ts` file the in `/app` folder. The `.server` postfix tells Remix to add the file only to the server but not the client bundle.
 
-9. **Implement the `register` and `login` functions**
+10. **Implement the `register` and `login` functions**
 
 Add the following code to the `session.server.ts` file:
 

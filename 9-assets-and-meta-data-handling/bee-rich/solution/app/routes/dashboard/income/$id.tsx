@@ -13,12 +13,7 @@ async function deleteInvoice(request: Request, id: string, userId: string): Prom
   const redirectPath = referer || '/dashboard/income';
 
   try {
-    await db.invoice.deleteMany({
-      where: {
-        id,
-        userId,
-      },
-    });
+    await db.invoice.delete({ where: { id_userId: { id, userId } } });
   } catch (err) {
     throw new Response('Not found', { status: 404 });
   }
@@ -37,16 +32,9 @@ async function updateInvoice(formData: FormData, id: string, userId: string): Pr
     throw Error('something went wrong');
   }
   const amountNumber = Number.parseFloat(amount);
-  await db.invoice.updateMany({
-    where: {
-      id,
-      userId,
-    },
-    data: {
-      title,
-      description,
-      amount: amountNumber,
-    },
+  await db.invoice.update({
+    where: { id_userId: { id, userId } },
+    data: { title, description, amount: amountNumber },
   });
   return json({ success: true });
 }
@@ -70,7 +58,8 @@ export async function action({ params, request }: ActionArgs) {
 export async function loader({ request, params }: LoaderArgs) {
   const userId = await requireUserId(request);
   const { id } = params;
-  const invoice = await db.invoice.findFirst({ where: { id, userId } });
+  if (!id) throw Error('id route parameter must be defined');
+  const invoice = await db.invoice.findUnique({ where: { id_userId: { id, userId } } });
   if (!invoice) throw new Response('Not found', { status: 404 });
   return json(invoice);
 }
