@@ -1,4 +1,4 @@
-# 10. Working with files
+# 10. Working with file uploads
 
 In this chapter, we will learn how to work with files in Remix. We will start by adding a file. We will then learn how to read the uploaded file and display its contents in the browser. Finally, we will discuss third-party services that can be used to store files.
 
@@ -6,7 +6,7 @@ In this chapter, we will learn how to work with files in Remix. We will start by
 
 Before we get started, we have to clean up our experiments from the previous chapter.
 
-If you want to reuse your code from the previous chapter, then follow this guide to get to the starting point of this chapter. Otherwise, feel free to checkout the code in the [start](./start/) folder and dive right into _Chapter 10, Working with Files_.
+If you want to reuse your code from the previous chapter, then follow this guide to get to the starting point of this chapter. Otherwise, feel free to checkout the code in the [start](./start/) folder and dive right into _Chapter 10, Working with File Uploads_.
 
 ### Run the application
 
@@ -69,4 +69,4 @@ Delete the `app/styles/login.css` file from your project.
 
 Also, remove the `LinksFunction` type import as it is no longer needed.
 
-Sweet! We are now ready to start working with files. Jump right into _Chapter 10, Working with Files_. 🎉
+Sweet! We are now ready to start working with files. Jump right into _Chapter 10, Working with File Uploads_. 🎉
