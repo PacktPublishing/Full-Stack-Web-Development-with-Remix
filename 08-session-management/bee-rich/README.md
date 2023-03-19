@@ -4,7 +4,7 @@ In this chapter, you will learn about session management in Remix. First, we wil
 
 ## Getting started
 
-Note that the code in the [start](./start/) folder of this chapter is different from our final [solution](/7-error-handling-in-remix/bee-rich/solution/) from _Chapter 7, Error Handling in Remix_.
+Note that the code in the [start](./start/) folder of this chapter is different from our final [solution](/07-error-handling-in-remix/bee-rich/solution/) from _Chapter 7, Error Handling in Remix_.
 
 If you want to reuse the code from the previous chapter, then follow this guide before starting this chapter. Otherwise, feel free to checkout the code in the [start](./start/) folder and dive right into _Chapter 8, Session Management_.
 

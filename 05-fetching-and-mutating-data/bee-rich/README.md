@@ -4,7 +4,7 @@ In this chapter, you will learn how to fetch and mutate data in Remix. We alread
 
 ## Getting started
 
-Please note that the code in the [start](./start/) folder of this chapter is different from our final [solution](/5-fetching-and-mutating-data/bee-rich/solution/) from _Chapter 4, Routing in Remix_. For the start of this chapter, we set up Prisma with SQLite to store our data in a database.
+Please note that the code in the [start](./start/) folder of this chapter is different from our final [solution](/05-fetching-and-mutating-data/bee-rich/solution/) from _Chapter 4, Routing in Remix_. For the start of this chapter, we set up Prisma with SQLite to store our data in a database.
 
 If you want to reuse the code from the previous chapter, then follow this guide to get to the starting point of this chapter. Otherwise, feel free to checkout the code in the [start](./start/) folder and dive right into _Chapter 5, Fetching and Mutating Data_.
 
