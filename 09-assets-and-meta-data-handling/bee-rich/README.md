@@ -1,4 +1,4 @@
-# 4. Assets and Meta Data Handling
+# 9. Assets and Meta Data Handling
 
 In this chapter, you will learn how to create dynamic meta data for your application and how to handle assets such as images and fonts.
 
@@ -12,7 +12,7 @@ Happy coding!
 
 Follow these steps to get your application up and running:
 
-1. Make sure you have a `.env` file in the root of your project and that it contains the following line:
+1. Make sure you have a `.env` file in the root of your project and that it contains the following:
 
 ```text
 DATABASE_URL="file:./dev.db"
@@ -31,7 +31,7 @@ npm install
 npm run build
 ```
 
-4. Update the MySQL database schema
+4. Update the SQLite database schema
 
 ```bash
 npm run update:db
