@@ -36,14 +36,8 @@ async function updateExpense(formData: FormData, id: string): Promise<Response> 
     throw Error('something went wrong');
   }
   await db.expense.update({
-    where: {
-      id,
-    },
-    data: {
-      title,
-      description,
-      amount: amountNumber,
-    },
+    where: { id },
+    data: { title, description, amount: amountNumber },
   });
   return json({ success: true });
 }
