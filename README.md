@@ -12,15 +12,24 @@ Sometimes the `README.md` file may include instructions from how to get from the
 
 ## Chapters
 
-2. [Creating a new Remix App](02-creating-a-new-remix-app/)
-3. [Deployment Targets, Adapters, and Stacks](03-deployment-targets-adapters-and-stacks)
-4. [Routing in Remix](04-routing-in-remix/)
-5. [Fetching and Mutating Data](05-fetching-and-mutating-data/)
-6. [Enhancing the User Experience](06-enhancing-the-user-experience/)
-7. [Error Handling in Remix](07-error-handling-in-remix/)
-8. [Session Management](08-session-management/)
-9. [Assets and Meta Data Handling](09-assets-and-meta-data-handling/)
+### Getting started with Remix
+
+2.  [Creating a new Remix App](02-creating-a-new-remix-app/)
+3.  [Deployment Targets, Adapters, and Stacks](03-deployment-targets-adapters-and-stacks)
+4.  [Routing in Remix](04-routing-in-remix/)
+
+### Working with Remix and the web platform
+
+5.  [Fetching and Mutating Data](05-fetching-and-mutating-data/)
+6.  [Enhancing the User Experience](06-enhancing-the-user-experience/)
+7.  [Error Handling in Remix](07-error-handling-in-remix/)
+8.  [Session Management](08-session-management/)
+9.  [Assets and Meta Data Handling](09-assets-and-meta-data-handling/)
 10. [Working with File Uploads](10-working-with-file-uploads/)
+
+### Advanced topics of full stack web development with Remix
+
+11. [Optimistic UI](11-optimistic-ui/)
 
 ## BeeRich
 

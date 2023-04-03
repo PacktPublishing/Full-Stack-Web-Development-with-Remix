@@ -3,22 +3,20 @@ import { unstable_parseMultipartFormData } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useActionData, useLoaderData, useNavigation } from '@remix-run/react';
-import { deleteAttachment, uploadHandler } from '~/attachments.server';
+import { uploadHandler } from '~/attachments.server';
 import { Button } from '~/components/buttons';
 import { Attachment, Form, Input, Textarea } from '~/components/forms';
 import { FloatingActionLink } from '~/components/links';
 import { db } from '~/db.server';
+import { deleteInvoice, parseInvoice, removeAttachmentFromInvoice, updateInvoice } from '~/server/invoices.server';
 import { requireUserId } from '~/session.server';
 
-async function deleteInvoice(request: Request, id: string, userId: string): Promise<Response> {
+async function handleDelete(request: Request, id: string, userId: string): Promise<Response> {
   const referer = request.headers.get('referer');
   const redirectPath = referer || '/dashboard/income';
 
   try {
-    const invoice = await db.invoice.delete({ where: { id_userId: { id, userId } } });
-    if (invoice.attachment) {
-      deleteAttachment(invoice.attachment);
-    }
+    await deleteInvoice(id, userId);
   } catch (err) {
     throw new Response('Not found', { status: 404 });
   }
@@ -29,40 +27,20 @@ async function deleteInvoice(request: Request, id: string, userId: string): Prom
   return redirect(redirectPath);
 }
 
-async function updateInvoice(formData: FormData, id: string, userId: string): Promise<Response> {
-  const title = formData.get('title');
-  const description = formData.get('description');
-  const amount = formData.get('amount');
-  if (typeof title !== 'string' || typeof description !== 'string' || typeof amount !== 'string') {
-    throw Error('something went wrong');
-  }
-  const amountNumber = Number.parseFloat(amount);
-  if (Number.isNaN(amountNumber)) {
-    throw Error('something went wrong');
-  }
-  let attachment = formData.get('attachment');
-  if (!attachment || typeof attachment !== 'string') {
-    attachment = null;
-  }
-  await db.invoice.update({
-    where: { id_userId: { id, userId } },
-    data: { title, description, amount: amountNumber, attachment },
-  });
+async function handleUpdate(formData: FormData, id: string, userId: string): Promise<Response> {
+  const invoiceData = parseInvoice(formData);
+  await updateInvoice({ id, userId, ...invoiceData });
   return json({ success: true });
 }
 
-async function removeAttachment(formData: FormData, id: string, userId: string): Promise<Response> {
+async function handleRemoveAttachment(formData: FormData, id: string, userId: string): Promise<Response> {
   const attachmentUrl = formData.get('attachmentUrl');
   if (!attachmentUrl || typeof attachmentUrl !== 'string') {
     throw Error('something went wrong');
   }
   const fileName = attachmentUrl.split('/').pop();
   if (!fileName) throw Error('something went wrong');
-  await db.invoice.update({
-    where: { id_userId: { id, userId } },
-    data: { attachment: null },
-  });
-  deleteAttachment(fileName);
+  await removeAttachmentFromInvoice(id, userId, fileName);
   return json({ success: true });
 }
 
@@ -81,13 +59,13 @@ export async function action({ params, request }: ActionArgs) {
 
   const intent = formData.get('intent');
   if (intent === 'delete') {
-    return deleteInvoice(request, id, userId);
+    return handleDelete(request, id, userId);
   }
   if (intent === 'update') {
-    return updateInvoice(formData, id, userId);
+    return handleUpdate(formData, id, userId);
   }
   if (intent === 'remove-attachment') {
-    return removeAttachment(formData, id, userId);
+    return handleRemoveAttachment(formData, id, userId);
   }
   throw new Response('Bad request', { status: 400 });
 }
