@@ -55,6 +55,8 @@ npm run reset:db
 
 Remix is not opinionated about how you structure your code. So far, we mostly used the `/routes` folder for everything from querying the database to rendering the UI. The co-location is convenient, but now might be a good time to create some abstractions and refactor our code to make it easier to work with.
 
+You can find a diff of all the changes in [this commit](https://github.com/PacktPublishing/Full-Stack-Web-Development-with-Remix/commit/ad0cee6f31b0ecd3581089808777d024d6797d3b).
+
 ### Improve data validation with zod
 
 So far, we validated our `FormData`by using simple `if` statements. Now, we will add a data validation library.
