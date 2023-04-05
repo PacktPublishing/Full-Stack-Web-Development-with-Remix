@@ -91,6 +91,9 @@ type ListLinkItemProps = HTMLAttributes<HTMLLIElement> & {
 export function ListLinkItem({ isActive, className = '', to, deleteProps, children, ...props }: ListLinkItemProps) {
   const fetcher = useFetcher();
   const isPending = fetcher.state !== 'idle';
+  if (isPending) {
+    return null;
+  }
   return (
     <li
       className={clsx(

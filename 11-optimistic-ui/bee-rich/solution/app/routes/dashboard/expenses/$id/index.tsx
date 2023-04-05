@@ -85,7 +85,8 @@ export default function ExpenseDetailsPage() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
   const actionData = useActionData<typeof action>();
-
+  const isUploadingAttachment = !!navigation.formData?.get('attachment');
+  const isRemovingAttachment = navigation.formData?.get('intent') === 'remove-attachment';
   return (
     <>
       <Form
@@ -97,16 +98,17 @@ export default function ExpenseDetailsPage() {
         <Input label="Title:" type="text" name="title" defaultValue={expense.title} required />
         <Textarea label="Description:" name="description" defaultValue={expense.description || ''} />
         <Input label="Amount (in USD):" type="number" defaultValue={expense.amount} name="amount" required />
-        {expense.attachment ? (
+        {(isUploadingAttachment || expense.attachment) && !isRemovingAttachment ? (
           <Attachment
             label="Current Attachment"
             attachmentUrl={`/dashboard/expenses/${expense.id}/attachments/${expense.attachment}`}
+            disabled={isUploadingAttachment}
           />
         ) : (
-          <Input label="New Attachment" type="file" name="attachment" />
+          <Input label="New Attachment" type="file" name="attachment" disabled={isSubmitting} />
         )}
-        <Button type="submit" name="intent" value="update" disabled={isSubmitting} isPrimary>
-          {isSubmitting ? 'Save...' : 'Save'}
+        <Button type="submit" name="intent" value="update" isPrimary>
+          Save
         </Button>
         <p aria-live="polite" className="text-green-600">
           {actionData?.success && 'Changes saved!'}
