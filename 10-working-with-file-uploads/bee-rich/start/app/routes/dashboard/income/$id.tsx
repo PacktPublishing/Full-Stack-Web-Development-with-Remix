@@ -61,7 +61,8 @@ export async function action({ params, request }: ActionArgs) {
 export async function loader({ request, params }: LoaderArgs) {
   const userId = await requireUserId(request);
   const { id } = params;
-  const invoice = await db.invoice.findFirst({ where: { id, userId } });
+  if (!id) throw Error('id route parameter must be defined');
+  const invoice = await db.invoice.findUnique({ where: { id_userId: { id, userId } } });
   if (!invoice) throw new Response('Not found', { status: 404 });
   return json(invoice);
 }
