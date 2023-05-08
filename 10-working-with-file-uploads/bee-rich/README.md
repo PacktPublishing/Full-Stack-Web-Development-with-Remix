@@ -53,7 +53,7 @@ npm run reset:db
 
 ## Cleaning up
 
-In the laster chapter, we experimented with route-scoped CSS files and added some questionable custom styling to the login page. Let's remove that code now.
+In the laster chapter, we experimented with route-scoped CSS files and added some questionable custom styling to the login page. We also created a resource route for a static `robots.txt` file. Let's remove that code now.
 
 1. **Remove the login.css file**
 
@@ -68,5 +68,19 @@ Delete the `app/styles/login.css` file from your project.
 ```
 
 Also, remove the `LinksFunction` type import as it is no longer needed.
+
+3. **Remove the `app/routes/robots[.txt.].tsx` file**
+
+We moved the content of the `robots.txt` file into `app/routes/robots[.txt.].tsx` to practice working with resource routes. However, since the content for the `robots.txt` is static, let's create a `robots.txt` file in the `/public` folder instead.
+
+Paste the following content into the new `public/robots.txt` file:
+
+```txt
+User-agent: *
+Disallow: /dashboard/
+Allow: /login
+Allow: /signup
+Allow: /$
+```
 
 Sweet! We are now ready to start working with files. Jump right into _Chapter 10, Working with File Uploads_. 🎉
