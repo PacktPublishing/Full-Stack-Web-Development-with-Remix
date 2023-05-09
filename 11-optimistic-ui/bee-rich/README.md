@@ -31,7 +31,7 @@ npm install
 npm run build
 ```
 
-4. Update the MySQL database schema
+4. Update the SQLite database schema
 
 ```bash
 npm run update:db
@@ -183,7 +183,7 @@ The code includes the following reusable functions:
 - `deleteExpense` - Deletes an expense from the database.
 - `updateExpense` - Updates an existing expense in the database.
 - `removeAttachmentFromExpense` - Removes an attachment from an expense.
-- `parseExpense` - Parses the form data from the expense form `zod`.
+- `parseExpense` - Parses the form data from the expense form using `zod`.
 
 Note that we take advantage of Prisma's type definitions to define the `ExpenseUpdateData` type. Prisma provides several helper types within the `Prisma` namespace.
 
@@ -281,9 +281,11 @@ export function parseInvoice(formData: FormData) {
 }
 ```
 
+The code includes the invoice version of the functions we created in `app/server/expenses.server.ts`.
+
 5. **Update the create expense `action` function**
 
-Now, let's use the `parseExpense`and `createExpense` function sin `app/routes/dashboard/expenses/index.tsx`.
+Now, let's use the `parseExpense`and `createExpense` functions in `app/routes/dashboard/expenses/index.tsx`.
 
 Replace the existing `FormData` validation logic and database query in the route module's `action` function.
 
@@ -331,8 +333,6 @@ Follow the same pattern to rename the helper functions in `app/routes/dashboard/
 Replace the existing database query in the `handleDelete` helper function in `app/routes/dashboard/expenses/$id/index.tsx`.
 
 ```tsx
-import { deleteExpense } from "~/server/expenses.server";
-
 async function handleDelete(
   request: Request,
   id: string,
