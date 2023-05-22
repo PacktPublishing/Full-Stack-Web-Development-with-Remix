@@ -1,5 +1,12 @@
+import type { HeadersFunction } from '@remix-run/node';
 import { Outlet } from '@remix-run/react';
 import { NavLink } from '~/components/links';
+
+export const headers: HeadersFunction = () => {
+  return {
+    'Cache-Control': 'public, max-age=3600',
+  };
+};
 
 export default function Layout() {
   return (

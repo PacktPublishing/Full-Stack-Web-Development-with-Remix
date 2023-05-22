@@ -13,5 +13,10 @@ export async function loader({ request, params }: LoaderArgs) {
   const invoice = await db.invoice.findUnique({ where: { id_userId: { id, userId } } });
   if (!invoice || !invoice.attachment) throw new Response('Not found', { status: 404 });
   if (slug !== invoice.attachment) return redirect(`/dashboard/income/${id}/attachments/${invoice.attachment}`);
-  return buildFileResponse(invoice.attachment);
+  const headers = new Headers();
+  headers.set('ETag', invoice.attachment);
+  if (request.headers.get('If-None-Match') === invoice.attachment) {
+    return new Response(null, { status: 304, headers });
+  }
+  return buildFileResponse(invoice.attachment, headers);
 }

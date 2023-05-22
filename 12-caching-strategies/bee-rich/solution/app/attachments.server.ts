@@ -34,16 +34,13 @@ export function deleteAttachment(fileName: string) {
   }
 }
 
-export function buildFileResponse(fileName: string): Response {
+export function buildFileResponse(fileName: string, headers = new Headers()): Response {
   const localPath = path.join(process.cwd(), 'attachments', fileName);
   try {
     const file = fs.readFileSync(localPath);
-    return new Response(file, {
-      headers: {
-        'Content-Type': 'application/octet-stream',
-        'Content-Disposition': `attachment; filename="${fileName}"`,
-      },
-    });
+    headers.append('Content-Type', 'application/octet-stream');
+    headers.append('Content-Disposition', `attachment; filename="${fileName}"`);
+    return new Response(file, { headers });
   } catch (error) {
     console.error(error);
     return new Response('Not Found', { status: 404 });

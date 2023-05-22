@@ -1,5 +1,5 @@
 import type { Expense, Invoice } from '@prisma/client';
-import type { LoaderArgs, MetaFunction, SerializeFrom } from '@remix-run/node';
+import type { HeadersFunction, LoaderArgs, MetaFunction, SerializeFrom } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { Outlet, Link as RemixLink, useLoaderData, useLocation, Form } from '@remix-run/react';
 import { Container } from '~/components/containers';
@@ -7,6 +7,12 @@ import { H1 } from '~/components/headings';
 import { NavLink } from '~/components/links';
 import { db } from '~/db.server';
 import { getUser, logout } from '~/session.server';
+
+export const headers: HeadersFunction = () => {
+  return {
+    'Cache-Control': 'no-cache, private',
+  };
+};
 
 export const meta: MetaFunction = ({ data }) => {
   const title = data?.username ? `${data.username}'s Dashboard | BeeRich` : 'Dashboard | BeeRich';

@@ -14,6 +14,12 @@ export const meta: MetaFunction = () => ({
   description: 'Log into your BeeRich account to track your expenses and income.',
 });
 
+export const headers = () => {
+  return {
+    'Cache-Control': 'max-age=300000',
+  };
+};
+
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
   const email = formData.get('email');
