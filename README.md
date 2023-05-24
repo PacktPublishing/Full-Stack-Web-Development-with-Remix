@@ -30,6 +30,8 @@ Sometimes the `README.md` file may include instructions from how to get from the
 ### Advanced topics of full stack web development with Remix
 
 11. [Optimistic UI](11-optimistic-ui/)
+12. [Caching Strategies](12-caching-strategies/)
+13. [Deferring Loader Data](13-deferring-loader-data/)
 
 ## BeeRich
 
