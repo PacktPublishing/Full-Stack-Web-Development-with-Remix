@@ -144,7 +144,267 @@ model User {
 }
 ```
 
-3. **Update the expense utility functions**
+3. **Update the BeeRich database seed script**
+
+Update the `prisma/seed.ts` script to include `ExpenseLog` and `InvoiceLog` mock data.
+
+```typescript
+import type { Expense, Invoice, User } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
+
+const db = new PrismaClient();
+
+const expenses = [
+  {
+    title: "Groceries",
+    amount: 50,
+    currencyCode: "USD",
+    date: "2022-12-05",
+  },
+  {
+    title: "Gym Membership",
+    amount: 20,
+    currencyCode: "USD",
+    date: "2022-12-03",
+  },
+  {
+    title: "Movies",
+    amount: 20,
+    currencyCode: "USD",
+    date: "2022-12-02",
+  },
+  {
+    title: "Mobile Service",
+    amount: 55,
+    currencyCode: "USD",
+    date: "2022-11-01",
+  },
+  {
+    title: "Rent December",
+    amount: 1000,
+    currencyCode: "USD",
+    date: "2022-12-01",
+  },
+  {
+    title: "Groceries",
+    amount: 55,
+    currencyCode: "USD",
+    date: "2022-12-01",
+  },
+  {
+    title: "Takeout",
+    amount: 55,
+    currencyCode: "USD",
+    date: "2022-11-30",
+  },
+  {
+    title: "Gym Membership",
+    amount: 20,
+    currencyCode: "USD",
+    date: "2022-11-03",
+  },
+  {
+    title: "Groceries",
+    amount: 15,
+    currencyCode: "USD",
+    date: "2022-11-02",
+  },
+  {
+    title: "Mobile Service",
+    amount: 55,
+    currencyCode: "USD",
+    date: "2022-11-01",
+  },
+  {
+    title: "Rent November",
+    amount: 1000,
+    currencyCode: "USD",
+    date: "2022-11-01",
+  },
+  {
+    title: "Groceries",
+    amount: 55,
+    currencyCode: "USD",
+    date: "2022-10-30",
+  },
+  {
+    title: "Groceries",
+    amount: 55,
+    currencyCode: "USD",
+    date: "2022-10-15",
+  },
+  {
+    title: "Dinner",
+    amount: 40,
+    currencyCode: "USD",
+    date: "2022-10-11",
+  },
+  {
+    title: "Gym Membership",
+    amount: 20,
+    currencyCode: "USD",
+    date: "2022-10-03",
+  },
+  {
+    title: "Groceries",
+    amount: 25,
+    currencyCode: "USD",
+    date: "2022-10-02",
+  },
+  {
+    title: "Mobile Service",
+    amount: 55,
+    currencyCode: "USD",
+    date: "2022-10-01",
+  },
+  {
+    title: "Rent October",
+    amount: 1000,
+    currencyCode: "USD",
+    date: "2022-10-01",
+  },
+  {
+    title: "Groceries",
+    amount: 55,
+    currencyCode: "USD",
+    date: "2022-10-01",
+  },
+];
+
+const income = [
+  {
+    title: "Salary December",
+    amount: 2500,
+    currencyCode: "USD",
+    date: "2022-12-30",
+  },
+  {
+    title: "Salary November",
+    amount: 2500,
+    currencyCode: "USD",
+    date: "2022-11-30",
+  },
+  {
+    title: "Salary October",
+    amount: 2500,
+    currencyCode: "USD",
+    date: "2022-10-30",
+  },
+  {
+    title: "Salary September",
+    amount: 2500,
+    currencyCode: "USD",
+    date: "2022-09-30",
+  },
+];
+
+async function seed() {
+  const start = performance.now();
+  const user = await db.user.create({
+    data: {
+      name: "John Doe",
+      email: "john.doe@example.com",
+      password: await bcrypt.hash("BeeRich", 10),
+    },
+  });
+  const expensePromises = Promise.all(
+    expenses.map((expense) => createExpense(expense, user))
+  );
+  const invoicePromises = Promise.all(
+    income.map((income) => createInvoice(income, user))
+  );
+  const [createdExpenses, createdInvoices] = await Promise.all([
+    expensePromises,
+    invoicePromises,
+  ]);
+  const expenseLogPromises = createdExpenses.map((expense) =>
+    createExpenseLog(expense)
+  );
+  const invoiceLogPromises = createdInvoices.map((invoice) =>
+    createInvoiceLog(invoice)
+  );
+  await Promise.all([...expenseLogPromises, ...invoiceLogPromises]);
+  const end = performance.now();
+  console.log(`🚀 Seeded the database. Done in ${Math.round(end - start)}ms`);
+}
+
+function createExpense(expenseData: (typeof expenses)[number], user: User) {
+  return db.expense.create({
+    data: {
+      title: expenseData.title,
+      amount: expenseData.amount,
+      currencyCode: expenseData.currencyCode,
+      createdAt: new Date(expenseData.date),
+      userId: user.id,
+    },
+  });
+}
+
+function createInvoice(incomeData: (typeof income)[number], user: User) {
+  return db.invoice.create({
+    data: {
+      title: incomeData.title,
+      amount: incomeData.amount,
+      currencyCode: incomeData.currencyCode,
+      createdAt: new Date(incomeData.date),
+      userId: user.id,
+    },
+  });
+}
+
+function createExpenseLog({
+  userId,
+  id,
+  title,
+  description,
+  currencyCode,
+  amount,
+}: Expense) {
+  return db.expenseLog.create({
+    data: {
+      title,
+      description,
+      currencyCode,
+      amount,
+      userId,
+      expenseId: id,
+    },
+  });
+}
+
+function createInvoiceLog({
+  userId,
+  id,
+  title,
+  description,
+  currencyCode,
+  amount,
+}: Invoice) {
+  return db.invoiceLog.create({
+    data: {
+      title,
+      description,
+      currencyCode,
+      amount,
+      userId,
+      invoiceId: id,
+    },
+  });
+}
+
+seed();
+```
+
+The script now iterates over every created expense and invoice object to create associated expense and invoice log objects.
+
+4. **Update the database**
+
+Run `npm run build:db` to generate new Prisma types.
+
+Run `npm run update:db` to push the latest schema changes to the SQLite database and `npm run reset:db` if you want to reset the stored data and run the seeding script.
+
+5. **Update the expense utility functions**
 
 Add the following code to `app/server/expenses.server.ts`:
 
@@ -225,7 +485,7 @@ export async function updateExpense({
 
 Similarly, the `updateExpense` function now also creates a `ExpenseLog` object. To avoid more blocking time, we again treat the creation of the `ExpenseLog` object as an async side effect.
 
-4. **Update the invoice utility functions**
+6. **Update the invoice utility functions**
 
 Add the following code to `app/server/invoices.server.ts`:
 
