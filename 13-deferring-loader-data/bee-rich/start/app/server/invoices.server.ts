@@ -5,8 +5,8 @@ import { db } from '~/db.server';
 
 type InvoiceCreateData = Pick<Invoice, 'title' | 'description' | 'amount' | 'attachment' | 'userId'>;
 
-export function createInvoice({ title, description, amount, attachment, userId }: InvoiceCreateData) {
-  return db.invoice.create({
+export async function createInvoice({ title, description, amount, attachment, userId }: InvoiceCreateData) {
+  const invoice = await db.invoice.create({
     data: {
       title,
       description,
@@ -20,6 +20,8 @@ export function createInvoice({ title, description, amount, attachment, userId }
       },
     },
   });
+  createInvoiceLog(userId, invoice.id, { title, description, amount, currencyCode: 'USD' });
+  return invoice;
 }
 
 export async function deleteInvoice(id: string, userId: string) {
@@ -31,11 +33,13 @@ export async function deleteInvoice(id: string, userId: string) {
 
 type InvoiceUpdateData = Prisma.InvoiceUpdateInput & Prisma.InvoiceIdUserIdCompoundUniqueInput;
 
-export function updateInvoice({ id, title, description, amount, attachment, userId }: InvoiceUpdateData) {
-  return db.invoice.update({
+export async function updateInvoice({ id, title, description, amount, attachment, userId }: InvoiceUpdateData) {
+  const invoice = await db.invoice.update({
     where: { id_userId: { id, userId } },
     data: { title, description, amount, attachment },
   });
+  createInvoiceLog(userId, invoice.id, invoice);
+  return invoice;
 }
 
 export function removeAttachmentFromInvoice(id: string, userId: string, fileName: string) {
@@ -61,4 +65,16 @@ export function parseInvoice(formData: FormData) {
     attachment = null;
   }
   return { title, description, amount: amountNumber, attachment };
+}
+
+type InvoiceLogCreateData = Pick<Invoice, 'title' | 'description' | 'amount' | 'currencyCode'>;
+
+async function createInvoiceLog(userId: string, invoiceId: string, data: InvoiceLogCreateData) {
+  return db.invoiceLog.create({
+    data: {
+      ...data,
+      user: { connect: { id: userId } },
+      invoice: { connect: { id: invoiceId } },
+    },
+  });
 }
