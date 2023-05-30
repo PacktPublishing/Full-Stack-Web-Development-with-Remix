@@ -69,10 +69,17 @@ export function parseExpense(formData: FormData) {
 
 type ExpenseLogCreateData = Pick<Expense, 'title' | 'description' | 'amount' | 'currencyCode'>;
 
-async function createExpenseLog(userId: string, expenseId: string, data: ExpenseLogCreateData) {
+async function createExpenseLog(
+  userId: string,
+  expenseId: string,
+  { title, description, amount, currencyCode }: ExpenseLogCreateData,
+) {
   return db.expenseLog.create({
     data: {
-      ...data,
+      title,
+      description,
+      amount,
+      currencyCode,
       user: { connect: { id: userId } },
       expense: { connect: { id: expenseId } },
     },

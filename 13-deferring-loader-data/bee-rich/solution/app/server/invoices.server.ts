@@ -69,10 +69,17 @@ export function parseInvoice(formData: FormData) {
 
 type InvoiceLogCreateData = Pick<Invoice, 'title' | 'description' | 'amount' | 'currencyCode'>;
 
-async function createInvoiceLog(userId: string, invoiceId: string, data: InvoiceLogCreateData) {
+async function createInvoiceLog(
+  userId: string,
+  invoiceId: string,
+  { title, description, amount, currencyCode }: InvoiceLogCreateData,
+) {
   return db.invoiceLog.create({
     data: {
-      ...data,
+      title,
+      description,
+      amount,
+      currencyCode,
       user: { connect: { id: userId } },
       invoice: { connect: { id: invoiceId } },
     },

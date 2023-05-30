@@ -417,11 +417,14 @@ type ExpenseLogCreateData = Pick<
 async function createExpenseLog(
   userId: string,
   expenseId: string,
-  data: ExpenseLogCreateData
+  { title, description, amount, currencyCode }: ExpenseLogCreateData
 ) {
   return db.expenseLog.create({
     data: {
-      ...data,
+      title,
+      description,
+      amount,
+      currencyCode,
       user: { connect: { id: userId } },
       expense: { connect: { id: expenseId } },
     },
@@ -498,11 +501,14 @@ type InvoiceLogCreateData = Pick<
 async function createInvoiceLog(
   userId: string,
   invoiceId: string,
-  data: InvoiceLogCreateData
+  { title, description, amount, currencyCode }: InvoiceLogCreateData
 ) {
   return db.invoiceLog.create({
     data: {
-      ...data,
+      title,
+      description,
+      amount,
+      currencyCode,
       user: { connect: { id: userId } },
       invoice: { connect: { id: invoiceId } },
     },
