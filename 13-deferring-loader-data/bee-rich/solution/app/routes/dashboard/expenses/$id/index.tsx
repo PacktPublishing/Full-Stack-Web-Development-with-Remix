@@ -1,12 +1,13 @@
-import type { ActionArgs, LoaderArgs } from '@remix-run/node';
+import type { ExpenseLog } from '@prisma/client';
+import type { ActionArgs, LoaderArgs, SerializeFrom } from '@remix-run/node';
+import { redirect, json, defer } from '@remix-run/node';
 import { unstable_parseMultipartFormData } from '@remix-run/node';
-import { redirect } from '@remix-run/node';
-import { json } from '@remix-run/node';
-import { useActionData, useCatch, useLoaderData, useParams, useNavigation } from '@remix-run/react';
+import { useActionData, useCatch, useLoaderData, useParams, useNavigation, Await } from '@remix-run/react';
+import { Suspense } from 'react';
 import { uploadHandler } from '~/attachments.server';
 import { Button } from '~/components/buttons';
 import { Attachment, Form, Input, Textarea } from '~/components/forms';
-import { H2 } from '~/components/headings';
+import { H2, H3 } from '~/components/headings';
 import { FloatingActionLink } from '~/components/links';
 import { db } from '~/db.server';
 import { deleteExpense, parseExpense, removeAttachmentFromExpense, updateExpense } from '~/server/expenses.server';
@@ -77,11 +78,17 @@ export async function loader({ request, params }: LoaderArgs) {
   if (!id) throw Error('id route parameter must be defined');
   const expense = await db.expense.findUnique({ where: { id_userId: { id, userId } } });
   if (!expense) throw new Response('Not found', { status: 404 });
-  return json(expense);
+  const expenseLogs = db.expenseLog
+    .findMany({
+      orderBy: { createdAt: 'desc' },
+      where: { expenseId: id, userId },
+    })
+    .then((e) => e);
+  return defer({ expense, expenseLogs });
 }
 
 export default function ExpenseDetailsPage() {
-  const expense = useLoaderData<typeof loader>();
+  const { expense, expenseLogs } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
   const actionData = useActionData<typeof action>();
@@ -114,8 +121,45 @@ export default function ExpenseDetailsPage() {
           {actionData?.success && 'Changes saved!'}
         </p>
       </Form>
+      <Suspense fallback="Loading expense history...">
+        <Await resolve={expenseLogs} errorElement="There was an error loading the expense history. Please try again.">
+          {(resolvedExpenseLogs) => <ExpenseLogSection expenseLogs={resolvedExpenseLogs} />}
+        </Await>
+      </Suspense>
       <FloatingActionLink to="/dashboard/expenses/">Add expense</FloatingActionLink>
     </>
+  );
+}
+
+function ExpenseLogSection({ expenseLogs }: { expenseLogs: SerializeFrom<ExpenseLog[]> }) {
+  return (
+    <section className="my-5 w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">
+      <H3>Expense History</H3>
+      <ul className="space-y-2 max-h-[300px] lg:max-h-max overflow-y-scroll lg:overflow-hidden py-5">
+        {expenseLogs.map((expenseLog) => (
+          <li key={expenseLog.id}>
+            <p>
+              <b>
+                {`${expenseLog.title} - ${Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: expenseLog.currencyCode,
+                }).format(expenseLog.amount)}`}
+              </b>
+            </p>
+            {expenseLog.description && (
+              <p>
+                <i>{expenseLog.description}</i>
+              </p>
+            )}
+            <p className="text-sm text-gray-500">
+              {`${new Date(expenseLog.createdAt).toLocaleDateString()} ${new Date(
+                expenseLog.createdAt,
+              ).toLocaleTimeString()}`}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
