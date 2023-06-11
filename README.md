@@ -32,6 +32,7 @@ Sometimes the `README.md` file may include instructions from how to get from the
 11. [Optimistic UI](11-optimistic-ui/)
 12. [Caching Strategies](12-caching-strategies/)
 13. [Deferring Loader Data](13-deferring-loader-data/)
+14. [Real-Time with Remix](14-real-time-with-remix/)
 
 ## BeeRich
 

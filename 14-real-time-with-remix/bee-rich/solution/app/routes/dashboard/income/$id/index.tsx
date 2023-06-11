@@ -10,6 +10,7 @@ import { FloatingActionLink } from '~/components/links';
 import { db } from '~/db.server';
 import { deleteInvoice, parseInvoice, removeAttachmentFromInvoice, updateInvoice } from '~/server/invoices.server';
 import { requireUserId } from '~/session.server';
+import { emitter } from '~/server/events.server';
 
 async function handleDelete(request: Request, id: string, userId: string): Promise<Response> {
   const referer = request.headers.get('referer');
@@ -21,6 +22,7 @@ async function handleDelete(request: Request, id: string, userId: string): Promi
     throw new Response('Not found', { status: 404 });
   }
 
+  emitter.emit(userId);
   if (redirectPath.includes(id)) {
     return redirect('/dashboard/income');
   }
@@ -30,6 +32,7 @@ async function handleDelete(request: Request, id: string, userId: string): Promi
 async function handleUpdate(formData: FormData, id: string, userId: string): Promise<Response> {
   const invoiceData = parseInvoice(formData);
   await updateInvoice({ id, userId, ...invoiceData });
+  emitter.emit(userId);
   return json({ success: true });
 }
 
@@ -41,6 +44,7 @@ async function handleRemoveAttachment(formData: FormData, id: string, userId: st
   const fileName = attachmentUrl.split('/').pop();
   if (!fileName) throw Error('something went wrong');
   await removeAttachmentFromInvoice(id, userId, fileName);
+  emitter.emit(userId);
   return json({ success: true });
 }
 

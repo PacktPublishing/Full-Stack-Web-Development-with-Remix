@@ -7,12 +7,14 @@ import { Button } from '~/components/buttons';
 import { Form, Input, Textarea } from '~/components/forms';
 import { createInvoice, parseInvoice } from '~/server/invoices.server';
 import { requireUserId } from '~/session.server';
+import { emitter } from '~/server/events.server';
 
 export async function action({ request }: ActionArgs) {
   const userId = await requireUserId(request);
   const formData = await unstable_parseMultipartFormData(request, uploadHandler);
   const invoiceData = parseInvoice(formData);
   const invoice = await createInvoice({ userId, ...invoiceData });
+  emitter.emit(userId);
   return redirect(`/dashboard/income/${invoice.id}`);
 }
 

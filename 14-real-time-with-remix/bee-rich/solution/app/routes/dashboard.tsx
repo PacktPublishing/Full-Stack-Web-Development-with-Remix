@@ -6,6 +6,7 @@ import { Container } from '~/components/containers';
 import { H1 } from '~/components/headings';
 import { NavLink } from '~/components/links';
 import { db } from '~/db.server';
+import { useEventSource } from '~/event-source';
 import { getUser, logout } from '~/session.server';
 
 export const headers: HeadersFunction = () => {
@@ -88,6 +89,7 @@ function Layout({ firstExpense, firstInvoice, children }: LayoutProps) {
 
 export default function Dashboard() {
   const { firstExpense, firstInvoice } = useLoaderData<typeof loader>();
+  useEventSource();
   return (
     <Layout firstExpense={firstExpense} firstInvoice={firstInvoice}>
       <Outlet />

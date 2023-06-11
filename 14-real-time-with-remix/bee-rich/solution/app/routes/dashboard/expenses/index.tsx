@@ -7,12 +7,14 @@ import { Form, Input, Textarea } from '~/components/forms';
 import { uploadHandler } from '~/attachments.server';
 import { requireUserId } from '~/session.server';
 import { createExpense, parseExpense } from '~/server/expenses.server';
+import { emitter } from '~/server/events.server';
 
 export async function action({ request }: ActionArgs) {
   const userId = await requireUserId(request);
   const formData = await unstable_parseMultipartFormData(request, uploadHandler);
   const expenseData = parseExpense(formData);
   const expense = await createExpense({ userId, ...expenseData });
+  emitter.emit(userId);
   return redirect(`/dashboard/expenses/${expense.id}`);
 }
 
