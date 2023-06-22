@@ -4,7 +4,7 @@ In this chapter, we will learn about real-time capabilities and multiplayer UI w
 
 ## Getting started
 
-There is nothing to set up for this chapter! You can go ahead and use [the solution code from the previous chapter](../../../13-deferring-loader-data/bee-rich/solution/) to get started with _Chapter 14, Real-Time with Remix_.
+There is nothing to set up for this chapter! You can go ahead and use [the solution code from the previous chapter](../../13-deferring-loader-data/bee-rich/solution/) to get started with _Chapter 14, Real-Time with Remix_.
 
 Happy coding!
 
