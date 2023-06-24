@@ -7,6 +7,7 @@ import { Card } from '~/components/containers';
 import { Form, Input } from '~/components/forms';
 import { H1 } from '~/components/headings';
 import { InlineError } from '~/components/texts';
+import { getVisitorCookieData } from '~/server/visitors.server';
 import { createUserSession, getUserId, registerUser } from '~/session.server';
 
 export const meta: MetaFunction = () => ({
@@ -25,7 +26,8 @@ export async function action({ request }: ActionArgs) {
   }
   try {
     const user = await registerUser({ name, email, password });
-    return redirect('/dashboard', {
+    const { redirectUrl } = await getVisitorCookieData(request);
+    return redirect(redirectUrl || '/dashboard', {
       headers: await createUserSession(user),
     });
   } catch (error: any) {

@@ -1,6 +1,6 @@
 # 14. Advanced Session Management
 
-In this chapter, we will practice advanced session management patterns. We will use cookies to track user redirect URLs during login, persist user preferences, and implement pagination.
+In this chapter, we will practice advanced session management patterns. We will use cookies to track visitor sessions and implement pagination for expenses and invoices.
 
 ## Getting started
 

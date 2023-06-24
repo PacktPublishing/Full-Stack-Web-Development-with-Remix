@@ -2,6 +2,7 @@ import { db } from './db.server';
 import bcrypt from 'bcryptjs';
 import { createCookieSessionStorage, redirect } from '@remix-run/node';
 import type { User } from '@prisma/client';
+import { setVisitorCookieData } from './server/visitors.server';
 
 type UserRegistrationData = {
   name: string;
@@ -96,7 +97,8 @@ export async function requireUserId(request: Request) {
   const session = await getUserSession(request);
   const userId = session.get('userId');
   if (!userId || typeof userId !== 'string') {
-    throw redirect('/login');
+    const headers = await setVisitorCookieData({ redirectUrl: request.url });
+    throw redirect('/login', { headers });
   }
   return userId;
 }
