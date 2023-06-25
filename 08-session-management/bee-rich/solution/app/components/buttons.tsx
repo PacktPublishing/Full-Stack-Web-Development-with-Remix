@@ -12,6 +12,7 @@ export function ActionBar({ children }: { children: React.ReactNode }) {
 export function Button({ isPrimary = false, className, disabled, children, ...props }: ButtonProps) {
   return (
     <button
+      disabled={disabled}
       className={clsx(
         'w-full md:w-min whitespace-nowrap',
         isPrimary ? 'bg-primary dark:bg-darkPrimary' : 'bg-secondary dark:bg-darkSecondary',
