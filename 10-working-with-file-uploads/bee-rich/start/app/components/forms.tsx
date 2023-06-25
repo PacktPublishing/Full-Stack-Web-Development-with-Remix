@@ -44,8 +44,8 @@ export function Textarea({ label, className, ...props }: TextareaProps) {
   );
 }
 
-function useDebounce(delay: number): [string, React.Dispatch<React.SetStateAction<string>>] {
-  const [value, setValue] = useState('');
+function useDebounce(delay: number, initialValue = ''): [string, React.Dispatch<React.SetStateAction<string>>] {
+  const [value, setValue] = useState(initialValue);
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
@@ -63,10 +63,11 @@ function useDebounce(delay: number): [string, React.Dispatch<React.SetStateActio
 
 type SearchInputProps = InputProps & {
   formRef: React.RefObject<HTMLFormElement>;
+  defaultValue?: string;
 };
 
-export function SearchInput({ formRef, ...props }: SearchInputProps) {
-  const [debouncedValue, setValue] = useDebounce(500);
+export function SearchInput({ formRef, defaultValue, ...props }: SearchInputProps) {
+  const [debouncedValue, setValue] = useDebounce(500, defaultValue);
   const submit = useSubmit();
   const initialRender = useRef(true);
 
@@ -80,7 +81,7 @@ export function SearchInput({ formRef, ...props }: SearchInputProps) {
     }
   }, [formRef, debouncedValue, submit]);
 
-  return <Input {...props} onChange={(e) => setValue(e.target.value)} />;
+  return <Input {...props} defaultValue={debouncedValue} onChange={(e) => setValue(e.target.value)} />;
 }
 
 type FormProps = RemixFormProps;
