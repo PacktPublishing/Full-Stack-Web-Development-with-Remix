@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 import type { LoaderArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { useNavigation, Outlet, useLoaderData, useParams, Form, useLocation } from '@remix-run/react';
+import { useNavigation, Outlet, useLoaderData, useParams, Form, useLocation, useSearchParams } from '@remix-run/react';
 import { ListLinkItem } from '~/components/links';
 import { H1 } from '~/components/headings';
 import { db } from '~/db.server';
@@ -33,6 +33,8 @@ export default function ExpensesPage() {
   const { id } = useParams();
   const location = useLocation();
   const ref = useRef<HTMLFormElement>(null);
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get('q') || '';
   return (
     <div className="w-full">
       <H1>Your expenses</H1>
@@ -40,7 +42,7 @@ export default function ExpensesPage() {
         <section className="lg:p-8 w-full lg:max-w-2xl">
           <h2 className="sr-only">All expenses</h2>
           <Form ref={ref} method="get" action={location.pathname}>
-            <SearchInput name="q" type="search" label="Search by title" formRef={ref} />
+            <SearchInput name="q" type="search" label="Search by title" formRef={ref} defaultValue={searchQuery} />
           </Form>
           <ul className="flex flex-col">
             {expenses.map((expense) => (
