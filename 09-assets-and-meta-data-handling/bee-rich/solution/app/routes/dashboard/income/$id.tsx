@@ -1,9 +1,10 @@
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { useActionData, useLoaderData, useNavigation } from '@remix-run/react';
+import { useActionData, useCatch, useLoaderData, useNavigation, useParams } from '@remix-run/react';
 import { Button } from '~/components/buttons';
 import { Form, Input, Textarea } from '~/components/forms';
+import { H2 } from '~/components/headings';
 import { FloatingActionLink } from '~/components/links';
 import { db } from '~/db.server';
 import { requireUserId } from '~/session.server';
@@ -86,6 +87,33 @@ export default function IncomeDetailsPage() {
           {actionData?.success && 'Changes saved!'}
         </p>
       </Form>
+      <FloatingActionLink to="/dashboard/income/">Add invoice</FloatingActionLink>
+    </>
+  );
+}
+
+export function CatchBoundary() {
+  const response = useCatch();
+  const { id } = useParams();
+
+  if (response.status === 404) {
+    return (
+      <>
+        <div className="w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">
+          <H2>Invoice not found</H2>
+          <p>Apologies, the invoice with the id {id} cannot be found.</p>
+        </div>
+        <FloatingActionLink to="/dashboard/income/">Add invoice</FloatingActionLink>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <div className="w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">
+        <H2>Something went wrong</H2>
+        <p>Apologies, something went wrong on our end, please try again.</p>
+      </div>
       <FloatingActionLink to="/dashboard/income/">Add invoice</FloatingActionLink>
     </>
   );

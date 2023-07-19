@@ -1,11 +1,13 @@
-import type { ActionArgs, LoaderArgs } from '@remix-run/node';
-import { unstable_parseMultipartFormData } from '@remix-run/node';
+import type { InvoiceLog } from '@prisma/client';
+import type { ActionArgs, LoaderArgs, SerializeFrom } from '@remix-run/node';
+import { defer, json, unstable_parseMultipartFormData } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
-import { json } from '@remix-run/node';
-import { useActionData, useLoaderData, useNavigation } from '@remix-run/react';
+import { Await, useActionData, useCatch, useLoaderData, useNavigation, useParams } from '@remix-run/react';
+import { Suspense } from 'react';
 import { uploadHandler } from '~/attachments.server';
 import { Button } from '~/components/buttons';
 import { Attachment, Form, Input, Textarea } from '~/components/forms';
+import { H2, H3 } from '~/components/headings';
 import { FloatingActionLink } from '~/components/links';
 import { db } from '~/db.server';
 import { deleteInvoice, parseInvoice, removeAttachmentFromInvoice, updateInvoice } from '~/server/invoices.server';
@@ -76,11 +78,17 @@ export async function loader({ request, params }: LoaderArgs) {
   if (!id) throw Error('id route parameter must be defined');
   const invoice = await db.invoice.findUnique({ where: { id_userId: { id, userId } } });
   if (!invoice) throw new Response('Not found', { status: 404 });
-  return json(invoice);
+  const invoiceLogs = db.invoiceLog
+    .findMany({
+      orderBy: { createdAt: 'desc' },
+      where: { invoiceId: id, userId },
+    })
+    .then((invoice) => invoice);
+  return defer({ invoice, invoiceLogs });
 }
 
 export default function IncomeDetailsPage() {
-  const invoice = useLoaderData<typeof loader>();
+  const { invoice, invoiceLogs } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
   const actionData = useActionData<typeof action>();
@@ -113,6 +121,70 @@ export default function IncomeDetailsPage() {
           {actionData?.success && 'Changes saved!'}
         </p>
       </Form>
+      <Suspense fallback="Loading expense history...">
+        <Await resolve={invoiceLogs} errorElement="There was an error loading the invoice history. Please try again.">
+          {(resolvedInvoiceLogs) => <InvoiceLogSection invoiceLogs={resolvedInvoiceLogs} />}
+        </Await>
+      </Suspense>
+      <FloatingActionLink to="/dashboard/income/">Add invoice</FloatingActionLink>
+    </>
+  );
+}
+
+function InvoiceLogSection({ invoiceLogs }: { invoiceLogs: SerializeFrom<InvoiceLog[]> }) {
+  return (
+    <section className="my-5 w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">
+      <H3>Invoice History</H3>
+      <ul className="space-y-2 max-h-[300px] lg:max-h-max overflow-y-scroll lg:overflow-hidden py-5">
+        {invoiceLogs.map((invoiceLog) => (
+          <li key={invoiceLog.id}>
+            <p>
+              <b>
+                {`${invoiceLog.title} - ${Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: invoiceLog.currencyCode,
+                }).format(invoiceLog.amount)}`}
+              </b>
+            </p>
+            {invoiceLog.description && (
+              <p>
+                <i>{invoiceLog.description}</i>
+              </p>
+            )}
+            <p className="text-sm text-gray-500">
+              {`${new Date(invoiceLog.createdAt).toLocaleDateString()} ${new Date(
+                invoiceLog.createdAt,
+              ).toLocaleTimeString()}`}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+export function CatchBoundary() {
+  const response = useCatch();
+  const { id } = useParams();
+
+  if (response.status === 404) {
+    return (
+      <>
+        <div className="w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">
+          <H2>Invoice not found</H2>
+          <p>Apologies, the invoice with the id {id} cannot be found.</p>
+        </div>
+        <FloatingActionLink to="/dashboard/income/">Add invoice</FloatingActionLink>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <div className="w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">
+        <H2>Something went wrong</H2>
+        <p>Apologies, something went wrong on our end, please try again.</p>
+      </div>
       <FloatingActionLink to="/dashboard/income/">Add invoice</FloatingActionLink>
     </>
   );

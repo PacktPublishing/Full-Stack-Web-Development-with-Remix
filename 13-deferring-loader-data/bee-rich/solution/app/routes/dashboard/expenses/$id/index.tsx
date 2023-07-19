@@ -83,7 +83,7 @@ export async function loader({ request, params }: LoaderArgs) {
       orderBy: { createdAt: 'desc' },
       where: { expenseId: id, userId },
     })
-    .then((e) => e);
+    .then((expense) => expense);
   return defer({ expense, expenseLogs });
 }
 
