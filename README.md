@@ -33,6 +33,7 @@ Sometimes the `README.md` file may include instructions from how to get from the
 12. [Caching Strategies](12-caching-strategies/)
 13. [Deferring Loader Data](13-deferring-loader-data/)
 14. [Real-Time with Remix](14-real-time-with-remix/)
+15. [Advanced Session Management](15-advanced-session-management)
 
 ## BeeRich
 
