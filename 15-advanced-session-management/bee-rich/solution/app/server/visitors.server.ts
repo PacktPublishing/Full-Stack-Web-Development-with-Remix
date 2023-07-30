@@ -1,7 +1,7 @@
 import { createCookie } from '@remix-run/node';
 
 const visitorCookie = createCookie('visitor-cookie', {
-  maxAge: 86_400, // one day
+  maxAge: 60 * 5, // 5 minutes
 });
 
 type VisitorCookieData = {
