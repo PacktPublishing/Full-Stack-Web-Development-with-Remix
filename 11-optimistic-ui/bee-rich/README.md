@@ -12,7 +12,7 @@ If you want to reuse your code from the previous chapter, then follow this guide
 
 Follow these steps to get your application up and running:
 
-1. Make sure you have a `.env` file in the root of your project and that it contains the following line:
+1. Make sure you have a `.env` file in the root of your project and that it contains the following:
 
 ```text
 DATABASE_URL="file:./dev.db"
@@ -50,6 +50,21 @@ In case you receive Prisma errors during build, schema update, or runtime, you c
 ```bash
 npm run reset:db
 ```
+
+6. Seed the database with test data
+
+```bash
+npm run seed
+```
+
+This is optional, but can be helpful for testing.
+
+Test credentials:
+
+- Email: john.doe@example.com'
+- Password: BeeRich
+
+You can also update the seed data in `prisma/seed.ts`.
 
 ## Refactoring BeeRich
 

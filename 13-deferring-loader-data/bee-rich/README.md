@@ -51,6 +51,21 @@ In case you receive Prisma errors during build, schema update, or runtime, you c
 npm run reset:db
 ```
 
+6. Seed the database with test data
+
+```bash
+npm run seed
+```
+
+This is optional, but can be helpful for testing.
+
+Test credentials:
+
+- Email: john.doe@example.com'
+- Password: BeeRich
+
+You can also update the seed data in `prisma/seed.ts`.
+
 ## Adding changelogs for expenses and invoices
 
 In this chapter, we want add changelogs to BeeRich. This will allow users to review and reset changes made over time.

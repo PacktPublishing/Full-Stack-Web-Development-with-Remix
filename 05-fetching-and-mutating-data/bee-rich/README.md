@@ -32,7 +32,7 @@ npm install
 npm run build
 ```
 
-4. Update the MySQL database schema
+4. Update the SQLite database schema
 
 ```bash
 npm run update:db
@@ -45,6 +45,20 @@ npm run dev
 ```
 
 This starts the development server on port `3000`. You can now open the application in your browser at [http://localhost:3000](http://localhost:3000).
+
+In case you receive Prisma errors during build, schema update, or runtime, you can reset the database by running the following command:
+
+```bash
+npm run reset:db
+```
+
+6. Seed the database with test data
+
+```bash
+npm run seed
+```
+
+This is optional, but can be helpful for testing. You can also update the seed data in `prisma/seed.ts`.
 
 ## Setting up Prisma with SQLite
 
@@ -330,7 +344,7 @@ async function seed() {
   console.log(`🚀 Seeded the database. Done in ${Math.round(end - start)}ms`);
 }
 
-function createExpense(expenseData: typeof expenses[number]) {
+function createExpense(expenseData: (typeof expenses)[number]) {
   return db.expense.create({
     data: {
       title: expenseData.title,
@@ -341,7 +355,7 @@ function createExpense(expenseData: typeof expenses[number]) {
   });
 }
 
-function createInvoice(incomeData: typeof income[number]) {
+function createInvoice(incomeData: (typeof income)[number]) {
   return db.invoice.create({
     data: {
       title: incomeData.title,
