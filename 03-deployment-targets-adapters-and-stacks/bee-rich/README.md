@@ -38,13 +38,14 @@ This will start the development server on port `3000`. You can now open the appl
 - `npm run format` - runs all the formatting scripts
 - `npm run format:lint` - runs eslint and fixes errors
 - `npm run clean` - deletes all generated files and folders and installs dependencies
+- `npm run build` - runs all the build scripts
 - `npm run build:css` - generates the CSS for production
 - `npm run build:remix` - builds the Remix application
-- `npm run build` - runs all the build scripts
+- `npm run update:remix` - update to the latest version of Remix
+- `npm run dev` - runs all the dev scripts in parallel
 - `npm run dev:css` - generates and watches the CSS for development
 - `npm run dev:node` - runs the server in development mode
 - `npm run dev:remix` - runs the Remix watcher
-- `npm run dev` - runs all the dev scripts in parallel
 - `npm run generate:css` - runs the TailwindCSS script to generate the CSS file
 - `npm run start` - runs the server in production mode
 

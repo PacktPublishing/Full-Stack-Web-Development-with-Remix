@@ -9,6 +9,7 @@
     "build": "run-s \"build:*\"",
     "build:css": "npm run generate:css -- --minify",
     "build:remix": "remix build",
+    "update:remix": "npm i @remix-run/express@latest @remix-run/node@latest @remix-run/react@latest @remix-run/dev@latest @remix-run/eslint-config@latest",
     "dev": "run-p \"dev:*\"",
     "dev:css": "npm run generate:css -- --watch",
     "dev:node": "cross-env NODE_ENV=development nodemon ./server.js --watch ./server.js",
