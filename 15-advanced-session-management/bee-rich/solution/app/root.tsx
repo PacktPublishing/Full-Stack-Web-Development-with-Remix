@@ -1,17 +1,20 @@
-import type { LinksFunction, MetaFunction } from '@remix-run/node';
+import type { LinksFunction, V2_MetaFunction } from '@remix-run/node';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useCatch } from '@remix-run/react';
 import { H1 } from './components/headings';
 import { ButtonLink } from './components/links';
 import { PageTransitionProgressBar } from './components/progress';
 import tailwindCSS from './styles/tailwind.css';
 
-export const meta: MetaFunction = () => ({
-  charset: 'utf-8',
-  title: 'BeeRich',
-  viewport: 'width=device-width,initial-scale=1',
-  description:
-    'Bee in control of your finances with BeeRich - the buzzworthy expense and income tracker with a modern interface. Keep your finances organized and make honey with your money!',
-});
+export const meta: V2_MetaFunction = () => {
+  return [
+    { title: 'BeeRich' },
+    {
+      name: 'description',
+      content:
+        'Bee in control of your finances with BeeRich - the buzzworthy expense and income tracker with a modern interface. Keep your finances organized and make honey with your money!',
+    },
+  ];
+};
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: tailwindCSS },
@@ -27,6 +30,8 @@ function Document({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
       </head>

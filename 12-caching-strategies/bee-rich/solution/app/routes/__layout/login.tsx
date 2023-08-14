@@ -1,6 +1,5 @@
 import type { ActionArgs, LoaderArgs, MetaFunction } from '@remix-run/node';
-import { json } from '@remix-run/node';
-import { redirect } from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
 import { useActionData, useNavigation } from '@remix-run/react';
 import { Button } from '~/components/buttons';
 import { Card } from '~/components/containers';

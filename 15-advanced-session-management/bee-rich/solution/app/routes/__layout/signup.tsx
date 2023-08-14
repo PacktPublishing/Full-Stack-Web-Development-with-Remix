@@ -1,6 +1,5 @@
-import type { ActionArgs, LoaderArgs, MetaFunction } from '@remix-run/node';
-import { json } from '@remix-run/node';
-import { redirect } from '@remix-run/node';
+import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
 import { useActionData, useNavigation } from '@remix-run/react';
 import { Button } from '~/components/buttons';
 import { Card } from '~/components/containers';
@@ -10,10 +9,12 @@ import { InlineError } from '~/components/texts';
 import { getVisitorCookieData } from '~/server/visitors.server';
 import { createUserSession, getUserId, registerUser } from '~/session.server';
 
-export const meta: MetaFunction = () => ({
-  title: 'Sign Up | BeeRich',
-  description: 'Sign up for a BeeRich account to track your expenses and income.',
-});
+export const meta: V2_MetaFunction = () => {
+  return [
+    { title: 'Sign Up | BeeRich' },
+    { name: 'description', content: 'Sign up for a BeeRich account to track your expenses and income.' },
+  ];
+};
 
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
