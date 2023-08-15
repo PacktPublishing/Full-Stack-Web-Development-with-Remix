@@ -1,7 +1,6 @@
 import { clsx } from 'clsx';
 import type { FormProps, LinkProps as RemixLinkProps } from '@remix-run/react';
-import { useFetcher } from '@remix-run/react';
-import { Link as RemixLink, NavLink as RemixNavLink } from '@remix-run/react';
+import { useFetcher, Link as RemixLink, NavLink as RemixNavLink } from '@remix-run/react';
 import type { HTMLAttributes } from 'react';
 
 type LinkProps = RemixLinkProps;
@@ -106,7 +105,7 @@ export function ListLinkItem({ isActive, className = '', to, deleteProps, childr
         {children}
       </RemixNavLink>
       {deleteProps && (
-        <fetcher.Form className="p-8 ml-auto" method="post" action={deleteProps.action} replace>
+        <fetcher.Form className="p-8 ml-auto" method="POST" action={deleteProps.action} replace>
           <button
             type="submit"
             aria-label={deleteProps.ariaLabel}

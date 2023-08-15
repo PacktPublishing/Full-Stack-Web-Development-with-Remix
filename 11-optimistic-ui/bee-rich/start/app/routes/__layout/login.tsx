@@ -49,7 +49,7 @@ export default function LoginPage() {
   const actionData = useActionData<typeof action>();
   return (
     <Card>
-      <Form method="post" action="/login">
+      <Form method="POST" action="/login">
         <H1>Log In</H1>
         <Input label="Email:" name="email" type="email" required />
         <Input label="Password:" name="password" type="password" required />

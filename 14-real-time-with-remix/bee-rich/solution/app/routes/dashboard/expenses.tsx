@@ -41,7 +41,7 @@ export default function ExpensesPage() {
       <div className="mt-10 w-full flex flex-col-reverse lg:flex-row">
         <section className="lg:p-8 w-full lg:max-w-2xl">
           <h2 className="sr-only">All expenses</h2>
-          <Form ref={ref} method="get" action={location.pathname}>
+          <Form ref={ref} method="GET" action={location.pathname}>
             <SearchInput name="q" type="search" label="Search by title" formRef={ref} defaultValue={searchQuery} />
           </Form>
           <ul className="flex flex-col">

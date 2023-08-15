@@ -56,7 +56,7 @@ export default function IncomePage() {
       <div className="mt-10 w-full flex flex-col-reverse lg:flex-row">
         <section className="lg:p-8 w-full lg:max-w-2xl">
           <h2 className="sr-only">All your income</h2>
-          <Form ref={ref} method="get" action={location.pathname}>
+          <Form ref={ref} method="GET" action={location.pathname}>
             <input type="hidden" name="page" value={1} />
             <SearchInput name="q" type="search" label="Search by title" formRef={ref} defaultValue={searchQuery} />
           </Form>
@@ -86,7 +86,7 @@ export default function IncomePage() {
             ))}
           </ul>
           {showPagination && (
-            <Form method="get" action="/dashboard/income" className="flex justify-between">
+            <Form method="GET" action="/dashboard/income" className="flex justify-between">
               <input type="hidden" name="q" value={searchQuery} />
               <Button type="submit" name="page" value={pageNumber - 1} disabled={pageNumber === 1}>
                 Previous

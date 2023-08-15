@@ -94,7 +94,7 @@ export default function ExpenseDetailsPage() {
   return (
     <>
       <Form
-        method="post"
+        method="POST"
         action={`/dashboard/expenses/${expense.id}?index`}
         key={expense.id}
         encType="multipart/form-data"

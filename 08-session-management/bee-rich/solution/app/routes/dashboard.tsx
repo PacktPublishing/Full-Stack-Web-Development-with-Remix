@@ -41,7 +41,7 @@ function Layout({ firstExpense, firstInvoice, children }: LayoutProps) {
                 <RemixLink to="/">BeeRich</RemixLink>
               </li>
               <li className="ml-auto">
-                <Form method="post" action="/logout">
+                <Form method="POST" action="/logout">
                   <button type="submit">Log out</button>
                 </Form>
               </li>

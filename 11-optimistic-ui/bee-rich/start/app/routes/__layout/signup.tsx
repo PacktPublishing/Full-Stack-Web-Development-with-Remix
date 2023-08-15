@@ -48,7 +48,7 @@ export default function SignUpPage() {
   const actionData = useActionData<typeof action>();
   return (
     <Card>
-      <Form method="post" action="/signup">
+      <Form method="POST" action="/signup">
         <H1>Sign Up</H1>
         <Input label="Name:" name="name" required />
         <Input label="Email:" name="email" type="email" required />

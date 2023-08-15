@@ -109,7 +109,7 @@ export function ListLinkItem({ isActive, className = '', to, deleteProps, childr
         {children}
       </RemixNavLink>
       {deleteProps && (
-        <fetcher.Form className="p-8 ml-auto" method="post" action={deleteProps.action} replace>
+        <fetcher.Form className="p-8 ml-auto" method="POST" action={deleteProps.action} replace>
           <button
             type="submit"
             aria-label={deleteProps.ariaLabel}

@@ -21,7 +21,7 @@ export default function CreateExpensePage() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
   return (
-    <Form method="post" action="/dashboard/expenses/?index" encType="multipart/form-data">
+    <Form method="POST" action="/dashboard/expenses/?index" encType="multipart/form-data">
       <Input label="Title:" type="text" name="title" placeholder="Dinner for Two" required />
       <Textarea label="Description:" name="description" />
       <Input label="Amount (in USD):" type="number" defaultValue={0} name="amount" required />

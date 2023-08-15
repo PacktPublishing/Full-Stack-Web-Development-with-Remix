@@ -29,7 +29,7 @@ export async function action({ request }: ActionArgs) {
 
 export default function CreateExpensePage() {
   return (
-    <Form method="post" action="/dashboard/expenses/?index">
+    <Form method="POST" action="/dashboard/expenses/?index">
       <Input label="Title:" type="text" name="title" placeholder="Dinner for Two" required />
       <Textarea label="Description:" name="description" />
       <Input label="Amount (in USD):" type="number" defaultValue={0} name="amount" required />

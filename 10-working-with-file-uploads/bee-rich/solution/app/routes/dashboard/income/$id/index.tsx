@@ -116,7 +116,7 @@ export default function IncomeDetailsPage() {
   return (
     <>
       <Form
-        method="post"
+        method="POST"
         action={`/dashboard/income/${invoice.id}?index`}
         key={invoice.id}
         encType="multipart/form-data"

@@ -70,7 +70,7 @@ export default function ExpenseDetailsPage() {
 
   return (
     <>
-      <Form method="post" action={`/dashboard/expenses/${expense.id}`} key={expense.id}>
+      <Form method="POST" action={`/dashboard/expenses/${expense.id}`} key={expense.id}>
         <Input label="Title:" type="text" name="title" defaultValue={expense.title} required />
         <Textarea label="Description:" name="description" defaultValue={expense.description || ''} />
         <Input label="Amount (in USD):" type="number" defaultValue={expense.amount} name="amount" required />

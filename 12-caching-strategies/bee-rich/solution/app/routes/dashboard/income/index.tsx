@@ -19,7 +19,7 @@ export default function CreateIncomePage() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
   return (
-    <Form method="post" action="/dashboard/income/?index" encType="multipart/form-data">
+    <Form method="POST" action="/dashboard/income/?index" encType="multipart/form-data">
       <Input label="Title:" type="text" name="title" placeholder="Salary December 2022" required />
       <Textarea label="Description:" name="description" />
       <Input label="Amount (in USD):" type="number" defaultValue={0} name="amount" required />

@@ -29,7 +29,7 @@ export async function action({ request }: ActionArgs) {
 
 export default function CreateIncomePage() {
   return (
-    <Form method="post" action="/dashboard/income/?index">
+    <Form method="POST" action="/dashboard/income/?index">
       <Input label="Title:" type="text" name="title" placeholder="Salary December 2022" required />
       <Textarea label="Description:" name="description" />
       <Input label="Amount (in USD):" type="number" defaultValue={0} name="amount" required />

@@ -78,7 +78,7 @@ export default function IncomeDetailsPage() {
 
   return (
     <>
-      <Form method="post" action={`/dashboard/income/${invoice.id}`} key={invoice.id}>
+      <Form method="POST" action={`/dashboard/income/${invoice.id}`} key={invoice.id}>
         <Input label="Title:" type="text" name="title" defaultValue={invoice.title} required />
         <Textarea label="Description:" name="description" defaultValue={invoice.description || ''} />
         <Input label="Amount (in USD):" type="number" defaultValue={invoice.amount} name="amount" required />
