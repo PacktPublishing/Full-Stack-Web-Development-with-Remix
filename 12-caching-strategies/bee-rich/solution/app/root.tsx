@@ -1,5 +1,14 @@
-import type { LinksFunction, MetaFunction } from '@remix-run/node';
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useCatch } from '@remix-run/react';
+import type { LinksFunction, V2_MetaFunction } from '@remix-run/node';
+import {
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  isRouteErrorResponse,
+  useRouteError,
+} from '@remix-run/react';
 import { H1 } from './components/headings';
 import { ButtonLink } from './components/links';
 import { PageTransitionProgressBar } from './components/progress';
@@ -54,44 +63,53 @@ export default function App() {
   );
 }
 
-export function ErrorBoundary({ error }: { error: Error }) {
-  return (
-    <Document>
-      <section className="m-5 lg:m-20 flex flex-col gap-5">
-        <H1>Unexpected Error</H1>
-        <p>We are very sorry. An unexpected error occurred. Please try again or contact us if the problem persists.</p>
-        <div className="border-4 border-red-500 p-10">
-          <p>Error message: {error.message}</p>
-        </div>
-        <ButtonLink to="/" isPrimary>
-          Back to homepage
-        </ButtonLink>
-      </section>
-    </Document>
-  );
-}
+export function ErrorBoundary() {
+  const error = useRouteError();
 
-export function CatchBoundary() {
-  const caught = useCatch();
+  let message =
+    'We are very sorry. An unexpected error occurred. Please try again or contact us if the problem persists.';
+  if (isRouteErrorResponse(error)) {
+    let message;
+    switch (error.status) {
+      case 401:
+        message = <p>Oops! Looks like you tried to visit a page that you do not have access to.</p>;
+        break;
+      case 404:
+        message = <p>Oops! Looks like you tried to visit a page that does not exist.</p>;
+        break;
+    }
 
-  let message;
-  switch (caught.status) {
-    case 401:
-      message = <p>Oops! Looks like you tried to visit a page that you do not have access to.</p>;
-      break;
-    case 404:
-      message = <p>Oops! Looks like you tried to visit a page that does not exist.</p>;
-      break;
+    return (
+      <Document>
+        <section className="m-5 lg:m-20 flex flex-col gap-5">
+          <H1>{`${error.status} ${error.statusText}`}</H1>
+          {message}
+          <ButtonLink to="/" isPrimary>
+            Back to homepage
+          </ButtonLink>
+        </section>
+      </Document>
+    );
+  }
 
-    default:
-      throw new Error(caught.data || caught.statusText);
+  let errorMessage;
+  if (error instanceof Error) {
+    errorMessage = error.message;
+    if (error.stack) {
+      errorMessage = `${errorMessage}:\n${error.stack}`;
+    }
   }
 
   return (
     <Document>
       <section className="m-5 lg:m-20 flex flex-col gap-5">
-        <H1>{`${caught.status} ${caught.statusText}`}</H1>
-        {message}
+        <H1>Unexpected Error</H1>
+        <p>{message}</p>
+        {errorMessage && (
+          <div className="border-4 border-red-500 p-10">
+            <p>Error message: {errorMessage}</p>
+          </div>
+        )}
         <ButtonLink to="/" isPrimary>
           Back to homepage
         </ButtonLink>

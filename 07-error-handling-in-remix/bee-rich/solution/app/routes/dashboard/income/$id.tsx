@@ -1,6 +1,13 @@
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
-import { useActionData, useCatch, useLoaderData, useNavigation, useParams } from '@remix-run/react';
+import {
+  isRouteErrorResponse,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+  useParams,
+  useRouteError,
+} from '@remix-run/react';
 import { Button } from '~/components/buttons';
 import { Form, Input, Textarea } from '~/components/forms';
 import { H2 } from '~/components/headings';
@@ -87,11 +94,11 @@ export default function IncomeDetailsPage() {
   );
 }
 
-export function CatchBoundary() {
-  const response = useCatch();
+export function ErrorBoundary() {
+  const error = useRouteError();
   const { id } = useParams();
 
-  if (response.status === 404) {
+  if (isRouteErrorResponse(error) && error.status === 404) {
     return (
       <>
         <div className="w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">

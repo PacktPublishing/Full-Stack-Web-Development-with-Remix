@@ -1,7 +1,15 @@
 import type { InvoiceLog } from '@prisma/client';
 import type { ActionArgs, LoaderArgs, SerializeFrom } from '@remix-run/node';
 import { defer, redirect, json, unstable_parseMultipartFormData } from '@remix-run/node';
-import { Await, useActionData, useCatch, useLoaderData, useNavigation, useParams } from '@remix-run/react';
+import {
+  Await,
+  isRouteErrorResponse,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+  useParams,
+  useRouteError,
+} from '@remix-run/react';
 import { Suspense } from 'react';
 import { uploadHandler } from '~/attachments.server';
 import { Button } from '~/components/buttons';
@@ -162,11 +170,11 @@ function InvoiceLogSection({ invoiceLogs }: { invoiceLogs: SerializeFrom<Invoice
   );
 }
 
-export function CatchBoundary() {
-  const response = useCatch();
+export function ErrorBoundary() {
+  const error = useRouteError();
   const { id } = useParams();
 
-  if (response.status === 404) {
+  if (isRouteErrorResponse(error) && error.status === 404) {
     return (
       <>
         <div className="w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">

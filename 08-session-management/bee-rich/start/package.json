@@ -24,9 +24,9 @@
   },
   "dependencies": {
     "@prisma/client": "^4.7.0",
-    "@remix-run/express": "^1.13.0",
-    "@remix-run/node": "^1.13.0",
-    "@remix-run/react": "^1.13.0",
+    "@remix-run/express": "^1.19.3",
+    "@remix-run/node": "^1.19.3",
+    "@remix-run/react": "^1.19.3",
     "bcryptjs": "^2.4.3",
     "clsx": "^1.2.1",
     "compression": "^1.7.4",
@@ -37,8 +37,8 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@remix-run/dev": "^1.13.0",
-    "@remix-run/eslint-config": "^1.13.0",
+    "@remix-run/dev": "^1.19.3",
+    "@remix-run/eslint-config": "^1.19.3",
     "@types/bcryptjs": "^2.4.2",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
