@@ -59,3 +59,23 @@ npm run build
 npm run update:db
 npm run dev
 ```
+
+Always make sure to run these commands from the app's root folder. I recommend to open each Remix application you work on in a new VSCode window.
+
+### Formatting & linting
+
+BeeRich is set up with Prettier and ESLint.
+
+Run `npm run format:lint` from the project's root to fix all lint and format violations.
+
+You can also install the [ESLint VSCode extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) to fix all lint and format violations on file save. For this, add the following settings to your workspace's user settings (./vscode/settings.json):
+
+```json
+"editor.formatOnSave": true,
+"[javascript][javascriptreact][typescript][typescriptreact]": {
+  "editor.formatOnSave": false
+},
+"editor.codeActionsOnSave": {
+  "source.fixAll.eslint": true
+},
+```
