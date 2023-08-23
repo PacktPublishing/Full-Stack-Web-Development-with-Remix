@@ -3,7 +3,7 @@ import { createCookieSessionStorage, redirect } from '@remix-run/node';
 import bcrypt from 'bcryptjs';
 
 import { db } from './db.server';
-import { setVisitorCookieData } from './server/visitors.server';
+import { setVisitorCookieData } from './visitors.server';
 
 type UserRegistrationData = {
   name: string;

@@ -2,28 +2,28 @@ import type { ActionArgs } from '@remix-run/node';
 import { redirect, unstable_parseMultipartFormData } from '@remix-run/node';
 import { useNavigation } from '@remix-run/react';
 
-import { uploadHandler } from '~/attachments.server';
 import { Button } from '~/components/buttons';
 import { Form, Input, Textarea } from '~/components/forms';
-import { emitter } from '~/server/events.server';
-import { createExpense, parseExpense } from '~/server/expenses.server';
-import { requireUserId } from '~/session.server';
+import { uploadHandler } from '~/modules/attachments.server';
+import { createInvoice, parseInvoice } from '~/modules/invoices.server';
+import { emitter } from '~/modules/server-sent-events/events.server';
+import { requireUserId } from '~/modules/session.server';
 
 export async function action({ request }: ActionArgs) {
   const userId = await requireUserId(request);
   const formData = await unstable_parseMultipartFormData(request, uploadHandler);
-  const expenseData = parseExpense(formData);
-  const expense = await createExpense({ userId, ...expenseData });
+  const invoiceData = parseInvoice(formData);
+  const invoice = await createInvoice({ userId, ...invoiceData });
   emitter.emit(userId);
-  return redirect(`/dashboard/expenses/${expense.id}`);
+  return redirect(`/dashboard/income/${invoice.id}`);
 }
 
-export default function CreateExpensePage() {
+export default function CreateIncomePage() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
   return (
-    <Form method="POST" action="/dashboard/expenses/?index" encType="multipart/form-data">
-      <Input label="Title:" type="text" name="title" placeholder="Dinner for Two" required />
+    <Form method="POST" action="/dashboard/income/?index" encType="multipart/form-data">
+      <Input label="Title:" type="text" name="title" placeholder="Salary December 2022" required />
       <Textarea label="Description:" name="description" />
       <Input label="Amount (in USD):" type="number" defaultValue={0} name="amount" required />
       <Input label="Attachment" type="file" name="attachment" />

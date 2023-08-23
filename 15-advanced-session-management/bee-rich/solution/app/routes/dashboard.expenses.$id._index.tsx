@@ -1,4 +1,4 @@
-import type { InvoiceLog } from '@prisma/client';
+import type { ExpenseLog } from '@prisma/client';
 import type { ActionArgs, LoaderArgs, SerializeFrom } from '@remix-run/node';
 import { defer, json, redirect, unstable_parseMultipartFormData } from '@remix-run/node';
 import {
@@ -12,36 +12,36 @@ import {
 } from '@remix-run/react';
 import { Suspense } from 'react';
 
-import { uploadHandler } from '~/attachments.server';
 import { Button } from '~/components/buttons';
 import { Attachment, Form, Input, Textarea } from '~/components/forms';
 import { H2, H3 } from '~/components/headings';
 import { FloatingActionLink } from '~/components/links';
-import { db } from '~/db.server';
-import { emitter } from '~/server/events.server';
-import { deleteInvoice, parseInvoice, removeAttachmentFromInvoice, updateInvoice } from '~/server/invoices.server';
-import { requireUserId } from '~/session.server';
+import { uploadHandler } from '~/modules/attachments.server';
+import { db } from '~/modules/db.server';
+import { deleteExpense, parseExpense, removeAttachmentFromExpense, updateExpense } from '~/modules/expenses.server';
+import { emitter } from '~/modules/server-sent-events/events.server';
+import { requireUserId } from '~/modules/session.server';
 
 async function handleDelete(request: Request, id: string, userId: string): Promise<Response> {
   const referer = request.headers.get('referer');
-  const redirectPath = referer || '/dashboard/income';
+  const redirectPath = referer || '/dashboard/expenses';
 
   try {
-    await deleteInvoice(id, userId);
+    await deleteExpense(id, userId);
   } catch (err) {
     throw new Response('Not found', { status: 404 });
   }
 
   emitter.emit(userId);
   if (redirectPath.includes(id)) {
-    return redirect('/dashboard/income');
+    return redirect('/dashboard/expenses');
   }
   return redirect(redirectPath);
 }
 
 async function handleUpdate(formData: FormData, id: string, userId: string): Promise<Response> {
-  const invoiceData = parseInvoice(formData);
-  await updateInvoice({ id, userId, ...invoiceData });
+  const expenseData = parseExpense(formData);
+  await updateExpense({ id, userId, ...expenseData });
   emitter.emit(userId);
   return json({ success: true });
 }
@@ -53,7 +53,7 @@ async function handleRemoveAttachment(formData: FormData, id: string, userId: st
   }
   const fileName = attachmentUrl.split('/').pop();
   if (!fileName) throw Error('something went wrong');
-  await removeAttachmentFromInvoice(id, userId, fileName);
+  await removeAttachmentFromExpense(id, userId, fileName);
   emitter.emit(userId);
   return json({ success: true });
 }
@@ -88,19 +88,19 @@ export async function loader({ request, params }: LoaderArgs) {
   const userId = await requireUserId(request);
   const { id } = params;
   if (!id) throw Error('id route parameter must be defined');
-  const invoice = await db.invoice.findUnique({ where: { id_userId: { id, userId } } });
-  if (!invoice) throw new Response('Not found', { status: 404 });
-  const invoiceLogs = db.invoiceLog
+  const expense = await db.expense.findUnique({ where: { id_userId: { id, userId } } });
+  if (!expense) throw new Response('Not found', { status: 404 });
+  const expenseLogs = db.expenseLog
     .findMany({
       orderBy: { createdAt: 'desc' },
-      where: { invoiceId: id, userId },
+      where: { expenseId: id, userId },
     })
-    .then((invoice) => invoice);
-  return defer({ invoice, invoiceLogs });
+    .then((expense) => expense);
+  return defer({ expense, expenseLogs });
 }
 
-export default function IncomeDetailsPage() {
-  const { invoice, invoiceLogs } = useLoaderData<typeof loader>();
+export default function ExpenseDetailsPage() {
+  const { expense, expenseLogs } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
   const actionData = useActionData<typeof action>();
@@ -110,17 +110,17 @@ export default function IncomeDetailsPage() {
     <>
       <Form
         method="POST"
-        action={`/dashboard/income/${invoice.id}?index`}
-        key={invoice.id}
+        action={`/dashboard/expenses/${expense.id}?index`}
+        key={expense.id}
         encType="multipart/form-data"
       >
-        <Input label="Title:" type="text" name="title" defaultValue={invoice.title} required />
-        <Textarea label="Description:" name="description" defaultValue={invoice.description || ''} />
-        <Input label="Amount (in USD):" type="number" defaultValue={invoice.amount} name="amount" required />
-        {(isUploadingAttachment || invoice.attachment) && !isRemovingAttachment ? (
+        <Input label="Title:" type="text" name="title" defaultValue={expense.title} required />
+        <Textarea label="Description:" name="description" defaultValue={expense.description || ''} />
+        <Input label="Amount (in USD):" type="number" defaultValue={expense.amount} name="amount" required />
+        {(isUploadingAttachment || expense.attachment) && !isRemovingAttachment ? (
           <Attachment
             label="Current Attachment"
-            attachmentUrl={`/dashboard/income/${invoice.id}/attachments/${invoice.attachment}`}
+            attachmentUrl={`/dashboard/expenses/${expense.id}/attachments/${expense.attachment}`}
             disabled={isUploadingAttachment}
           />
         ) : (
@@ -134,38 +134,38 @@ export default function IncomeDetailsPage() {
         </p>
       </Form>
       <Suspense fallback="Loading expense history...">
-        <Await resolve={invoiceLogs} errorElement="There was an error loading the invoice history. Please try again.">
-          {(resolvedInvoiceLogs) => <InvoiceLogSection invoiceLogs={resolvedInvoiceLogs} />}
+        <Await resolve={expenseLogs} errorElement="There was an error loading the expense history. Please try again.">
+          {(resolvedExpenseLogs) => <ExpenseLogSection expenseLogs={resolvedExpenseLogs} />}
         </Await>
       </Suspense>
-      <FloatingActionLink to="/dashboard/income/">Add invoice</FloatingActionLink>
+      <FloatingActionLink to="/dashboard/expenses/">Add expense</FloatingActionLink>
     </>
   );
 }
 
-function InvoiceLogSection({ invoiceLogs }: { invoiceLogs: SerializeFrom<InvoiceLog[]> }) {
+function ExpenseLogSection({ expenseLogs }: { expenseLogs: SerializeFrom<ExpenseLog[]> }) {
   return (
     <section className="my-5 w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">
-      <H3>Invoice History</H3>
+      <H3>Expense History</H3>
       <ul className="space-y-2 max-h-[300px] lg:max-h-max overflow-y-scroll lg:overflow-hidden py-5">
-        {invoiceLogs.map((invoiceLog) => (
-          <li key={invoiceLog.id}>
+        {expenseLogs.map((expenseLog) => (
+          <li key={expenseLog.id}>
             <p>
               <b>
-                {`${invoiceLog.title} - ${Intl.NumberFormat('en-US', {
+                {`${expenseLog.title} - ${Intl.NumberFormat('en-US', {
                   style: 'currency',
-                  currency: invoiceLog.currencyCode,
-                }).format(invoiceLog.amount)}`}
+                  currency: expenseLog.currencyCode,
+                }).format(expenseLog.amount)}`}
               </b>
             </p>
-            {invoiceLog.description && (
+            {expenseLog.description && (
               <p>
-                <i>{invoiceLog.description}</i>
+                <i>{expenseLog.description}</i>
               </p>
             )}
             <p className="text-sm text-gray-500">
-              {`${new Date(invoiceLog.createdAt).toLocaleDateString()} ${new Date(
-                invoiceLog.createdAt,
+              {`${new Date(expenseLog.createdAt).toLocaleDateString()} ${new Date(
+                expenseLog.createdAt,
               ).toLocaleTimeString()}`}
             </p>
           </li>
@@ -183,10 +183,10 @@ export function ErrorBoundary() {
     return (
       <>
         <div className="w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">
-          <H2>Invoice not found</H2>
-          <p>Apologies, the invoice with the id {id} cannot be found.</p>
+          <H2>Expense not found</H2>
+          <p>Apologies, the expense with the id {id} cannot be found.</p>
         </div>
-        <FloatingActionLink to="/dashboard/income/">Add invoice</FloatingActionLink>
+        <FloatingActionLink to="/dashboard/expenses/">Add expense</FloatingActionLink>
       </>
     );
   }
@@ -197,7 +197,7 @@ export function ErrorBoundary() {
         <H2>Something went wrong</H2>
         <p>Apologies, something went wrong on our end, please try again.</p>
       </div>
-      <FloatingActionLink to="/dashboard/income/">Add invoice</FloatingActionLink>
+      <FloatingActionLink to="/dashboard/expenses/">Add expense</FloatingActionLink>
     </>
   );
 }

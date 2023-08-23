@@ -1,9 +1,9 @@
 import type { LoaderArgs } from '@remix-run/node';
 import { redirect } from '@remix-run/router';
 
-import { buildFileResponse } from '~/attachments.server';
-import { db } from '~/db.server';
-import { requireUserId } from '~/session.server';
+import { buildFileResponse } from '~/modules/attachments.server';
+import { db } from '~/modules/db.server';
+import { requireUserId } from '~/modules/session.server';
 
 export async function loader({ request, params }: LoaderArgs) {
   const userId = await requireUserId(request);

@@ -1,8 +1,8 @@
 import type { Invoice, Prisma } from '@prisma/client';
 import zod from 'zod';
 
-import { deleteAttachment } from '~/attachments.server';
-import { db } from '~/db.server';
+import { deleteAttachment } from '~/modules/attachments.server';
+import { db } from '~/modules/db.server';
 
 type InvoiceCreateData = Pick<Invoice, 'title' | 'description' | 'amount' | 'attachment' | 'userId'>;
 

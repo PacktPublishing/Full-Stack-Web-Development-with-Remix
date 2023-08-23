@@ -9,7 +9,7 @@ export const headers: HeadersFunction = () => {
   };
 };
 
-export default function Layout() {
+export default function Component() {
   return (
     <>
       <header className="mb-4 lg:mb-10">

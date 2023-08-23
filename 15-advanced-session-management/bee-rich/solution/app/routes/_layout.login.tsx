@@ -7,27 +7,34 @@ import { Card } from '~/components/containers';
 import { Form, Input } from '~/components/forms';
 import { H1 } from '~/components/headings';
 import { InlineError } from '~/components/texts';
-import { getVisitorCookieData } from '~/server/visitors.server';
-import { createUserSession, getUserId, registerUser } from '~/session.server';
+import { createUserSession, getUserId, loginUser } from '~/modules/session.server';
+import { getVisitorCookieData } from '~/modules/visitors.server';
 
 export const meta: V2_MetaFunction = () => {
   return [
-    { title: 'Sign Up | BeeRich' },
-    { name: 'description', content: 'Sign up for a BeeRich account to track your expenses and income.' },
+    { title: 'Log In | BeeRich' },
+    { name: 'description', content: 'Log into your BeeRich account to track your expenses and income.' },
   ];
+};
+
+export const headers = () => {
+  return {
+    'Cache-Control': 'max-age=300000',
+  };
 };
 
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
-  const { name, email, password } = Object.fromEntries(formData);
-  if (!name || !email || !password) {
+  const email = formData.get('email');
+  const password = formData.get('password');
+  if (!email || !password) {
     return json({ error: 'Please fill out all fields.' });
   }
-  if (typeof name !== 'string' || typeof email !== 'string' || typeof password !== 'string') {
+  if (typeof email !== 'string' || typeof password !== 'string') {
     throw new Error('Invalid form data.');
   }
   try {
-    const user = await registerUser({ name, email, password });
+    const user = await loginUser({ email, password });
     const { redirectUrl } = await getVisitorCookieData(request);
     return redirect(redirectUrl || '/dashboard', {
       headers: await createUserSession(user),
@@ -45,19 +52,18 @@ export async function loader({ request }: LoaderArgs) {
   return {};
 }
 
-export default function SignUpPage() {
+export default function Component() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
   const actionData = useActionData<typeof action>();
   return (
     <Card>
-      <Form method="POST" action="/signup">
-        <H1>Sign Up</H1>
-        <Input label="Name:" name="name" required />
+      <Form method="POST" action="/login">
+        <H1>Log In</H1>
         <Input label="Email:" name="email" type="email" required />
         <Input label="Password:" name="password" type="password" required />
         <Button disabled={isSubmitting} type="submit" isPrimary>
-          {isSubmitting ? 'Signing you up...' : 'Sign up!'}
+          {isSubmitting ? 'Logging you in...' : 'Log in!'}
         </Button>
         <InlineError aria-live="assertive">{actionData?.error && actionData.error}</InlineError>
       </Form>

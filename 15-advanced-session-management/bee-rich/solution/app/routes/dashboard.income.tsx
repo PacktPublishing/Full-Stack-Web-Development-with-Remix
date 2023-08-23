@@ -9,8 +9,8 @@ import { Button } from '~/components/buttons';
 import { SearchInput } from '~/components/forms';
 import { H1 } from '~/components/headings';
 import { ListLinkItem } from '~/components/links';
-import { db } from '~/db.server';
-import { requireUserId } from '~/session.server';
+import { db } from '~/modules/db.server';
+import { requireUserId } from '~/modules/session.server';
 
 const PAGE_SIZE = 10;
 
