@@ -1,8 +1,9 @@
-import { clsx } from 'clsx';
 import { json } from '@remix-run/node';
-import { useNavigation, Outlet, useLoaderData } from '@remix-run/react';
-import { ListLinkItem } from '~/components/links';
+import { Outlet, useLoaderData, useNavigation } from '@remix-run/react';
+import { clsx } from 'clsx';
+
 import { H1 } from '~/components/headings';
+import { ListLinkItem } from '~/components/links';
 import { db } from '~/db.server';
 
 export async function loader() {

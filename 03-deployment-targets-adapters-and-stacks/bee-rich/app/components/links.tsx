@@ -1,6 +1,6 @@
-import { clsx } from 'clsx';
 import type { LinkProps as RemixLinkProps } from '@remix-run/react';
 import { Link as RemixLink, NavLink as RemixNavLink } from '@remix-run/react';
+import { clsx } from 'clsx';
 import type { HTMLAttributes } from 'react';
 
 type LinkProps = RemixLinkProps;

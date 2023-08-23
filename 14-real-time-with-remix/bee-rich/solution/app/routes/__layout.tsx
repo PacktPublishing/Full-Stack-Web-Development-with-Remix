@@ -1,5 +1,6 @@
 import type { HeadersFunction } from '@remix-run/node';
 import { Outlet } from '@remix-run/react';
+
 import { NavLink } from '~/components/links';
 
 export const headers: HeadersFunction = () => {

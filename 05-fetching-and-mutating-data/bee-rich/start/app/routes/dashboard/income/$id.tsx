@@ -1,6 +1,7 @@
 import type { LoaderArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
+
 import { H2 } from '~/components/headings';
 
 const data = [

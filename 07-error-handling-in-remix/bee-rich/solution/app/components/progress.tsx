@@ -3,8 +3,8 @@
  * You can find the original blog post here: https://dev.to/gugaguichard/creating-a-github-like-progress-bar-for-your-remix-app-153l
  */
 
-import { clsx } from 'clsx';
 import { useNavigation } from '@remix-run/react';
+import { clsx } from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 
 function PageTransitionProgressBar() {

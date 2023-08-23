@@ -1,4 +1,5 @@
 import { Outlet } from '@remix-run/react';
+
 import { NavLink } from '~/components/links';
 
 export default function Layout() {

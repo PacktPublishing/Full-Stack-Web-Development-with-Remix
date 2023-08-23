@@ -1,12 +1,13 @@
-import { clsx } from 'clsx';
 import type { LoaderArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { Form, Outlet, useLoaderData, useLocation, useParams, useNavigation } from '@remix-run/react';
-import { ListLinkItem } from '~/components/links';
-import { H1 } from '~/components/headings';
-import { db } from '~/db.server';
+import { Form, Outlet, useLoaderData, useLocation, useNavigation, useParams } from '@remix-run/react';
+import { clsx } from 'clsx';
 import { useRef } from 'react';
+
 import { SearchInput } from '~/components/forms';
+import { H1 } from '~/components/headings';
+import { ListLinkItem } from '~/components/links';
+import { db } from '~/db.server';
 import { requireUserId } from '~/session.server';
 
 export async function loader({ request }: LoaderArgs) {

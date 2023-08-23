@@ -1,7 +1,8 @@
+import { Outlet, useNavigation } from '@remix-run/react';
 import { clsx } from 'clsx';
-import { useNavigation, Outlet } from '@remix-run/react';
-import { ListLinkItem } from '~/components/links';
+
 import { H1 } from '~/components/headings';
+import { ListLinkItem } from '~/components/links';
 
 export default function ExpensesPage() {
   const navigation = useNavigation();

@@ -1,10 +1,11 @@
 import type { LinksFunction, V2_MetaFunction } from '@remix-run/node';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
+
 import { PageTransitionProgressBar } from './components/progress';
 import tailwindCSS from './styles/tailwind.css';
 
 export const meta: V2_MetaFunction = () => {
-  return [ { title: 'BeeRich' } ];
+  return [{ title: 'BeeRich' }];
 };
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: tailwindCSS }];

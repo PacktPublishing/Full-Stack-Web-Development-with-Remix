@@ -4,7 +4,7 @@
   "scripts": {
     "routes": "remix routes",
     "format": "run-s format:*",
-    "format:lint": "npx eslint --fix",
+    "format:lint": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
     "clean": "rimraf ./node_modules .cache ./build ./public/build && npm i",
     "build": "run-s \"build:*\"",
     "build:css": "npm run generate:css -- --minify",

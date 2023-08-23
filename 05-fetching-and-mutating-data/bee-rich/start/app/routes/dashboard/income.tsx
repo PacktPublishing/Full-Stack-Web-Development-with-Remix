@@ -1,7 +1,8 @@
-import { clsx } from 'clsx';
 import { Outlet, useNavigation } from '@remix-run/react';
-import { ListLinkItem } from '~/components/links';
+import { clsx } from 'clsx';
+
 import { H1 } from '~/components/headings';
+import { ListLinkItem } from '~/components/links';
 
 export default function IncomePage() {
   const navigation = useNavigation();

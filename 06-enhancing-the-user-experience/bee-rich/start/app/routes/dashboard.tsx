@@ -1,5 +1,6 @@
 import { json } from '@remix-run/node';
-import { Outlet, Link as RemixLink, useLoaderData, useLocation } from '@remix-run/react';
+import { Link as RemixLink, Outlet, useLoaderData, useLocation } from '@remix-run/react';
+
 import { Container } from '~/components/containers';
 import { NavLink } from '~/components/links';
 import { db } from '~/db.server';

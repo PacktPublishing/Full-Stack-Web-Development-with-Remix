@@ -1,11 +1,11 @@
-import fs from 'fs';
-import path from 'path';
 import type { UploadHandler } from '@remix-run/node';
 import {
   unstable_composeUploadHandlers,
   unstable_createFileUploadHandler,
   unstable_createMemoryUploadHandler,
 } from '@remix-run/node';
+import fs from 'fs';
+import path from 'path';
 
 const standardFileUploadHandler = unstable_createFileUploadHandler({
   directory: './attachments',

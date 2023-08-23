@@ -1,7 +1,8 @@
-import { db } from './db.server';
-import bcrypt from 'bcryptjs';
-import { createCookieSessionStorage, redirect } from '@remix-run/node';
 import type { User } from '@prisma/client';
+import { createCookieSessionStorage, redirect } from '@remix-run/node';
+import bcrypt from 'bcryptjs';
+
+import { db } from './db.server';
 import { setVisitorCookieData } from './server/visitors.server';
 
 type UserRegistrationData = {

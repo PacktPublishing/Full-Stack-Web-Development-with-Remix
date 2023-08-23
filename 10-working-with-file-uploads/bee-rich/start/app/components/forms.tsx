@@ -1,10 +1,8 @@
-import { clsx } from 'clsx';
 import type { FormProps as RemixFormProps } from '@remix-run/react';
-import { useSubmit } from '@remix-run/react';
-import { Form as RemixForm } from '@remix-run/react';
+import { Form as RemixForm, useSubmit } from '@remix-run/react';
+import { clsx } from 'clsx';
 import type { InputHTMLAttributes, ReactNode } from 'react';
-import { useRef } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   label: ReactNode;

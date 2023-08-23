@@ -1,7 +1,8 @@
 import type { Expense, Prisma } from '@prisma/client';
 import zod from 'zod';
-import { db } from '~/db.server';
+
 import { deleteAttachment } from '~/attachments.server';
+import { db } from '~/db.server';
 
 type ExpenseCreateData = Pick<Expense, 'title' | 'description' | 'amount' | 'attachment' | 'userId'>;
 

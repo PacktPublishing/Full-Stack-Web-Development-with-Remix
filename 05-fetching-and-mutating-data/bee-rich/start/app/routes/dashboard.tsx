@@ -1,4 +1,5 @@
-import { Outlet, Link as RemixLink } from '@remix-run/react';
+import { Link as RemixLink, Outlet } from '@remix-run/react';
+
 import { Container } from '~/components/containers';
 import { NavLink } from '~/components/links';
 
