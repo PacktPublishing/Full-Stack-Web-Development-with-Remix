@@ -12,7 +12,7 @@ module.exports = {
     '@remix-run/eslint-config',
     '@remix-run/eslint-config/node',
   ],
-  plugins: ['@typescript-eslint', 'html', 'jsx-a11y'],
+  plugins: ['@typescript-eslint', 'html', 'jsx-a11y', 'simple-import-sort', 'import'],
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
@@ -34,5 +34,10 @@ module.exports = {
         disallowTypeAnnotations: true,
       },
     ],
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
+    'import/first': 'error',
+    'import/newline-after-import': 'error',
+    'import/no-duplicates': 'error',
   },
 };
