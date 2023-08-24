@@ -6,7 +6,7 @@ import { Button } from '~/components/buttons';
 import { Form, Input, Textarea } from '~/components/forms';
 import { uploadHandler } from '~/modules/attachments.server';
 import { createExpense, parseExpense } from '~/modules/expenses.server';
-import { requireUserId } from '~/modules/session.server';
+import { requireUserId } from '~/modules/session/session.server';
 
 export async function action({ request }: ActionArgs) {
   const userId = await requireUserId(request);

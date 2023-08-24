@@ -20,7 +20,7 @@ import { uploadHandler } from '~/modules/attachments.server';
 import { db } from '~/modules/db.server';
 import { deleteExpense, parseExpense, removeAttachmentFromExpense, updateExpense } from '~/modules/expenses.server';
 import { emitter } from '~/modules/server-sent-events/events.server';
-import { requireUserId } from '~/modules/session.server';
+import { requireUserId } from '~/modules/session/session.server';
 
 async function handleDelete(request: Request, id: string, userId: string): Promise<Response> {
   const referer = request.headers.get('referer');

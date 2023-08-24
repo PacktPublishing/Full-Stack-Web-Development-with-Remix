@@ -15,7 +15,7 @@ import { H2 } from '~/components/headings';
 import { FloatingActionLink } from '~/components/links';
 import { deleteAttachment, uploadHandler } from '~/modules/attachments.server';
 import { db } from '~/modules/db.server';
-import { requireUserId } from '~/modules/session.server';
+import { requireUserId } from '~/modules/session/session.server';
 
 async function deleteInvoice(request: Request, id: string, userId: string): Promise<Response> {
   const referer = request.headers.get('referer');

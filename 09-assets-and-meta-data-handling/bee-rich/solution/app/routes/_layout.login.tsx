@@ -7,7 +7,7 @@ import { Card } from '~/components/containers';
 import { Form, Input } from '~/components/forms';
 import { H1 } from '~/components/headings';
 import { InlineError } from '~/components/texts';
-import { createUserSession, getUserId, loginUser } from '~/modules/session.server';
+import { createUserSession, getUserId, loginUser } from '~/modules/session/session.server';
 import loginCSS from '~/styles/login.css';
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: loginCSS }];

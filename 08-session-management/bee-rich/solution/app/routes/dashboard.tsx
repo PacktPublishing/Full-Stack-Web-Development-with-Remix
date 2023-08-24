@@ -7,7 +7,7 @@ import { Container } from '~/components/containers';
 import { H1 } from '~/components/headings';
 import { NavLink } from '~/components/links';
 import { db } from '~/modules/db.server';
-import { requireUserId } from '~/modules/session.server';
+import { requireUserId } from '~/modules/session/session.server';
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await requireUserId(request);

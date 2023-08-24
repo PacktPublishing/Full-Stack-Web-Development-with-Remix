@@ -3,7 +3,7 @@ import { redirect } from '@remix-run/router';
 
 import { buildFileResponse } from '~/modules/attachments.server';
 import { db } from '~/modules/db.server';
-import { requireUserId } from '~/modules/session.server';
+import { requireUserId } from '~/modules/session/session.server';
 
 export async function loader({ request, params }: LoaderArgs) {
   const userId = await requireUserId(request);

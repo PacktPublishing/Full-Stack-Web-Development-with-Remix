@@ -2,6 +2,7 @@ import type { HeadersFunction } from '@remix-run/node';
 import { Outlet } from '@remix-run/react';
 
 import { NavLink } from '~/components/links';
+import { useUser } from '~/modules/session/session';
 
 export const headers: HeadersFunction = () => {
   return {
@@ -9,7 +10,8 @@ export const headers: HeadersFunction = () => {
   };
 };
 
-export default function Layout() {
+export default function Component() {
+  const user = useUser();
   return (
     <>
       <header className="mb-4 lg:mb-10">
@@ -20,16 +22,26 @@ export default function Layout() {
                 Home
               </NavLink>
             </li>
-            <li className="ml-auto">
-              <NavLink to="/login" prefetch="intent">
-                Log in
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/signup" prefetch="intent">
-                Sign up
-              </NavLink>
-            </li>
+            {user ? (
+              <li className="ml-auto">
+                <NavLink to="/dashboard" prefetch="intent">
+                  Dashboard
+                </NavLink>
+              </li>
+            ) : (
+              <>
+                <li className="ml-auto">
+                  <NavLink to="/login" prefetch="intent">
+                    Log in
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/signup" prefetch="intent">
+                    Sign up
+                  </NavLink>
+                </li>
+              </>
+            )}
           </ul>
         </nav>
       </header>

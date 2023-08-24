@@ -7,7 +7,7 @@ import { Container } from '~/components/containers';
 import { H1 } from '~/components/headings';
 import { NavLink } from '~/components/links';
 import { db } from '~/modules/db.server';
-import { getUser, logout } from '~/modules/session.server';
+import { getUser, logout } from '~/modules/session/session.server';
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
   const title = data?.username ? `${data.username}'s Dashboard | BeeRich` : 'Dashboard | BeeRich';

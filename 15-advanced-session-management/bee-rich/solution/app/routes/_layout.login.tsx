@@ -7,7 +7,7 @@ import { Card } from '~/components/containers';
 import { Form, Input } from '~/components/forms';
 import { H1 } from '~/components/headings';
 import { InlineError } from '~/components/texts';
-import { createUserSession, getUserId, loginUser } from '~/modules/session.server';
+import { createUserSession, getUserId, loginUser } from '~/modules/session/session.server';
 import { getVisitorCookieData } from '~/modules/visitors.server';
 
 export const meta: V2_MetaFunction = () => {

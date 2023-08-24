@@ -14,7 +14,7 @@ import { Form, Input, Textarea } from '~/components/forms';
 import { H2 } from '~/components/headings';
 import { FloatingActionLink } from '~/components/links';
 import { db } from '~/modules/db.server';
-import { requireUserId } from '~/modules/session.server';
+import { requireUserId } from '~/modules/session/session.server';
 
 async function deleteExpense(request: Request, id: string, userId: string): Promise<Response> {
   const referer = request.headers.get('referer');

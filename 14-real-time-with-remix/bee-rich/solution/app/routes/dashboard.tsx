@@ -8,7 +8,7 @@ import { H1 } from '~/components/headings';
 import { NavLink } from '~/components/links';
 import { db } from '~/modules/db.server';
 import { useEventSource } from '~/modules/server-sent-events/event-source';
-import { getUser, logout } from '~/modules/session.server';
+import { getUser, logout } from '~/modules/session/session.server';
 
 export const headers: HeadersFunction = () => {
   return {

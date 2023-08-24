@@ -1,4 +1,4 @@
-import type { LinksFunction, V2_MetaFunction } from '@remix-run/node';
+import type { LinksFunction, LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import {
   isRouteErrorResponse,
   Links,
@@ -13,6 +13,7 @@ import {
 import { H1 } from './components/headings';
 import { ButtonLink } from './components/links';
 import { PageTransitionProgressBar } from './components/progress';
+import { getUser } from './modules/session/session.server';
 import tailwindCSS from './styles/tailwind.css';
 
 export const meta: V2_MetaFunction = () => {
@@ -35,6 +36,11 @@ export const links: LinksFunction = () => [
     href: 'https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap',
   },
 ];
+
+export async function loader({ request }: LoaderArgs) {
+  const user = await getUser(request);
+  return { user };
+}
 
 function Document({ children }: { children: React.ReactNode }) {
   return (
