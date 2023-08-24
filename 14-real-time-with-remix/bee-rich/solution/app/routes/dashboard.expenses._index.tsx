@@ -2,12 +2,12 @@ import type { ActionArgs } from '@remix-run/node';
 import { redirect, unstable_parseMultipartFormData } from '@remix-run/node';
 import { useNavigation } from '@remix-run/react';
 
-import { uploadHandler } from '~/attachments.server';
 import { Button } from '~/components/buttons';
 import { Form, Input, Textarea } from '~/components/forms';
-import { emitter } from '~/server/events.server';
-import { createExpense, parseExpense } from '~/server/expenses.server';
-import { requireUserId } from '~/session.server';
+import { uploadHandler } from '~/modules/attachments.server';
+import { createExpense, parseExpense } from '~/modules/expenses.server';
+import { emitter } from '~/modules/server-sent-events/events.server';
+import { requireUserId } from '~/modules/session.server';
 
 export async function action({ request }: ActionArgs) {
   const userId = await requireUserId(request);

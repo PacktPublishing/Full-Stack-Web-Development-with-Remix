@@ -4,7 +4,7 @@ import { clsx } from 'clsx';
 
 import { H1 } from '~/components/headings';
 import { ListLinkItem } from '~/components/links';
-import { db } from '~/db.server';
+import { db } from '~/modules/db.server';
 
 export async function loader() {
   const invoices = await db.invoice.findMany({

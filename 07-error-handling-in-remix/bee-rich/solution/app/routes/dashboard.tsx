@@ -6,7 +6,7 @@ import { Link as RemixLink, Outlet, useLoaderData, useLocation, useRouteError } 
 import { Container } from '~/components/containers';
 import { H1 } from '~/components/headings';
 import { NavLink } from '~/components/links';
-import { db } from '~/db.server';
+import { db } from '~/modules/db.server';
 
 export async function loader() {
   const expenseQuery = db.expense.findFirst({

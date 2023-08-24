@@ -5,7 +5,7 @@ import { useActionData, useLoaderData, useNavigation } from '@remix-run/react';
 import { Button } from '~/components/buttons';
 import { Form, Input, Textarea } from '~/components/forms';
 import { FloatingActionLink } from '~/components/links';
-import { db } from '~/db.server';
+import { db } from '~/modules/db.server';
 
 async function deleteExpense(request: Request, id: string): Promise<Response> {
   const referer = request.headers.get('referer');

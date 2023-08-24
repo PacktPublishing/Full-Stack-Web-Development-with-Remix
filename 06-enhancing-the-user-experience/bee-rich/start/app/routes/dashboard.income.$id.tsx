@@ -4,7 +4,7 @@ import { useLoaderData } from '@remix-run/react';
 
 import { H2 } from '~/components/headings';
 import { FloatingActionLink } from '~/components/links';
-import { db } from '~/db.server';
+import { db } from '~/modules/db.server';
 
 export async function loader({ params }: LoaderArgs) {
   const { id } = params;

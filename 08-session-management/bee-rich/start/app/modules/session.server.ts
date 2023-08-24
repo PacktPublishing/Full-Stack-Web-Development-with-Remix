@@ -1,7 +1,7 @@
 import type { User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
-import { db } from './db.server';
+import { db } from '~/modules/db.server';
 
 type UserRegistrationData = {
   name: string;

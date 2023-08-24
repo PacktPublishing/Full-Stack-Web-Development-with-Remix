@@ -13,8 +13,8 @@ import { Button } from '~/components/buttons';
 import { Form, Input, Textarea } from '~/components/forms';
 import { H2 } from '~/components/headings';
 import { FloatingActionLink } from '~/components/links';
-import { db } from '~/db.server';
-import { requireUserId } from '~/session.server';
+import { db } from '~/modules/db.server';
+import { requireUserId } from '~/modules/session.server';
 
 async function deleteInvoice(request: Request, id: string, userId: string): Promise<Response> {
   const referer = request.headers.get('referer');

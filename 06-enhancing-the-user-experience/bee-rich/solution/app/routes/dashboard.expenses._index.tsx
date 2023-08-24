@@ -4,7 +4,7 @@ import { useNavigation } from '@remix-run/react';
 
 import { Button } from '~/components/buttons';
 import { Form, Input, Textarea } from '~/components/forms';
-import { db } from '~/db.server';
+import { db } from '~/modules/db.server';
 
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();

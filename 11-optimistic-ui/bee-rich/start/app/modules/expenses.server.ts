@@ -1,13 +1,13 @@
 import type { Expense, Prisma } from '@prisma/client';
 import zod from 'zod';
 
-import { deleteAttachment } from '~/attachments.server';
-import { db } from '~/db.server';
+import { deleteAttachment } from '~/modules/attachments.server';
+import { db } from '~/modules/db.server';
 
 type ExpenseCreateData = Pick<Expense, 'title' | 'description' | 'amount' | 'attachment' | 'userId'>;
 
-export async function createExpense({ title, description, amount, attachment, userId }: ExpenseCreateData) {
-  const expense = await db.expense.create({
+export function createExpense({ title, description, amount, attachment, userId }: ExpenseCreateData) {
+  return db.expense.create({
     data: {
       title,
       description,
@@ -21,8 +21,6 @@ export async function createExpense({ title, description, amount, attachment, us
       },
     },
   });
-  createExpenseLog(userId, expense.id, { title, description, amount, currencyCode: 'USD' });
-  return expense;
 }
 
 export async function deleteExpense(id: string, userId: string) {
@@ -34,13 +32,11 @@ export async function deleteExpense(id: string, userId: string) {
 
 type ExpenseUpdateData = Prisma.ExpenseUpdateInput & Prisma.ExpenseIdUserIdCompoundUniqueInput;
 
-export async function updateExpense({ id, title, description, amount, attachment, userId }: ExpenseUpdateData) {
-  const expense = await db.expense.update({
+export function updateExpense({ id, title, description, amount, attachment, userId }: ExpenseUpdateData) {
+  return db.expense.update({
     where: { id_userId: { id, userId } },
     data: { title, description, amount, attachment },
   });
-  createExpenseLog(userId, expense.id, expense);
-  return expense;
 }
 
 export function removeAttachmentFromExpense(id: string, userId: string, fileName: string) {
@@ -66,23 +62,4 @@ export function parseExpense(formData: FormData) {
     attachment = null;
   }
   return { title, description, amount: amountNumber, attachment };
-}
-
-type ExpenseLogCreateData = Pick<Expense, 'title' | 'description' | 'amount' | 'currencyCode'>;
-
-async function createExpenseLog(
-  userId: string,
-  expenseId: string,
-  { title, description, amount, currencyCode }: ExpenseLogCreateData,
-) {
-  return db.expenseLog.create({
-    data: {
-      title,
-      description,
-      amount,
-      currencyCode,
-      user: { connect: { id: userId } },
-      expense: { connect: { id: expenseId } },
-    },
-  });
 }

@@ -6,8 +6,8 @@ import { Form, Link as RemixLink, Outlet, useLoaderData, useLocation, useRouteEr
 import { Container } from '~/components/containers';
 import { H1 } from '~/components/headings';
 import { NavLink } from '~/components/links';
-import { db } from '~/db.server';
-import { getUser, logout } from '~/session.server';
+import { db } from '~/modules/db.server';
+import { getUser, logout } from '~/modules/session.server';
 
 export const headers: HeadersFunction = () => {
   return {
