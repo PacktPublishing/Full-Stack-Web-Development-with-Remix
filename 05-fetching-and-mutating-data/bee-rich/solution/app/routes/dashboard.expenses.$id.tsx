@@ -13,7 +13,7 @@ export async function loader({ params }: LoaderArgs) {
   return json(expense);
 }
 
-export default function ExpenseDetailsPage() {
+export default function Component() {
   const expense = useLoaderData<typeof loader>();
   return (
     <>

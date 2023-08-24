@@ -108,7 +108,7 @@ export async function loader({ request, params }: LoaderArgs) {
   return json(invoice);
 }
 
-export default function IncomeDetailsPage() {
+export default function Component() {
   const invoice = useLoaderData<typeof loader>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';

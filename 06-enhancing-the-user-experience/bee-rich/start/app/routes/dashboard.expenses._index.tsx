@@ -28,7 +28,7 @@ export async function action({ request }: ActionArgs) {
   return redirect(`/dashboard/expenses/${expense.id}`);
 }
 
-export default function CreateExpensePage() {
+export default function Component() {
   return (
     <Form method="POST" action="/dashboard/expenses/?index">
       <Input label="Title:" type="text" name="title" placeholder="Dinner for Two" required />

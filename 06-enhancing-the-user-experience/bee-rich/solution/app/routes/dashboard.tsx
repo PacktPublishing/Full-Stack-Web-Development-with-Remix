@@ -17,7 +17,7 @@ export async function loader() {
   return json({ firstExpense, firstInvoice });
 }
 
-export default function Layout() {
+export default function Component() {
   const { firstExpense, firstInvoice } = useLoaderData<typeof loader>();
   const location = useLocation();
   return (

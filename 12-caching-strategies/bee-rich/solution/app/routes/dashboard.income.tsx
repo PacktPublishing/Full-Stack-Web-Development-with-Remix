@@ -28,7 +28,7 @@ export async function loader({ request }: LoaderArgs) {
   return json(invoices);
 }
 
-export default function IncomePage() {
+export default function Component() {
   const navigation = useNavigation();
   const invoices = useLoaderData<typeof loader>();
   const { id } = useParams();

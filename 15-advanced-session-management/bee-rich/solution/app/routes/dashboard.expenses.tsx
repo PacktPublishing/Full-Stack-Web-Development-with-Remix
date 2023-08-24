@@ -39,7 +39,7 @@ export async function loader({ request }: LoaderArgs) {
   return json({ count, expenses });
 }
 
-export default function ExpensesPage() {
+export default function Component() {
   const navigation = useNavigation();
   const { count, expenses } = useLoaderData<typeof loader>();
   const { id } = useParams();

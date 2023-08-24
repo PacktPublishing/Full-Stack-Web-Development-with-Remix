@@ -63,7 +63,7 @@ export async function loader({ params }: LoaderArgs) {
   return json(expense);
 }
 
-export default function ExpenseDetailsPage() {
+export default function Component() {
   const expense = useLoaderData<typeof loader>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';

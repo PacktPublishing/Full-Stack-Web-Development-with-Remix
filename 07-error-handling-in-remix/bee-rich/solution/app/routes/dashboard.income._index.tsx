@@ -29,7 +29,7 @@ export async function action({ request }: ActionArgs) {
   return redirect(`/dashboard/income/${invoice.id}`);
 }
 
-export default function CreateIncomePage() {
+export default function Component() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
   return (

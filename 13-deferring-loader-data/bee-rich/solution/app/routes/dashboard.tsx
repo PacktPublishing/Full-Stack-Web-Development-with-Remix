@@ -87,7 +87,7 @@ function Layout({ firstExpense, firstInvoice, children }: LayoutProps) {
   );
 }
 
-export default function Dashboard() {
+export default function Component() {
   const { firstExpense, firstInvoice } = useLoaderData<typeof loader>();
   return (
     <Layout firstExpense={firstExpense} firstInvoice={firstInvoice}>

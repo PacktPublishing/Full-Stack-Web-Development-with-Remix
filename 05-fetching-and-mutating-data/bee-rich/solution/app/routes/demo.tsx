@@ -5,7 +5,7 @@ import { H1, H2, H3, H4 } from '~/components/headings';
 import { ButtonLink, FloatingActionLink, Link } from '~/components/links';
 import { InlineError, Paragraph } from '~/components/texts';
 
-export default function DemoPage() {
+export default function Component() {
   return (
     <div className="w-full flex flex-col gap-10 items-center justify-center mb-20">
       <section className="w-full flex flex-col gap-3 items-center justify-center">

@@ -2,7 +2,7 @@ import { Outlet } from '@remix-run/react';
 
 import { NavLink } from '~/components/links';
 
-export default function Layout() {
+export default function Component() {
   return (
     <>
       <header className="mb-4 lg:mb-10">

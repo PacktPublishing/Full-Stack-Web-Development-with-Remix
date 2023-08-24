@@ -4,7 +4,7 @@ import { clsx } from 'clsx';
 import { H1 } from '~/components/headings';
 import { ListLinkItem } from '~/components/links';
 
-export default function ExpensesPage() {
+export default function Component() {
   const navigation = useNavigation();
   return (
     <div className="w-full">

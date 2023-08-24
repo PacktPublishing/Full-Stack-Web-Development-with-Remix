@@ -3,7 +3,7 @@ import { Link as RemixLink, Outlet } from '@remix-run/react';
 import { Container } from '~/components/containers';
 import { NavLink } from '~/components/links';
 
-export default function Layout() {
+export default function Component() {
   return (
     <>
       <header>

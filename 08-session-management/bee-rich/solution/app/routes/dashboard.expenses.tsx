@@ -28,7 +28,7 @@ export async function loader({ request }: LoaderArgs) {
   return json(expenses);
 }
 
-export default function ExpensesPage() {
+export default function Component() {
   const navigation = useNavigation();
   const expenses = useLoaderData<typeof loader>();
   const { id } = useParams();

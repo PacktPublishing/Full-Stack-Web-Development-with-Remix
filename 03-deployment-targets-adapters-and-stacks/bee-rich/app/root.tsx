@@ -9,7 +9,7 @@ export const meta: V2_MetaFunction = () => {
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: tailwindCSS }];
 
-export default function App() {
+export default function Component() {
   return (
     <html lang="en">
       <head>

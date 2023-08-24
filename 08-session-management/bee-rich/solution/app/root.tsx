@@ -47,7 +47,7 @@ function Document({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
+export default function Component() {
   return (
     <Document>
       <Outlet />

@@ -99,7 +99,7 @@ export async function loader({ request, params }: LoaderArgs) {
   return defer({ invoice, invoiceLogs });
 }
 
-export default function IncomeDetailsPage() {
+export default function Component() {
   const { invoice, invoiceLogs } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';

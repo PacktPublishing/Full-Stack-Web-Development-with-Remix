@@ -42,7 +42,7 @@ export async function action({ request }: ActionArgs) {
   return redirect(`/dashboard/expenses/${expense.id}`);
 }
 
-export default function CreateExpensePage() {
+export default function Component() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
   return (

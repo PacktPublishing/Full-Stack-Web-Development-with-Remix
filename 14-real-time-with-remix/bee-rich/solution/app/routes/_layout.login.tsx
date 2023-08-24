@@ -50,7 +50,7 @@ export async function loader({ request }: LoaderArgs) {
   return {};
 }
 
-export default function LoginPage() {
+export default function Component() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
   const actionData = useActionData<typeof action>();

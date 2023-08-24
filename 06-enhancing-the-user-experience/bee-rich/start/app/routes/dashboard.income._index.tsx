@@ -28,7 +28,7 @@ export async function action({ request }: ActionArgs) {
   return redirect(`/dashboard/income/${invoice.id}`);
 }
 
-export default function CreateIncomePage() {
+export default function Component() {
   return (
     <Form method="POST" action="/dashboard/income/?index">
       <Input label="Title:" type="text" name="title" placeholder="Salary December 2022" required />
