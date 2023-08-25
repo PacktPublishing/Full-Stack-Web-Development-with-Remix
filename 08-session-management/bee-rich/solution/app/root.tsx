@@ -1,4 +1,4 @@
-import type { LinksFunction, LoaderArgs, V2_MetaFunction } from '@remix-run/node';
+import type { LinksFunction, LoaderArgs, MetaFunction } from '@remix-run/node';
 import {
   isRouteErrorResponse,
   Links,
@@ -16,7 +16,7 @@ import { PageTransitionProgressBar } from './components/progress';
 import { getUser } from './modules/session/session.server';
 import tailwindCSS from './styles/tailwind.css';
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [{ title: 'BeeRich' }];
 };
 

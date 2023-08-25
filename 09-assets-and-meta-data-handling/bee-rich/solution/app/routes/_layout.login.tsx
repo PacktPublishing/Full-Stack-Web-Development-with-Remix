@@ -1,4 +1,4 @@
-import type { ActionArgs, LinksFunction, LoaderArgs, V2_MetaFunction } from '@remix-run/node';
+import type { ActionArgs, LinksFunction, LoaderArgs, MetaFunction } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
 import { useActionData, useNavigation } from '@remix-run/react';
 
@@ -12,7 +12,7 @@ import loginCSS from '~/styles/login.css';
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: loginCSS }];
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     { title: 'Log In | BeeRich' },
     { name: 'description', content: 'Log into your BeeRich account to track your expenses and income.' },
