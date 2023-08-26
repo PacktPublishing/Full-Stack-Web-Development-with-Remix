@@ -3,7 +3,10 @@ const path = require('path');
 const express = require('express');
 const compression = require('compression');
 const morgan = require('morgan');
+const { installGlobals } = require('@remix-run/node');
 const { createRequestHandler } = require('@remix-run/express');
+
+installGlobals();
 
 const BUILD_DIR = path.join(process.cwd(), 'build');
 
