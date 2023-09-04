@@ -1,18 +1,40 @@
-# 3. Deployment Targets, Adapters, and Stacks
-
-In this chapter, we will introduce you to BeeRich, the demo application used throughout this book. BeeRich is a simple personal finance app that allows you to track your expenses and income. Each chapter will add more features to BeeRich and focus on a specific topic.
+# BeeRich
 
 ## Getting started
 
 **Welcome!** BeeRich is a dashboard-like application that mimics both personal and enterprise use cases. BeeRich is a personal finance management application that helps you stay on top of your beekeep - pardon me - bookkeeping. Well, at least that’s the goal. There is nothing much there yet. In every chapter, we will add more code to this application.
 
-Starting with the next chapter, there will be a `bee-rich/start` and `bee-rich/solution` folder code for the chapter. Usually, you want to work on your local copy of BeeRich. However, if you get stuck, you can always refer to the `bee-rich/solution` folder to see the final code for the chapter and fallback to the `bee-rich/start` folder to reset the code to the starting point.
+Starting with _Chapter 4, Routing in Remix_, there will be a `bee-rich/start` and `bee-rich/solution` folder in each chapter folder. Usually, you want to work on your local copy of BeeRich. However, if you get stuck, you can always refer to the `bee-rich/solution` folder to see the final code for the chapter and fallback to the `bee-rich/start` folder to reset the code to the starting point.
 
 Each `bee-rich` folder contains a `README.md` file that contains a **Getting started** section (just like this one!). Additionally, there might be additional sections to help you get started with the chapter.
 
-For this chapter, you can jump right into the book's content. However, if you want to explore the BeeRich application, you can find an overview of its dependencies, available scripts, and recommended VSCode settings below.
+### Bootstrapping BeeRich
 
-Also, if you want to set up BeeRich yourself, you can follow the instructions in the [Setting up BeeRich from scratch](#setting-up-beerich-from-scratch) section.
+To get started with BeeRich, you can either copy-paste the BeeRich application from any chapter's `bee-rich/start` folder or you can use `create-remix` to bootstrap BeeRich.
+
+#### Bootstrapping the initial BeeRich application
+
+To bootstrap the base BeeRich application, run the following command:
+
+```sh
+npx create-remix@2 --template PacktPublishing/Full-Stack-Web-Development-with-Remix/03-deployment-targets-adapters-and-stacks/bee-rich
+```
+
+#### Bootstrapping the BeeRich application for a specific chapter
+
+To bootstrap the BeeRich application for a specific chapter, run the following command:
+
+```sh
+npx create-remix@2 --template PacktPublishing/Full-Stack-Web-Development-with-Remix/:chapter-name/bee-rich/start
+```
+
+Replace `:chapter-name` with the name of the chapter. For example, to bootstrap the BeeRich application for _Chapter 4, Routing in Remix_, run the following command:
+
+```sh
+npx create-remix@2 --template PacktPublishing/Full-Stack-Web-Development-with-Remix/04-routing-in-remix/bee-rich/start
+```
+
+You can also replace `start` with `solution` to bootstrap the BeeRich application with the final code for the chapter.
 
 ### Run the application
 
@@ -24,6 +46,34 @@ npm run dev
 ```
 
 This will start the development server on port `3000`. You can now open the application in your browser at [http://localhost:3000](http://localhost:3000).
+
+### Chapter 5
+
+Once we add the database in Chapter 5, you will need to run the following commands to set up the database and running the application:
+
+```
+npm install
+npm run build
+npm run update:db
+npm run dev
+```
+
+Also, make sure to add a `.env` file to the root of the project with the following content:
+
+```text
+DATABASE_URL="file:./dev.db"
+```
+
+If there are issues with the database setup, you can run `npm run reset:db` to reset the database.
+
+### Chapter 8
+
+Once we add authentication in Chapter 8, you need to add a session secret to the `.env` file:
+
+```text
+DATABASE_URL="file:./dev.db"
+SESSION_SECRET="[A secret string]"
+```
 
 ### Dependencies
 

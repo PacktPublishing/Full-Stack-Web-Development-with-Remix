@@ -1,4 +1,4 @@
-# 3. Deployment Targets, Adapters, and Stacks
+# 2. Creating a new Remix App
 
 This chapter covers the following topics:
 

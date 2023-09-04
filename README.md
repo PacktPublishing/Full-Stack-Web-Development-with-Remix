@@ -6,7 +6,7 @@ Learn how Remix can supercharge your React development.
 
 ### Getting started with Remix
 
-2.  [Creating a new Remix App](02-creating-a-new-remix-app/)
+2.  [Creating a new Remix App](02-creating-a-new-remix-app)
 3.  [Deployment Targets, Adapters, and Stacks](03-deployment-targets-adapters-and-stacks)
 4.  [Routing in Remix](04-routing-in-remix/)
 
@@ -35,7 +35,7 @@ The code for each chapter can be found in the corresponding folder. For example,
 
 BeeRich is a dashboard-like application that mimics both personal and enterprise use cases. BeeRich is a personal finance management application that helps you stay on top of your bee - pardon me - bookkeeping. Well, at least that’s the goal. In every chapter, we will add more code to this application.
 
-We kick off the BeeRich development journey in [Chapter 3](/03-deployment-targets-adapters-and-stacks/bee-rich/).
+We kick off the BeeRich development journey in _Chapter 3, Deployment Targets, Adapters, and Stacks_. You can find the BeeRich Remix template [here](/03-deployment-targets-adapters-and-stacks/bee-rich/).
 
 ### Getting started with BeeRich
 
@@ -47,4 +47,4 @@ npx create-remix@2 --template PacktPublishing/Full-Stack-Web-Development-with-Re
 
 Follow the instructions in the terminal to create the application.
 
-Note that the created application is nothing but a copy of the template from Chapter 3. Refer to the `README.md` file in the bootstrapped application folder or [here](./03-deployment-targets-adapters-and-stacks/bee-rich/README.md) for more information about how to work with BeeRich.
+Note that the created application is nothing but a copy of the template from _Chapter 3, Deployment Targets, Adapters, and Stacks_. Refer to the `README.md` file in the bootstrapped application folder or [here](./03-deployment-targets-adapters-and-stacks/bee-rich/README.md) for more information about how to work with BeeRich.
