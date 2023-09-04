@@ -33,9 +33,9 @@ The code for each chapter can be found in the corresponding folder. For example,
 
 ## BeeRich
 
-In this book, we build a demo application called BeeRich. BeeRich is a dashboard-like expense and income tracking application. It is meant to reflect a real-world application that you might build with Remix.
+BeeRich is a dashboard-like application that mimics both personal and enterprise use cases. BeeRich is a personal finance management application that helps you stay on top of your bee - pardon me - bookkeeping. Well, at least that’s the goal. In every chapter, we will add more code to this application.
 
-We kick off our BeeRich development journey in [Chapter 3](/03-deployment-targets-adapters-and-stacks/bee-rich/).
+We kick off the BeeRich development journey in [Chapter 3](/03-deployment-targets-adapters-and-stacks/bee-rich/).
 
 ### Getting started with BeeRich
 
@@ -45,4 +45,4 @@ Run the following command in a terminal to bootstrap the application, using the 
 npx create-remix@2 --template PacktPublishing/Full-Stack-Web-Development-with-Remix/03-deployment-targets-adapters-and-stacks/bee-rich
 ```
 
-Refer to the README.md file in the bootstrapped application folder for more information about how to work with BeeRich.
+Refer to the `README.md` file in the bootstrapped application folder for more information about how to work with BeeRich.
