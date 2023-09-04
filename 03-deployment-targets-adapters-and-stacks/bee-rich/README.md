@@ -10,9 +10,9 @@ Each `bee-rich` folder contains a `README.md` file that contains a **Getting sta
 
 ### Bootstrapping BeeRich
 
-To get started with BeeRich, you can either copy-paste the BeeRich application from any chapter's `bee-rich/start` folder or you can use `create-remix` to bootstrap BeeRich.
+To get started with BeeRich, you can either copy-paste the BeeRich application from the chapter's `bee-rich/start` folder or you can use `create-remix` to bootstrap BeeRich.
 
-#### Bootstrapping the initial BeeRich application
+#### BeeRich template
 
 To bootstrap the base BeeRich application, run the following command:
 
@@ -20,7 +20,9 @@ To bootstrap the base BeeRich application, run the following command:
 npx create-remix@2 --template PacktPublishing/Full-Stack-Web-Development-with-Remix/03-deployment-targets-adapters-and-stacks/bee-rich
 ```
 
-#### Bootstrapping the BeeRich application for a specific chapter
+This uses the BeeRich template from _Chapter 3, Deployment Targets, Adapters, and Stacks_.
+
+#### BeeRich chapter code
 
 To bootstrap the BeeRich application for a specific chapter, run the following command:
 
@@ -47,7 +49,7 @@ npm run dev
 
 This will start the development server on port `3000`. You can now open the application in your browser at [http://localhost:3000](http://localhost:3000).
 
-### Chapter 5
+#### Chapter 5
 
 Once we add the database in Chapter 5, you will need to run the following commands to set up the database and running the application:
 
@@ -66,7 +68,7 @@ DATABASE_URL="file:./dev.db"
 
 If there are issues with the database setup, you can run `npm run reset:db` to reset the database.
 
-### Chapter 8
+#### Chapter 8
 
 Once we add authentication in Chapter 8, you need to add a session secret to the `.env` file:
 

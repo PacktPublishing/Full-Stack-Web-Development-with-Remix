@@ -10,7 +10,7 @@ This chapter covers the following topics:
 
 You can find the Cloudflare Workers version of the "Hello World!" app [here](./cloudflare-workers/).
 
-# Using Remix Stacks
+## Using Remix Stacks
 
 This folder also includes an [Indie Stack project](./indie-stack/), bootstrapped using the `create-remix` CLI.
 
