@@ -39,10 +39,12 @@ We kick off the BeeRich development journey in [Chapter 3](/03-deployment-target
 
 ### Getting started with BeeRich
 
-Run the following command in a terminal to bootstrap the application, using the template from Chapter 3:
+Run the following command in a terminal to bootstrap the application:
 
 ```sh
 npx create-remix@2 --template PacktPublishing/Full-Stack-Web-Development-with-Remix/03-deployment-targets-adapters-and-stacks/bee-rich
 ```
 
-Refer to the `README.md` file in the bootstrapped application folder for more information about how to work with BeeRich.
+Follow the instructions in the terminal to create the application.
+
+Note that the created application is nothing but a copy of the template from Chapter 3. Refer to the `README.md` file in the bootstrapped application folder or [here](./03-deployment-targets-adapters-and-stacks/bee-rich/README.md) for more information about how to work with BeeRich.
