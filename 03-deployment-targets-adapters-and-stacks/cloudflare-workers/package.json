@@ -1,0 +1,35 @@
+{
+  "name": "cloudflare-workers",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "build": "remix build",
+    "deploy": "wrangler deploy",
+    "dev": "remix dev --manual -c \"npm start\"",
+    "start": "wrangler dev ./build/index.js",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@cloudflare/kv-asset-handler": "^0.1.3",
+    "@remix-run/cloudflare": "^1.19.3",
+    "@remix-run/css-bundle": "^1.19.3",
+    "@remix-run/react": "^1.19.3",
+    "isbot": "^3.6.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^3.19.0",
+    "@remix-run/dev": "^1.19.3",
+    "@remix-run/eslint-config": "^1.19.3",
+    "@types/react": "^18.0.35",
+    "@types/react-dom": "^18.0.11",
+    "eslint": "^8.38.0",
+    "typescript": "^5.0.4",
+    "wrangler": "^3.1.1"
+  },
+  "engines": {
+    "node": ">=16.13.0"
+  }
+}
