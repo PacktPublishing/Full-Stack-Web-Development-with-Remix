@@ -6,9 +6,7 @@ In this chapter, we will introduce you to BeeRich, the demo application used thr
 
 **Welcome!** BeeRich is a dashboard-like application that mimics both personal and enterprise use cases. BeeRich is a personal finance management application that helps you stay on top of your beekeep - pardon me - bookkeeping. Well, at least that’s the goal. There is nothing much there yet. In every chapter, we will add more code to this application.
 
-Every chapter has a dedicated folder in this repository. You will find one or several `README.md` files in each chapter's folder that contain instructions on how to get started with the chapter.
-
-Starting with the next chapter, there will be a `bee-rich/start` and `bee-rich/solution` folder code for the chapter.
+Starting with the next chapter, there will be a `bee-rich/start` and `bee-rich/solution` folder code for the chapter. Usually, you want to work on your local copy of BeeRich. However, if you get stuck, you can always refer to the `bee-rich/solution` folder to see the final code for the chapter and fallback to the `bee-rich/start` folder to reset the code to the starting point.
 
 Each `bee-rich` folder contains a `README.md` file that contains a **Getting started** section (just like this one!). Additionally, there might be additional sections to help you get started with the chapter.
 
@@ -27,12 +25,12 @@ npm run dev
 
 This will start the development server on port `3000`. You can now open the application in your browser at [http://localhost:3000](http://localhost:3000).
 
-### New dependencies
+### Dependencies
 
 - [clsx](https://www.npmjs.com/package/clsx): A helper for constructing className strings conditionally.
 - [tailwindcss](https://tailwindcss.com/): A utility-first CSS framework.
 
-### New scripts
+### Scripts
 
 - `npm run routes` - prints the routes hierarchy
 - `npm run format` - runs all the formatting scripts
@@ -53,10 +51,28 @@ This will start the development server on port `3000`. You can now open the appl
 
 If you are using VS Code, we recommend installing the following extensions:
 
-- [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
-Inspect the [`.vscode/settings.json`](./.vscode/extensions.json) file to see the recommended settings for VS Code. Feel free to alter these settings based on your own preferences.
+### Formatting & linting
+
+BeeRich is set up with Prettier and ESLint.
+
+Run `npm run format:lint` from the project's root to fix all lint and format violations.
+
+You can also install the [ESLint VSCode extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) to fix all lint and format violations on file save. For this, add the following settings to your workspace's user settings (./vscode/settings.json):
+
+```json
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "[markdown][javascript][javascriptreact][typescript][typescriptreact]": {
+    "editor.formatOnSave": false
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
+```
 
 ## Setting up BeeRich from scratch
 
