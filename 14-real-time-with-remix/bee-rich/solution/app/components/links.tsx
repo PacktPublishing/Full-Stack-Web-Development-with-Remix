@@ -1,5 +1,5 @@
 import type { FormProps, LinkProps as RemixLinkProps } from '@remix-run/react';
-import { Link as RemixLink, NavLink as RemixNavLink, useFetcher } from '@remix-run/react';
+import { Form, Link as RemixLink, NavLink as RemixNavLink, useNavigation } from '@remix-run/react';
 import { clsx } from 'clsx';
 import type { HTMLAttributes } from 'react';
 
@@ -88,9 +88,9 @@ type ListLinkItemProps = HTMLAttributes<HTMLLIElement> & {
 };
 
 export function ListLinkItem({ isActive, className = '', to, deleteProps, children, ...props }: ListLinkItemProps) {
-  const fetcher = useFetcher();
-  const isPending = fetcher.state !== 'idle';
-  if (isPending) {
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state !== 'idle' && navigation.formAction === deleteProps?.action;
+  if (isSubmitting) {
     return null;
   }
   return (
@@ -108,15 +108,15 @@ export function ListLinkItem({ isActive, className = '', to, deleteProps, childr
         {children}
       </RemixNavLink>
       {deleteProps && (
-        <fetcher.Form className="p-8 ml-auto" method="POST" action={deleteProps.action} replace>
+        <Form className="p-8 ml-auto" method="POST" action={deleteProps.action} replace>
           <button
             type="submit"
             aria-label={deleteProps.ariaLabel}
             name="intent"
             value="delete"
-            disabled={isPending}
+            disabled={isSubmitting}
             className={
-              isPending
+              isSubmitting
                 ? 'animate-spin duration-1000'
                 : 'hover:text-primary focus:text-primary dark:hover:text-darkPrimary dark:focus:text-darkPrimary'
             }
@@ -129,7 +129,7 @@ export function ListLinkItem({ isActive, className = '', to, deleteProps, childr
               />
             </svg>
           </button>
-        </fetcher.Form>
+        </Form>
       )}
     </li>
   );

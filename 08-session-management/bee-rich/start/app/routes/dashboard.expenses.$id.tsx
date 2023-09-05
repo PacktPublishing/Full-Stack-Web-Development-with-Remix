@@ -74,7 +74,7 @@ export async function loader({ params }: LoaderArgs) {
 export default function Component() {
   const expense = useLoaderData<typeof loader>();
   const navigation = useNavigation();
-  const isSubmitting = navigation.state === 'submitting';
+  const isSubmitting = navigation.state !== 'idle' && navigation.formAction === `/dashboard/expenses/${expense.id}`;
   const actionData = useActionData<typeof action>();
 
   return (

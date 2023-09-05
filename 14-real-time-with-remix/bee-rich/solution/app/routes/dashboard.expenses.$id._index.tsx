@@ -102,7 +102,8 @@ export async function loader({ request, params }: LoaderArgs) {
 export default function Component() {
   const { expense, expenseLogs } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
-  const isSubmitting = navigation.state === 'submitting';
+  const isSubmitting =
+    navigation.state !== 'idle' && navigation.formAction === `/dashboard/expenses/${expense.id}?index`;
   const actionData = useActionData<typeof action>();
   const isUploadingAttachment = !!navigation.formData?.get('attachment');
   const isRemovingAttachment = navigation.formData?.get('intent') === 'remove-attachment';

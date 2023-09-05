@@ -20,7 +20,7 @@ export async function action({ request }: ActionArgs) {
 
 export default function Component() {
   const navigation = useNavigation();
-  const isSubmitting = navigation.state === 'submitting';
+  const isSubmitting = navigation.state !== 'idle' && navigation.formAction === '/dashboard/expenses/?index';
   return (
     <Form method="POST" action="/dashboard/expenses/?index" encType="multipart/form-data">
       <Input label="Title:" type="text" name="title" placeholder="Dinner for Two" required />

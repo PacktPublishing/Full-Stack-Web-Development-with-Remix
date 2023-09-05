@@ -49,7 +49,7 @@ export async function loader({ request }: LoaderArgs) {
 
 export default function Component() {
   const navigation = useNavigation();
-  const isSubmitting = navigation.state === 'submitting';
+  const isSubmitting = navigation.state !== 'idle' && navigation.formAction === '/login';
   const actionData = useActionData<typeof action>();
   return (
     <Card>
