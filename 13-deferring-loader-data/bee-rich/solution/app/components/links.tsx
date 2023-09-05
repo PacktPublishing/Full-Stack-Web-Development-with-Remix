@@ -89,7 +89,10 @@ type ListLinkItemProps = HTMLAttributes<HTMLLIElement> & {
 
 export function ListLinkItem({ isActive, className = '', to, deleteProps, children, ...props }: ListLinkItemProps) {
   const navigation = useNavigation();
-  const isSubmitting = navigation.state !== 'idle' && navigation.formAction === deleteProps?.action;
+  const isSubmitting =
+    navigation.state !== 'idle' &&
+    navigation.formAction === deleteProps?.action &&
+    navigation.formData?.get('intent') === 'delete';
   if (isSubmitting) {
     return null;
   }
