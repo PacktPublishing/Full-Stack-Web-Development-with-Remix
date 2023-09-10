@@ -1,5 +1,5 @@
 import type { FormProps, LinkProps as RemixLinkProps } from '@remix-run/react';
-import { Form, Link as RemixLink, NavLink as RemixNavLink, useNavigation } from '@remix-run/react';
+import { Link as RemixLink, NavLink as RemixNavLink, useFetcher } from '@remix-run/react';
 import { clsx } from 'clsx';
 import type { HTMLAttributes } from 'react';
 
@@ -88,11 +88,8 @@ type ListLinkItemProps = HTMLAttributes<HTMLLIElement> & {
 };
 
 export function ListLinkItem({ isActive, className = '', to, deleteProps, children, ...props }: ListLinkItemProps) {
-  const navigation = useNavigation();
-  const isSubmitting =
-    navigation.state !== 'idle' &&
-    navigation.formAction === deleteProps?.action &&
-    navigation.formData?.get('intent') === 'delete';
+  const fetcher = useFetcher();
+  const isSubmitting = fetcher.state !== 'idle';
   return (
     <li
       className={clsx(
@@ -108,7 +105,7 @@ export function ListLinkItem({ isActive, className = '', to, deleteProps, childr
         {children}
       </RemixNavLink>
       {deleteProps && (
-        <Form className="p-8 ml-auto" method="POST" action={deleteProps.action} replace>
+        <fetcher.Form className="p-8 ml-auto" method="POST" action={deleteProps.action}>
           <button
             type="submit"
             aria-label={deleteProps.ariaLabel}
@@ -129,7 +126,7 @@ export function ListLinkItem({ isActive, className = '', to, deleteProps, childr
               />
             </svg>
           </button>
-        </Form>
+        </fetcher.Form>
       )}
     </li>
   );
