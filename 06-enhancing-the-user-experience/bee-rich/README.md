@@ -64,11 +64,10 @@ This is optional, but can be helpful for testing. You can also update the seed d
 
 2. **Import the `Form` component and the `FormProps` type from `@remix-run/react`**
 
-```diff
+```tsx
+import type { FormProps, LinkProps as RemixLinkProps } from '@remix-run/react';
+import { Form, Link as RemixLink, NavLink as RemixNavLink } from '@remix-run/react';
 import { clsx } from 'clsx';
-+ import type { FormProps, LinkProps as RemixLinkProps } from '@remix-run/react';
-+ import { Form } from '@remix-run/react';
-import { Link as RemixLink, NavLink as RemixNavLink } from '@remix-run/react';
 import type { HTMLAttributes } from 'react';
 ```
 
@@ -79,7 +78,7 @@ Copy the following code and replace the existing `ListLinkItemProps` type:
 ```typescript
 type DeleteProps = {
   ariaLabel: string;
-  action: FormProps["action"];
+  action: FormProps['action'];
 };
 
 type ListLinkItemProps = HTMLAttributes<HTMLLIElement> & {
@@ -90,31 +89,22 @@ type ListLinkItemProps = HTMLAttributes<HTMLLIElement> & {
 };
 ```
 
-We update the `ListLinkItemProps` type to support a `deleteProps` property that is of type `DeleteProps`.
-
-We also add an `isActive` property to the `ListLinkItemProps` type to style the active/current item differently.
+We update the `ListLinkItemProps` type to support an optional `deleteProps` property that is of type `DeleteProps`. We also add an `isActive` property to the `ListLinkItemProps` type to style the active/current item differently.
 
 4. **Replace the `ListLinkItem` component**
 
 Copy the following code and replace the existing `ListLinkItem` component:
 
 ```tsx
-export function ListLinkItem({
-  isActive,
-  className = "",
-  to,
-  deleteProps,
-  children,
-  ...props
-}: ListLinkItemProps) {
+export function ListLinkItem({ isActive, className = '', to, deleteProps, children, ...props }: ListLinkItemProps) {
   return (
     <li
       className={clsx(
-        "w-full flex flex-row items-center border",
+        'w-full flex flex-row items-center border',
         isActive
-          ? "bg-secondary dark:bg-darkSecondary border-secondary dark:border-darkSecondary"
-          : "hover:bg-backgroundPrimary dark:hover:bg-darkBackgroundPrimary border-background dark:border-darkBackground hover:border-secondary dark:hover:border-darkSecondary",
-        className
+          ? 'bg-secondary dark:bg-darkSecondary border-secondary dark:border-darkSecondary'
+          : 'hover:bg-backgroundPrimary dark:hover:bg-darkBackgroundPrimary border-background dark:border-darkBackground hover:border-secondary dark:hover:border-darkSecondary',
+        className,
       )}
       {...props}
     >
@@ -123,12 +113,7 @@ export function ListLinkItem({
       </RemixNavLink>
       {deleteProps && (
         <Form className="p-8 ml-auto" method="POST" action={deleteProps.action}>
-          <button
-            type="submit"
-            aria-label={deleteProps.ariaLabel}
-            name="intent"
-            value="delete"
-          >
+          <button type="submit" aria-label={deleteProps.ariaLabel} name="intent" value="delete">
             <svg className="w-8 h-8 " viewBox="0 0 20 20" fill="currentColor">
               <path
                 fillRule="evenodd"
@@ -144,7 +129,7 @@ export function ListLinkItem({
 }
 ```
 
-The updated `ListLinkItem` component supports the deletion of the item by rendering a `Form` component. The `Form` component is rendered only if the `deleteProps` property is provided. The `deleteProps` property contains information for the expense deletion form.
+The updated `ListLinkItem` component supports rendering a `Form` component. The `Form` component is rendered only if the `deleteProps` property is provided. The `deleteProps` property contains information for the expense deletion form. The form submits an action to the `deleteProps.action` URL. The `deleteProps.ariaLabel` property is used as the `aria-label` attribute of the icon button. Finally, the form includes a hidden input field with the name `intent` and the value `delete`. This is necessary to distinguish the delete action from the update action on the server - more on that in _Chapter 6, Enhancing the User Experience_.
 
 We further updated the styling of the component. Previously, we used the `className` property of Remix's `NavLink` component for styling. Now, we use a custom `isActive` property to style the active/current item differently. This is necessary because we now style the outer `li` element and not just the `NavLink` component when the item is active.
 
