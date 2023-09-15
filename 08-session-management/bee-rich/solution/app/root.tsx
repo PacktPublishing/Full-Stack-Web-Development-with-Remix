@@ -57,41 +57,19 @@ export default function Component() {
 
 export function ErrorBoundary() {
   const error = useRouteError();
-
   let message =
     'We are very sorry. An unexpected error occurred. Please try again or contact us if the problem persists.';
   if (isRouteErrorResponse(error)) {
-    let message;
     switch (error.status) {
       case 401:
-        message = <p>Oops! Looks like you tried to visit a page that you do not have access to.</p>;
+        message = 'Oops! Looks like you tried to visit a page that you do not have access to.';
         break;
       case 404:
-        message = <p>Oops! Looks like you tried to visit a page that does not exist.</p>;
+        message = 'Oops! Looks like you tried to visit a page that does not exist.';
         break;
     }
-
-    return (
-      <Document>
-        <section className="m-5 lg:m-20 flex flex-col gap-5">
-          <H1>{`${error.status} ${error.statusText}`}</H1>
-          {message}
-          <ButtonLink to="/" isPrimary>
-            Back to homepage
-          </ButtonLink>
-        </section>
-      </Document>
-    );
   }
-
-  let errorMessage;
-  if (error instanceof Error) {
-    errorMessage = error.message;
-    if (error.stack) {
-      errorMessage = `${errorMessage}:\n${error.stack}`;
-    }
-  }
-
+  let errorMessage = error instanceof Error ? error.message : null;
   return (
     <Document>
       <section className="m-5 lg:m-20 flex flex-col gap-5">
