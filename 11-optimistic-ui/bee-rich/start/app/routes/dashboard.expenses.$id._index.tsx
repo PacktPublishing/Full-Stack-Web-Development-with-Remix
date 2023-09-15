@@ -127,24 +127,17 @@ export default function Component() {
 export function ErrorBoundary() {
   const error = useRouteError();
   const { id } = useParams();
-
+  let heading = 'Something went wrong';
+  let message = `Apologies, something went wrong on our end, please try again.`;
   if (isRouteErrorResponse(error) && error.status === 404) {
-    return (
-      <>
-        <div className="w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">
-          <H2>Expense not found</H2>
-          <p>Apologies, the expense with the id {id} cannot be found.</p>
-        </div>
-        <FloatingActionLink to="/dashboard/expenses/">Add expense</FloatingActionLink>
-      </>
-    );
+    heading = 'Expense not found';
+    message = `Apologies, the expense with the id ${id} cannot be found.`;
   }
-
   return (
     <>
       <div className="w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">
-        <H2>Something went wrong</H2>
-        <p>Apologies, something went wrong on our end, please try again.</p>
+        <H2>{heading}</H2>
+        <p>{message}</p>
       </div>
       <FloatingActionLink to="/dashboard/expenses/">Add expense</FloatingActionLink>
     </>
