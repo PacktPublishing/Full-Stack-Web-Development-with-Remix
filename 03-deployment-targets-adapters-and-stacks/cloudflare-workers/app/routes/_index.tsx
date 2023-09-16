@@ -1,7 +1,7 @@
-import type { V2_MetaFunction } from "@remix-run/cloudflare";
+import type { MetaFunction } from "@remix-run/cloudflare";
 import { useEffect, useState } from "react";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     { title: "New Remix App" },
     { name: "description", content: "Welcome to Remix!" },
@@ -9,7 +9,7 @@ export const meta: V2_MetaFunction = () => {
 };
 
 export default function Index() {
-  const [userAgent, setUserAgent] = useState('the World');
+const [userAgent, setUserAgent] = useState('the World');
   useEffect(() => {
     setUserAgent(navigator.userAgent);
   }, []);
