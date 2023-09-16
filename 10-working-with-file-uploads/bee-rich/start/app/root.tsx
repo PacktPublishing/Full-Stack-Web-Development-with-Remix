@@ -87,7 +87,7 @@ export function ErrorBoundary() {
         break;
     }
   }
-  let errorMessage = error instanceof Error ? error.message : null;
+  const errorMessage = error instanceof Error ? error.message : null;
   return (
     <Document>
       <section className="m-5 lg:m-20 flex flex-col gap-5">
