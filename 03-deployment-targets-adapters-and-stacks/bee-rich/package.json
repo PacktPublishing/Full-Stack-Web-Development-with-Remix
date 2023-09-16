@@ -9,7 +9,7 @@
     "build": "run-s \"build:*\"",
     "build:css": "npm run generate:css -- --minify",
     "build:remix": "remix build",
-    "update:remix": "npm i @remix-run/express@latest @remix-run/node@latest @remix-run/react@latest @remix-run/dev@latest @remix-run/eslint-config@latest",
+    "update:remix": "npm i @remix-run/express@2 @remix-run/node@2 @remix-run/react@2 @remix-run/dev@2 @remix-run/eslint-config@2",
     "dev": "run-p \"dev:*\"",
     "dev:css": "npm run generate:css -- --watch",
     "dev:node": "cross-env NODE_ENV=development nodemon ./server.js --watch ./server.js",
@@ -18,9 +18,9 @@
     "start": "cross-env NODE_ENV=production node ./server.js"
   },
   "dependencies": {
-    "@remix-run/express": "^0.0.0-nightly-fd72e00-20230825",
-    "@remix-run/node": "^0.0.0-nightly-fd72e00-20230825",
-    "@remix-run/react": "^0.0.0-nightly-fd72e00-20230825",
+    "@remix-run/express": "^2.0.0",
+    "@remix-run/node": "^2.0.0",
+    "@remix-run/react": "^2.0.0",
     "clsx": "^1.2.1",
     "compression": "^1.7.4",
     "cross-env": "^7.0.3",
@@ -31,8 +31,8 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@remix-run/dev": "^0.0.0-nightly-fd72e00-20230825",
-    "@remix-run/eslint-config": "^0.0.0-nightly-fd72e00-20230825",
+    "@remix-run/dev": "^2.0.0",
+    "@remix-run/eslint-config": "^2.0.0",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "eslint": "^8.24.0",
