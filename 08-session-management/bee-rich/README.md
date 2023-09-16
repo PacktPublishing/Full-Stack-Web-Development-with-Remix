@@ -1,6 +1,6 @@
 # 8. Session Management
 
-In this chapter, you will learn about session management in Remix. First, we will use the URL to store application state. Next, we will utilize cookies to manage user sessions. Finally, we will see how to authenticate users with session cookies.
+In this chapter, you will learn about state and session management in Remix. First, we will use the URL to store application state. Next, we will utilize cookies to manage user sessions. Finally, we will see how to authenticate users with session cookies.
 
 ## Getting started
 
@@ -62,7 +62,7 @@ This is optional, but can be helpful for testing. You can also update the seed d
 
 ## Introducing users to BeeRich
 
-So, far we don't have a concept of users in BeeRich. To change that, let's first update our database model.
+So far, we don't have a concept of users in BeeRich. To change that, let's first update our database model.
 
 1. **Add a `User` model to the database schema**
 
@@ -194,19 +194,23 @@ Now that we updated the seed script, it's time to commit our schema changes to o
 
 The easiest way to do so is to delete the existing database.
 
-Run `npm run reset:db` to execute our reset script. It will delete the dev database, create a new one, and run the seed script.
+Run `npm run reset:db` to execute the reset script. It will delete the dev database, create a new one, and run the seed script.
 
 8. **Start the dev server**
 
 Run `npm run dev`, open a new browser window, and navigate to the dashboard (http://localhost:3000/dashboard).
 
-BeeRich should run without issues and the dashboard should display all expenses created by `seed.ts`.
+BeeRich should run and the dashboard should display all expenses created by `seed.ts`.
 
-9. **Create the `session.server.ts` file**
+**Note:** The updated Prisma schema introduces errors in our expense and income create and edit `action` functions. We will need to update the code to add the `userId` to the `expense` and `invoice` objects. We will do so in the chapter's exercises.
+
+9. **Create the `modules/session/session.server.ts` file**
 
 Let's also prepare some code for the register and login flow that we will add to BeeRich in this chapter.
 
-Create a new `session.server.ts` file the in `/app` folder. The `.server` postfix tells Remix to add the file only to the server but not the client bundle.
+Create a new `/session` folder in `/app/modules`. This is where we colocate all session-related logic. Next, create a new `session.server.ts` file in the folder.
+
+Note the `.server` postfix. It tells Remix to only bundle this file with the server but not the client bundle.
 
 10. **Implement the `register` and `login` functions**
 
@@ -284,8 +288,6 @@ export async function loginUser({
 ```
 
 Both functions will help us to implement the authentication flow in this chapter. These functions take the register and login form data as arguments and either throw an error or return a user object.
-
-**Note:** The updated Prisma schema introduces some errors in our `action` functions. We will need to update the code to add the `userId` to the `expense` and `invoice` objects. We will do so in the chapter's exercises.
 
 **Great!** 🥳 We are all set to use the `User` model to start implementing the authentication flow in BeeRich! 🎉
 
