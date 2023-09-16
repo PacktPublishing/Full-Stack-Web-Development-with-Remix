@@ -1,4 +1,4 @@
-app = "indie-stack-32cf"
+app = "indie-stack-0d93"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = [ ]
