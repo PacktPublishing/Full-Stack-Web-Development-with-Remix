@@ -1,14 +1,24 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const path = require('path');
-const express = require('express');
-const compression = require('compression');
-const morgan = require('morgan');
-const { installGlobals } = require('@remix-run/node');
-const { createRequestHandler } = require('@remix-run/express');
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import * as url from 'node:url';
 
+import { createRequestHandler } from '@remix-run/express';
+import { broadcastDevReady, installGlobals } from '@remix-run/node';
+import chokidar from 'chokidar';
+import compression from 'compression';
+import express from 'express';
+import morgan from 'morgan';
+import sourceMapSupport from 'source-map-support';
+
+sourceMapSupport.install();
 installGlobals();
 
-const BUILD_DIR = path.join(process.cwd(), 'build');
+/**
+ * @typedef {import('@remix-run/node').ServerBuild} ServerBuild
+ */
+
+const BUILD_PATH = path.resolve('build/index.js');
+const initialBuild = await reimportServer();
 
 const app = express();
 
@@ -29,34 +39,92 @@ app.use(morgan('tiny'));
 app.all(
   '*',
   process.env.NODE_ENV === 'development'
-    ? (req, res, next) => {
-        purgeRequireCache();
-
-        return createRequestHandler({
-          build: require(BUILD_DIR),
-          mode: process.env.NODE_ENV,
-        })(req, res, next);
-      }
+    ? createDevRequestHandler(initialBuild)
     : createRequestHandler({
-        build: require(BUILD_DIR),
-        mode: process.env.NODE_ENV,
+        build: initialBuild,
+        mode: initialBuild.mode,
       }),
 );
-const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
+const port = process.env.PORT || 3000;
+app.listen(port, async () => {
   console.log(`Express server listening on port ${port}`);
+
+  if (process.env.NODE_ENV === 'development') {
+    broadcastDevReady(initialBuild);
+  }
 });
 
-function purgeRequireCache() {
-  // purge require cache on requests for "server side HMR" this won't let
-  // you have in-memory objects between requests in development,
-  // alternatively you can set up nodemon/pm2-dev to restart the server on
-  // file changes, but then you'll have to reconnect to databases/etc on each
-  // change. We prefer the DX of this, so we've included it for you by default
-  for (const key in require.cache) {
-    if (key.startsWith(BUILD_DIR)) {
-      delete require.cache[key];
-    }
+/**
+ * @returns {Promise<ServerBuild>}
+ */
+async function reimportServer() {
+  const stat = fs.statSync(BUILD_PATH);
+
+  // convert build path to URL for Windows compatibility with dynamic `import`
+  const BUILD_URL = url.pathToFileURL(BUILD_PATH).href;
+
+  // use a timestamp query parameter to bust the import cache
+  return import(BUILD_URL + '?t=' + stat.mtimeMs);
+}
+
+/**
+ * @param {ServerBuild} initialBuild
+ * @returns {import('@remix-run/express').RequestHandler}
+ */
+function createDevRequestHandler(initialBuild) {
+  let build = initialBuild;
+  async function handleServerUpdate() {
+    // 1. re-import the server build
+    build = await reimportServer();
+    // 2. tell Remix that this app server is now up-to-date and ready
+    broadcastDevReady(build);
   }
+  chokidar.watch(BUILD_PATH, { ignoreInitial: true }).on('add', handleServerUpdate).on('change', handleServerUpdate);
+
+  // wrap request handler to make sure its recreated with the latest build for every request
+  return async (req, res, next) => {
+    try {
+      return createRequestHandler({
+        build,
+        mode: 'development',
+      })(req, res, next);
+    } catch (error) {
+      next(error);
+    }
+  };
+}
+
+  // convert build path to URL for Windows compatibility with dynamic `import`
+  const BUILD_URL = url.pathToFileURL(BUILD_PATH).href;
+
+  // use a timestamp query parameter to bust the import cache
+  return import(BUILD_URL + '?t=' + stat.mtimeMs);
+}
+
+/**
+ * @param {ServerBuild} initialBuild
+ * @returns {import('@remix-run/express').RequestHandler}
+ */
+function createDevRequestHandler(initialBuild) {
+  let build = initialBuild;
+  async function handleServerUpdate() {
+    // 1. re-import the server build
+    build = await reimportServer();
+    // 2. tell Remix that this app server is now up-to-date and ready
+    broadcastDevReady(build);
+  }
+  chokidar.watch(BUILD_PATH, { ignoreInitial: true }).on('add', handleServerUpdate).on('change', handleServerUpdate);
+
+  // wrap request handler to make sure its recreated with the latest build for every request
+  return async (req, res, next) => {
+    try {
+      return createRequestHandler({
+        build,
+        mode: 'development',
+      })(req, res, next);
+    } catch (error) {
+      next(error);
+    }
+  };
 }

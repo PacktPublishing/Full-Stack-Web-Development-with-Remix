@@ -106,7 +106,7 @@ You can find the extension in the [VSCode marketplace](https://marketplace.visua
 
 5. **Update `.gitignore` to ignore the SQLite database file**
 
-Add the following line to your `.gitignore` file:
+Add the following line to your `.gitignore` and `.eslintignore` files:
 
 ```txt
 /prisma/dev.db
