@@ -148,21 +148,19 @@ const income = [
   },
 ];
 
-async function seed() {
-  const start = performance.now();
-  const user = await db.user.create({
-    data: {
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      password: await bcrypt.hash('BeeRich', 10),
-    },
-  });
-  const expensePromises = expenses.map((expense) => createExpense(expense, user));
-  const invoicePromises = income.map((income) => createInvoice(income, user));
-  await Promise.all([...expensePromises, ...invoicePromises]);
-  const end = performance.now();
-  console.log(`🚀 Seeded the database. Done in ${Math.round(end - start)}ms`);
-}
+const start = performance.now();
+const user = await db.user.create({
+  data: {
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    password: await bcrypt.hash('BeeRich', 10),
+  },
+});
+const expensePromises = expenses.map((expense) => createExpense(expense, user));
+const invoicePromises = income.map((income) => createInvoice(income, user));
+await Promise.all([...expensePromises, ...invoicePromises]);
+const end = performance.now();
+console.log(`🚀 Seeded the database. Done in ${Math.round(end - start)}ms`);
 
 function createExpense(expenseData: (typeof expenses)[number], user: User) {
   return db.expense.create({
@@ -187,12 +185,3 @@ function createInvoice(incomeData: (typeof income)[number], user: User) {
     },
   });
 }
-
-seed()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await db.$disconnect();
-  });
