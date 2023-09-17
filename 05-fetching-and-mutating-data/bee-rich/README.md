@@ -72,7 +72,13 @@ The code of _Chapter 5_ has Prisma already set up. If you want to add Prisma to 
 npm install prisma --save-dev
 ```
 
-2. **Initialize Prisma**
+2. **Install the Prisma client as a dependency in your project**
+
+```bash
+npm install @prisma/client
+```
+
+3. **Initialize Prisma**
 
 ```bash
 npx prisma init --datasource-provider sqlite
@@ -82,11 +88,11 @@ This will add both a `prisma` folder and a `.env` file to your project. The `.en
 
 Please note that the `.env` file is ignored by git based on our `.gitignore` file. This is a good practice to keep your credentials out of version control.
 
-3. **(Optional) Get the Prisma VSCode extension**
+4. **(Optional) Get the Prisma VSCode extension**
 
 You can find the extension in the [VSCode marketplace](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma).
 
-4. **Add helpful scripts to your `package.json`**
+5. **Add helpful scripts to your `package.json`**
 
 ```json
 "scripts": {
@@ -104,7 +110,7 @@ You can find the extension in the [VSCode marketplace](https://marketplace.visua
 - `seed` seeds the database with some initial mock data
 - `reset:db` deletes the database by removing the `dev.db` file and then recreates it by running `update:db` and `seed`
 
-5. **Update `.gitignore` to ignore the SQLite database file**
+6. **Update `.gitignore` to ignore the SQLite database file**
 
 Add the following line to your `.gitignore` and `.eslintignore` files:
 
@@ -112,7 +118,7 @@ Add the following line to your `.gitignore` and `.eslintignore` files:
 /prisma/dev.db
 ```
 
-6. **Model the data**
+7. **Model the data**
 
 Add the following two data models to the `schema.prisma` file:
 
@@ -142,7 +148,7 @@ Each model has an `id` field that is the primary key of the table. The `createdA
 
 Having some questions? Please find more information in the [Prisma quick-start guide](https://www.prisma.io/docs/getting-started/quickstart). You can learn more about SQLite and Prisma [here](https://www.prisma.io/docs/concepts/database-connectors/sqlite).
 
-7. **Update the database schema**
+8. **Update the database schema**
 
 Run the following commands to update the database schema and generate the Prisma client:
 
@@ -150,11 +156,11 @@ Run the following commands to update the database schema and generate the Prisma
 npm run build:db && npm run update:db
 ```
 
-8. **Create a new folder `app/modules`**
+9. **Create a new folder `app/modules`**
 
 Create a `modules` folder in `app`. We will use this folder to organize new features in our application.
 
-9. **Create a wrapper for the Prisma client**
+10. **Create a wrapper for the Prisma client**
 
 Usually you can import the Prisma client directly from `@prisma/client`. However, for it to work with Remix in development, we need to add a wrapper that stores the client in a cached variable.
 
@@ -188,7 +194,7 @@ export { db };
 
 You can find more information about this wrapper in the database section of the [Remix Jokes App Tutorial](https://remix.run/docs/en/v1/tutorials/jokes#connect-to-the-database).
 
-10. **Seed the database**
+11. **Seed the database**
 
 Create a new file `seed.ts` in the `prisma` folder and add the following code:
 
