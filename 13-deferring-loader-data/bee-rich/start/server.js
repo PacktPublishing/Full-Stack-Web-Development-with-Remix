@@ -94,37 +94,3 @@ function createDevRequestHandler(initialBuild) {
     }
   };
 }
-
-  // convert build path to URL for Windows compatibility with dynamic `import`
-  const BUILD_URL = url.pathToFileURL(BUILD_PATH).href;
-
-  // use a timestamp query parameter to bust the import cache
-  return import(BUILD_URL + '?t=' + stat.mtimeMs);
-}
-
-/**
- * @param {ServerBuild} initialBuild
- * @returns {import('@remix-run/express').RequestHandler}
- */
-function createDevRequestHandler(initialBuild) {
-  let build = initialBuild;
-  async function handleServerUpdate() {
-    // 1. re-import the server build
-    build = await reimportServer();
-    // 2. tell Remix that this app server is now up-to-date and ready
-    broadcastDevReady(build);
-  }
-  chokidar.watch(BUILD_PATH, { ignoreInitial: true }).on('add', handleServerUpdate).on('change', handleServerUpdate);
-
-  // wrap request handler to make sure its recreated with the latest build for every request
-  return async (req, res, next) => {
-    try {
-      return createRequestHandler({
-        build,
-        mode: 'development',
-      })(req, res, next);
-    } catch (error) {
-      next(error);
-    }
-  };
-}
