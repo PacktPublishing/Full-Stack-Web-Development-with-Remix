@@ -1,96 +1,119 @@
-import * as fs from 'node:fs';
-import * as path from 'node:path';
-import * as url from 'node:url';
-
-import { createRequestHandler } from '@remix-run/express';
-import { broadcastDevReady, installGlobals } from '@remix-run/node';
-import chokidar from 'chokidar';
-import compression from 'compression';
-import express from 'express';
-import morgan from 'morgan';
-import sourceMapSupport from 'source-map-support';
-
-sourceMapSupport.install();
-installGlobals();
-
 /**
- * @typedef {import('@remix-run/node').ServerBuild} ServerBuild
+ * By default, Remix will handle generating the HTTP Response for you.
+ * You are free to delete this file if you'd like to, but if you ever want it revealed again, you can run `npx remix reveal` ✨
+ * For more information, see https://remix.run/file-conventions/entry.server
  */
 
-const BUILD_PATH = path.resolve('build/index.js');
-const initialBuild = await reimportServer();
+import { PassThrough } from 'node:stream';
 
-const app = express();
+import type { AppLoadContext, EntryContext } from '@remix-run/node';
+import { createReadableStreamFromReadable } from '@remix-run/node';
+import { RemixServer } from '@remix-run/react';
+import isbot from 'isbot';
+import { renderToPipeableStream } from 'react-dom/server';
 
-app.use(compression());
+const ABORT_DELAY = 5_000;
 
-// http://expressjs.com/en/advanced/best-practice-security.html#at-a-minimum-disable-x-powered-by-header
-app.disable('x-powered-by');
-
-// Remix fingerprints its assets so we can cache forever.
-app.use('/build', express.static('public/build', { immutable: true, maxAge: '1y' }));
-
-// Everything else (like favicon.ico) is cached for an hour. You may want to be
-// more aggressive with this caching.
-app.use(express.static('public', { maxAge: '1h' }));
-
-app.use(morgan('tiny'));
-
-app.all(
-  '*',
-  process.env.NODE_ENV === 'development'
-    ? createDevRequestHandler(initialBuild)
-    : createRequestHandler({
-        build: initialBuild,
-        mode: initialBuild.mode,
-      }),
-);
-
-const port = process.env.PORT || 3000;
-app.listen(port, async () => {
-  console.log(`Express server listening on port ${port}`);
-
-  if (process.env.NODE_ENV === 'development') {
-    broadcastDevReady(initialBuild);
-  }
-});
-
-/**
- * @returns {Promise<ServerBuild>}
- */
-async function reimportServer() {
-  const stat = fs.statSync(BUILD_PATH);
-
-  // convert build path to URL for Windows compatibility with dynamic `import`
-  const BUILD_URL = url.pathToFileURL(BUILD_PATH).href;
-
-  // use a timestamp query parameter to bust the import cache
-  return import(BUILD_URL + '?t=' + stat.mtimeMs);
+export default function handleRequest(
+  request: Request,
+  responseStatusCode: number,
+  responseHeaders: Headers,
+  remixContext: EntryContext,
+  loadContext: AppLoadContext,
+) {
+  return isbot(request.headers.get('user-agent'))
+    ? handleBotRequest(request, responseStatusCode, responseHeaders, remixContext)
+    : handleBrowserRequest(request, responseStatusCode, responseHeaders, remixContext);
 }
 
-/**
- * @param {ServerBuild} initialBuild
- * @returns {import('@remix-run/express').RequestHandler}
- */
-function createDevRequestHandler(initialBuild) {
-  let build = initialBuild;
-  async function handleServerUpdate() {
-    // 1. re-import the server build
-    build = await reimportServer();
-    // 2. tell Remix that this app server is now up-to-date and ready
-    broadcastDevReady(build);
-  }
-  chokidar.watch(BUILD_PATH, { ignoreInitial: true }).on('add', handleServerUpdate).on('change', handleServerUpdate);
+function handleBotRequest(
+  request: Request,
+  responseStatusCode: number,
+  responseHeaders: Headers,
+  remixContext: EntryContext,
+) {
+  return new Promise((resolve, reject) => {
+    let shellRendered = false;
+    const { pipe, abort } = renderToPipeableStream(
+      <RemixServer context={remixContext} url={request.url} abortDelay={ABORT_DELAY} />,
+      {
+        onAllReady() {
+          shellRendered = true;
+          const body = new PassThrough();
+          const stream = createReadableStreamFromReadable(body);
 
-  // wrap request handler to make sure its recreated with the latest build for every request
-  return async (req, res, next) => {
-    try {
-      return createRequestHandler({
-        build,
-        mode: 'development',
-      })(req, res, next);
-    } catch (error) {
-      next(error);
-    }
-  };
+          responseHeaders.set('Content-Type', 'text/html');
+
+          resolve(
+            new Response(stream, {
+              headers: responseHeaders,
+              status: responseStatusCode,
+            }),
+          );
+
+          pipe(body);
+        },
+        onShellError(error: unknown) {
+          reject(error);
+        },
+        onError(error: unknown) {
+          responseStatusCode = 500;
+          // Log streaming rendering errors from inside the shell.  Don't log
+          // errors encountered during initial shell rendering since they'll
+          // reject and get logged in handleDocumentRequest.
+          if (shellRendered) {
+            console.error(error);
+          }
+        },
+      },
+    );
+
+    setTimeout(abort, ABORT_DELAY);
+  });
+}
+
+function handleBrowserRequest(
+  request: Request,
+  responseStatusCode: number,
+  responseHeaders: Headers,
+  remixContext: EntryContext,
+) {
+  return new Promise((resolve, reject) => {
+    let shellRendered = false;
+    const { pipe, abort } = renderToPipeableStream(
+      <RemixServer context={remixContext} url={request.url} abortDelay={ABORT_DELAY} />,
+      {
+        onShellReady() {
+          shellRendered = true;
+          const body = new PassThrough();
+          const stream = createReadableStreamFromReadable(body);
+
+          responseHeaders.set('Content-Type', 'text/html');
+
+          resolve(
+            new Response(stream, {
+              headers: responseHeaders,
+              status: responseStatusCode,
+            }),
+          );
+
+          pipe(body);
+        },
+        onShellError(error: unknown) {
+          reject(error);
+        },
+        onError(error: unknown) {
+          responseStatusCode = 500;
+          // Log streaming rendering errors from inside the shell.  Don't log
+          // errors encountered during initial shell rendering since they'll
+          // reject and get logged in handleDocumentRequest.
+          if (shellRendered) {
+            console.error(error);
+          }
+        },
+      },
+    );
+
+    setTimeout(abort, ABORT_DELAY);
+  });
 }
