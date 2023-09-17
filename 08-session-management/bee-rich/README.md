@@ -217,9 +217,10 @@ Note the `.server` postfix. It tells Remix to only bundle this file with the ser
 Add the following code to the `session.server.ts` file:
 
 ```ts
-import { db } from "./db.server";
-import bcrypt from "bcryptjs";
-import type { User } from "@prisma/client";
+import type { User } from '@prisma/client';
+import bcrypt from 'bcryptjs';
+
+import { db } from '~/modules/db.server';
 
 type UserRegistrationData = {
   name: string;
@@ -227,11 +228,7 @@ type UserRegistrationData = {
   password: string;
 };
 
-export async function registerUser({
-  name,
-  email,
-  password,
-}: UserRegistrationData): Promise<User> {
+export async function registerUser({ name, email, password }: UserRegistrationData): Promise<User> {
   const hashedPassword = await bcrypt.hash(password, 10);
   const sanitizedEmail = email.trim().toLowerCase();
   const sanitizedName = name.trim();
@@ -254,7 +251,7 @@ export async function registerUser({
     });
   } catch (error) {
     console.error(error);
-    throw new Error("Unable to create user.");
+    throw new Error('Unable to create user.');
   }
 }
 
@@ -263,10 +260,7 @@ type UserLoginData = {
   password: string;
 };
 
-export async function loginUser({
-  email,
-  password,
-}: UserLoginData): Promise<User> {
+export async function loginUser({ email, password }: UserLoginData): Promise<User> {
   const sanitizedEmail = email.trim().toLowerCase();
 
   const user = await db.user.findUnique({
@@ -280,7 +274,7 @@ export async function loginUser({
   const passwordValid = await bcrypt.compare(password, user.password);
 
   if (!passwordValid) {
-    throw new Error("Invalid password.");
+    throw new Error('Invalid password.');
   }
 
   return user;

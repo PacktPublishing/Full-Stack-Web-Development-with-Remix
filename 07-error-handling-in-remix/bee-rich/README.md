@@ -1,6 +1,6 @@
 # 7. Error Handling in Remix
 
-In this chapter, you will learn about error handling in Remix. We will work with Remix's `ErrorBoundary` and `CatchBoundary` components to handle errors in a declarative way. We will also revisit the concept of throwing responses in `loader` and `action` functions.
+In this chapter, you will learn about error handling in Remix. We will work with Remix's `ErrorBoundary` component to handle errors in a declarative way. We will also review the concept of throwing responses in `loader` and `action` functions.
 
 ## Getting started
 
