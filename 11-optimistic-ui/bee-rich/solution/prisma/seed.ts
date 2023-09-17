@@ -164,7 +164,7 @@ async function seed() {
   console.log(`🚀 Seeded the database. Done in ${Math.round(end - start)}ms`);
 }
 
-function createExpense(expenseData: typeof expenses[number], user: User) {
+function createExpense(expenseData: (typeof expenses)[number], user: User) {
   return db.expense.create({
     data: {
       title: expenseData.title,
@@ -176,7 +176,7 @@ function createExpense(expenseData: typeof expenses[number], user: User) {
   });
 }
 
-function createInvoice(incomeData: typeof income[number], user: User) {
+function createInvoice(incomeData: (typeof income)[number], user: User) {
   return db.invoice.create({
     data: {
       title: incomeData.title,
