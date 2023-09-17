@@ -148,25 +148,6 @@ const income = [
   },
 ];
 
-async function seed() {
-  const start = performance.now();
-  const user = await db.user.create({
-    data: {
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      password: await bcrypt.hash('BeeRich', 10),
-    },
-  });
-  const expensePromises = Promise.all(expenses.map((expense) => createExpense(expense, user)));
-  const invoicePromises = Promise.all(income.map((income) => createInvoice(income, user)));
-  const [createdExpenses, createdInvoices] = await Promise.all([expensePromises, invoicePromises]);
-  const expenseLogPromises = createdExpenses.map((expense) => createExpenseLog(expense));
-  const invoiceLogPromises = createdInvoices.map((invoice) => createInvoiceLog(invoice));
-  await Promise.all([...expenseLogPromises, ...invoiceLogPromises]);
-  const end = performance.now();
-  console.log(`🚀 Seeded the database. Done in ${Math.round(end - start)}ms`);
-}
-
 function createExpense(expenseData: (typeof expenses)[number], user: User) {
   return db.expense.create({
     data: {
@@ -217,11 +198,20 @@ function createInvoiceLog({ userId, id, title, description, currencyCode, amount
   });
 }
 
-seed()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await db.$disconnect();
-  });
+console.log('🌱 Seeding the database...');
+const start = performance.now();
+const user = await db.user.create({
+  data: {
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    password: await bcrypt.hash('BeeRich', 10),
+  },
+});
+const expensePromises = Promise.all(expenses.map((expense) => createExpense(expense, user)));
+const invoicePromises = Promise.all(income.map((income) => createInvoice(income, user)));
+const [createdExpenses, createdInvoices] = await Promise.all([expensePromises, invoicePromises]);
+const expenseLogPromises = createdExpenses.map((expense) => createExpenseLog(expense));
+const invoiceLogPromises = createdInvoices.map((invoice) => createInvoiceLog(invoice));
+await Promise.all([...expenseLogPromises, ...invoiceLogPromises]);
+const end = performance.now();
+console.log(`🚀 Seeded the database. Done in ${Math.round(end - start)}ms`);

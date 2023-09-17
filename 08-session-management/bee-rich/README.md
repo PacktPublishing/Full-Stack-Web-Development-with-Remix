@@ -136,10 +136,10 @@ import { PrismaClient } from '@prisma/client';
 +import bcrypt from 'bcryptjs';
 ```
 
-Next, update the seed function to first create a test user. Feel free to update the user mock data to whatever you like:
+Next, update the script to create a test user. Feel free to update the user mock data to whatever you like:
 
 ```diff
-async function seed() {
+  console.log('🌱 Seeding the database...');
   const start = performance.now();
 + const user = await db.user.create({
 +   data: {
@@ -155,10 +155,9 @@ async function seed() {
   await Promise.all([...expensePromises, ...invoicePromises]);
   const end = performance.now();
   console.log(`🚀 Seeded the database. Done in ${Math.round(end - start)}ms`);
-}
 ```
 
-The updated `seed` function creates a mock user. It then passed the mock user as the second argument to the `createExpense` and `createInvoice` helper functions.
+The updated code creates a mock user. It then passed the mock user as the second argument to the `createExpense` and `createInvoice` helper functions.
 
 Update the `createExpense` and `createInvoice` helper functions to accept a user object. Update the creation query to connect the created expense and invoice objects to the user:
 

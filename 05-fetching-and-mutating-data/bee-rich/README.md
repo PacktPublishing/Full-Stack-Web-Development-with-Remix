@@ -99,7 +99,7 @@ You can find the extension in the [VSCode marketplace](https://marketplace.visua
   "format:db": "npx prisma format",
   "build:db": "npx prisma generate",
   "update:db": "npx prisma db push",
-  "seed": "npx ts-node prisma/seed.ts",
+  "seed": "bun prisma/seed.ts",
   "reset:db": "rimraf ./prisma/dev.db && npm run update:db && npm run seed"
 }
 ```
@@ -347,16 +347,7 @@ const income = [
   },
 ];
 
-async function seed() {
-  const start = performance.now();
-  const expensePromises = expenses.map((expense) => createExpense(expense));
-  const invoicePromises = income.map((income) => createInvoice(income));
-  await Promise.all([...expensePromises, ...invoicePromises]);
-  const end = performance.now();
-  console.log(`🚀 Seeded the database. Done in ${Math.round(end - start)}ms`);
-}
-
-function createExpense(expenseData: typeof expenses[number]) {
+function createExpense(expenseData: (typeof expenses)[number]) {
   return db.expense.create({
     data: {
       title: expenseData.title,
@@ -367,7 +358,7 @@ function createExpense(expenseData: typeof expenses[number]) {
   });
 }
 
-function createInvoice(incomeData: typeof income[number]) {
+function createInvoice(incomeData: (typeof income)[number]) {
   return db.invoice.create({
     data: {
       title: incomeData.title,
@@ -378,14 +369,13 @@ function createInvoice(incomeData: typeof income[number]) {
   });
 }
 
-seed()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await db.$disconnect();
-  });
+console.log('🌱 Seeding the database...');
+const start = performance.now();
+const expensePromises = expenses.map((expense) => createExpense(expense));
+const invoicePromises = income.map((income) => createInvoice(income));
+await Promise.all([...expensePromises, ...invoicePromises]);
+const end = performance.now();
+console.log(`🚀 Seeded the database. Done in ${Math.round(end - start)}ms`);
 
 ```
 
