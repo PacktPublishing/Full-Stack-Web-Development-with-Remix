@@ -408,7 +408,14 @@ function createInvoiceLog({
   });
 }
 
-seed();
+seed()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await db.$disconnect();
+  });
 ```
 
 The script now iterates over every created expense and invoice object to create associated expense and invoice log objects.
