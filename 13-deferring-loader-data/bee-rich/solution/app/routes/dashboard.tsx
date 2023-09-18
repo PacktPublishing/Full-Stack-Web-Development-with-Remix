@@ -1,5 +1,5 @@
 import type { Expense, Invoice } from '@prisma/client';
-import type { HeadersFunction, LoaderArgs, MetaFunction, SerializeFrom } from '@remix-run/node';
+import type { HeadersFunction, LoaderFunctionArgs, MetaFunction, SerializeFrom } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { Form, Link as RemixLink, Outlet, useLoaderData, useLocation, useRouteError } from '@remix-run/react';
 
@@ -20,7 +20,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title }, { name: 'robots', content: 'noindex' }];
 };
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const user = await getUser(request);
   if (!user) return logout(request);
   const expenseQuery = db.expense.findFirst({

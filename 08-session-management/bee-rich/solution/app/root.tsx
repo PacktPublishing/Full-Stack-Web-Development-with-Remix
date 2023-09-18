@@ -1,4 +1,4 @@
-import type { LinksFunction, LoaderArgs, MetaFunction } from '@remix-run/node';
+import type { LinksFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import {
   isRouteErrorResponse,
   Links,
@@ -22,7 +22,7 @@ export const meta: MetaFunction = () => {
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: tailwindCSS }];
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const user = await getUser(request);
   return { user };
 }

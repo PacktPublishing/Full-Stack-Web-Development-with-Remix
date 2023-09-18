@@ -1,4 +1,4 @@
-import type { LoaderArgs } from '@remix-run/node';
+import type { LoaderFunctionArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
@@ -22,7 +22,7 @@ const data = [
   },
 ];
 
-export function loader({ params }: LoaderArgs) {
+export function loader({ params }: LoaderFunctionArgs) {
   const { id } = params;
   const expense = data.find((expense) => expense.id === Number(id));
   if (!expense) throw new Response('Not found', { status: 404 });

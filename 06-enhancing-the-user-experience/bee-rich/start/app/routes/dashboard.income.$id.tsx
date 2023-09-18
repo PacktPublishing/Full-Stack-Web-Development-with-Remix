@@ -1,4 +1,4 @@
-import type { LoaderArgs } from '@remix-run/node';
+import type { LoaderFunctionArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
@@ -6,7 +6,7 @@ import { H2 } from '~/components/headings';
 import { FloatingActionLink } from '~/components/links';
 import { db } from '~/modules/db.server';
 
-export async function loader({ params }: LoaderArgs) {
+export async function loader({ params }: LoaderFunctionArgs) {
   const { id } = params;
   const invoice = await db.invoice.findUnique({ where: { id } });
   if (!invoice) throw new Response('Not found', { status: 404 });

@@ -1,5 +1,5 @@
 import type { Prisma } from '@prisma/client';
-import type { LoaderArgs } from '@remix-run/node';
+import type { LoaderFunctionArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { Form, Outlet, useLoaderData, useLocation, useNavigation, useParams, useSearchParams } from '@remix-run/react';
 import { clsx } from 'clsx';
@@ -14,7 +14,7 @@ import { requireUserId } from '~/modules/session/session.server';
 
 const PAGE_SIZE = 10;
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const userId = await requireUserId(request);
   const url = new URL(request.url);
   const searchString = url.searchParams.get('q');

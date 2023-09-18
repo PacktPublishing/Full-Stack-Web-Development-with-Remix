@@ -1,10 +1,10 @@
-import type { LoaderArgs } from '@remix-run/node';
+import type { LoaderFunctionArgs } from '@remix-run/node';
 
 import type { OnSetup } from '~/modules/server-sent-events/events.server';
 import { emitter, eventStream } from '~/modules/server-sent-events/events.server';
 import { requireUserId } from '~/modules/session/session.server';
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const userId = await requireUserId(request);
 
   const onSetup: OnSetup = (send) => {

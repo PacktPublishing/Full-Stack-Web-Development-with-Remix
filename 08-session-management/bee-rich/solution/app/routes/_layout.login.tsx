@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderArgs } from '@remix-run/node';
+import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
 import { useActionData, useNavigation } from '@remix-run/react';
 
@@ -9,7 +9,7 @@ import { H1 } from '~/components/headings';
 import { InlineError } from '~/components/texts';
 import { createUserSession, getUserId, loginUser } from '~/modules/session/session.server';
 
-export async function action({ request }: ActionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const email = formData.get('email');
   const password = formData.get('password');
@@ -29,7 +29,7 @@ export async function action({ request }: ActionArgs) {
   }
 }
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const userId = await getUserId(request);
   if (userId) {
     return redirect('/dashboard');

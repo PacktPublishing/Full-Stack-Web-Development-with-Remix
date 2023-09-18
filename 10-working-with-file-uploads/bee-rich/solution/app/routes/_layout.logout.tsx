@@ -1,9 +1,9 @@
-import type { ActionArgs } from '@remix-run/node';
+import type { ActionFunctionArgs } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 
 import { logout } from '~/modules/session/session.server';
 
-export function action({ request }: ActionArgs) {
+export function action({ request }: ActionFunctionArgs) {
   return logout(request);
 }
 

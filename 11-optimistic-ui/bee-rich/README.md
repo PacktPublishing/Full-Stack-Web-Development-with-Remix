@@ -305,7 +305,7 @@ Now, let's use the `parseExpense`and `createExpense` functions in `app/routes/da
 Replace the existing `FormData` validation logic and database query in the route module's `action` function.
 
 ```ts
-export async function action({ request }: ActionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const userId = await requireUserId(request);
   const formData = await unstable_parseMultipartFormData(
     request,

@@ -1,11 +1,11 @@
-import type { LoaderArgs } from '@remix-run/node';
+import type { LoaderFunctionArgs } from '@remix-run/node';
 import { redirect } from '@remix-run/router';
 
 import { buildFileResponse } from '~/modules/attachments.server';
 import { db } from '~/modules/db.server';
 import { requireUserId } from '~/modules/session/session.server';
 
-export async function loader({ request, params }: LoaderArgs) {
+export async function loader({ request, params }: LoaderFunctionArgs) {
   const userId = await requireUserId(request);
   const { id } = params;
   const slug = params['*'];

@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderArgs } from '@remix-run/node';
+import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
 import {
   isRouteErrorResponse,
@@ -50,7 +50,7 @@ async function updateInvoice(formData: FormData, id: string, userId: string): Pr
   return json({ success: true });
 }
 
-export async function action({ params, request }: ActionArgs) {
+export async function action({ params, request }: ActionFunctionArgs) {
   const userId = await requireUserId(request);
   const { id } = params;
   if (!id) throw Error('id route parameter must be defined');
@@ -66,7 +66,7 @@ export async function action({ params, request }: ActionArgs) {
   throw new Response('Bad request', { status: 400 });
 }
 
-export async function loader({ request, params }: LoaderArgs) {
+export async function loader({ request, params }: LoaderFunctionArgs) {
   const userId = await requireUserId(request);
   const { id } = params;
   if (!id) throw Error('id route parameter must be defined');

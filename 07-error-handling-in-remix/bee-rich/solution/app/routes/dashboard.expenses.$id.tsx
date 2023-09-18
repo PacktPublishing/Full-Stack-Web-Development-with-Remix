@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderArgs } from '@remix-run/node';
+import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
 import {
   isRouteErrorResponse,
@@ -49,7 +49,7 @@ async function updateExpense(formData: FormData, id: string): Promise<Response> 
   return json({ success: true });
 }
 
-export async function action({ params, request }: ActionArgs) {
+export async function action({ params, request }: ActionFunctionArgs) {
   const { id } = params;
   if (!id) throw Error('id route parameter must be defined');
 
@@ -64,7 +64,7 @@ export async function action({ params, request }: ActionArgs) {
   throw new Response('Bad request', { status: 400 });
 }
 
-export async function loader({ params }: LoaderArgs) {
+export async function loader({ params }: LoaderFunctionArgs) {
   const { id } = params;
   const expense = await db.expense.findUnique({ where: { id } });
   if (!expense) throw new Response('Not found', { status: 404 });

@@ -1,4 +1,4 @@
-import type { ActionArgs } from '@remix-run/node';
+import type { ActionFunctionArgs } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 import { useNavigation } from '@remix-run/react';
 
@@ -7,7 +7,7 @@ import { Form, Input, Textarea } from '~/components/forms';
 import { db } from '~/modules/db.server';
 import { requireUserId } from '~/modules/session/session.server';
 
-export async function action({ request }: ActionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const userId = await requireUserId(request);
   const formData = await request.formData();
   const title = formData.get('title');
