@@ -14,7 +14,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export default function Component() {
-  const invoice = useLoaderData();
+  const invoice = useLoaderData<typeof loader>();
   return (
     <>
       <section className="w-full h-full p-8">
