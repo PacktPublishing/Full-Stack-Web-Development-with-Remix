@@ -8,7 +8,8 @@ import { H1 } from '~/components/headings';
 import { NavLink } from '~/components/links';
 import { db } from '~/modules/db.server';
 import { useEventSource } from '~/modules/server-sent-events/event-source';
-import { getUser, logout } from '~/modules/session/session.server';
+import { requireUserId } from '~/modules/session/session.server';
+import type { loader as rootLoader } from '~/root';
 
 export const headers: HeadersFunction = () => {
   return {
@@ -16,25 +17,26 @@ export const headers: HeadersFunction = () => {
   };
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  const title = data?.username ? `${data.username}'s Dashboard | BeeRich` : 'Dashboard | BeeRich';
+export const meta: MetaFunction<typeof loader, { root: typeof rootLoader }> = ({ matches }) => {
+  const root = matches.find((match) => match.id === 'root');
+  const userName = root?.data?.user?.name || null;
+  const title = userName ? `${userName}'s Dashboard | BeeRich` : 'Dashboard | BeeRich';
   return [{ title }, { name: 'robots', content: 'noindex' }];
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const user = await getUser(request);
-  if (!user) return logout(request);
+  const userId = await requireUserId(request);
   const expenseQuery = db.expense.findFirst({
     orderBy: { createdAt: 'desc' },
-    where: { userId: user.id },
+    where: { userId: userId },
   });
   const invoiceQuery = db.invoice.findFirst({
     orderBy: { createdAt: 'desc' },
-    where: { userId: user.id },
+    where: { userId: userId },
   });
 
   const [firstExpense, firstInvoice] = await Promise.all([expenseQuery, invoiceQuery]);
-  return json({ firstExpense, firstInvoice, username: user.name });
+  return json({ firstExpense, firstInvoice });
 }
 
 type LayoutProps = {
