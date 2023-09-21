@@ -48,3 +48,14 @@ npx create-remix@2 --template PacktPublishing/Full-Stack-Web-Development-with-Re
 Follow the instructions in the terminal to create the application.
 
 Note that the created application is nothing but a copy of the template from _Chapter 3, Deployment Targets, Adapters, and Stacks_. Refer to the `README.md` file in the bootstrapped application folder or [here](./03-deployment-targets-adapters-and-stacks/bee-rich/README.md) for more information about how to work with BeeRich.
+
+## Troubleshooting and FAQ
+
+### Application Error! How do I fix it?
+
+If you see an **Application Error** while running the application, it is most likely that you missed a step in the instructions. Refer to the troubleshooting section in _Chapter 2, Creating a new Remix App_, for a step-by-step guide on how to debug issues in Remix. As always, read carefully through the error message and the stack trace to find the root cause of the issue.
+
+#### Error: Environment variable not found: DATABASE_URL
+
+1. Make sure to add an `.env` file to the root of your project. Refer to the `README.md` file of your current chapter. The _Run the application_ section contains the required environment variables for the application to run.
+2. Restart your application after adding the `.env` file by running `npm run dev`. Environment variables are only loaded when the application starts.
