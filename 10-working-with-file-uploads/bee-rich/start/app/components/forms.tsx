@@ -94,3 +94,30 @@ export function Form({ className, children, ...props }: FormProps) {
     </RemixForm>
   );
 }
+
+type AttachmentProps = {
+  label: ReactNode;
+  attachmentUrl: string;
+  disabled?: boolean;
+};
+
+export function Attachment({ label, attachmentUrl, disabled = false }: AttachmentProps) {
+  return (
+    <div className="w-full lg:max-w-md flex gap-2 items-center justify-center mt-1 text-text dark:text-darkText text-lg font-semibold bg-background dark:bg-darkBackground py-4 px-2 rounded-lg border border-secondaryAccent dark:border-darkSecondaryAccent">
+      {disabled ? (
+        <span className="font-bold">{label}</span>
+      ) : (
+        <a
+          href={attachmentUrl}
+          className="font-bold underline decoration-4 underline-offset-2 decoration-primary dark:decoration-darkPrimary hover:decoration-primaryAccent hover:dark:decoration-darkPrimaryAccent"
+        >
+          {label}
+        </a>
+      )}
+      <input type="hidden" name="attachmentUrl" value={attachmentUrl} />
+      <button aria-label="Remove attachment" type="submit" name="intent" value="remove-attachment" disabled={disabled}>
+        X
+      </button>
+    </div>
+  );
+}
