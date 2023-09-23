@@ -6,6 +6,7 @@ Learn how Remix can supercharge your React development.
 
 ### Getting started with Remix
 
+1. The Era of Full Stack Web Frameworks
 2.  [Creating a new Remix App](02-creating-a-new-remix-app)
 3.  [Deployment Targets, Adapters, and Stacks](03-deployment-targets-adapters-and-stacks)
 4.  [Routing in Remix](04-routing-in-remix/)
@@ -26,6 +27,8 @@ Learn how Remix can supercharge your React development.
 13. [Deferring Loader Data](13-deferring-loader-data/)
 14. [Real-Time with Remix](14-real-time-with-remix/)
 15. [Advanced Session Management](15-advanced-session-management)
+16. Developing for the Edge
+17. Migration and Upgrade Strategies
 
 ## Structure
 

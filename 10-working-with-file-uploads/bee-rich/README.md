@@ -1,6 +1,6 @@
 # 10. Working with file uploads
 
-In this chapter, we will learn how to work with files in Remix. We will start by adding a file. We will then learn how to read the uploaded file and display its contents in the browser. Finally, we will discuss third-party services that can be used to store files.
+In this chapter, we will add file uploads to BeeRich. We will start by adding file attachments to the create and edit forms. Next, we will update the `action` functions to process the file uploads on the server. We will also learn how to authorize access to uploaded files and how to serve them to the client.
 
 ## Getting started
 
@@ -88,7 +88,7 @@ Also, remove the `LinksFunction` type import as it is no longer needed.
 
 We moved the content of the `robots.txt` file into `app/routes/robots[.txt.].tsx` to practice working with resource routes. However, since the content for the `robots.txt` is static, let's create a `robots.txt` file in the `/public` folder instead.
 
-Paste the following content into the new `public/robots.txt` file:
+First, delete the `app/routes/robots[.txt.].tsx` file. Next, paste the following content into the new `public/robots.txt` file:
 
 ```txt
 User-agent: *
