@@ -393,36 +393,13 @@ Run `npm run build:db` to generate new Prisma types.
 
 Run `npm run update:db` to push the latest schema changes to the SQLite database and `npm run reset:db` if you want to reset the stored data and run the seeding script.
 
-5. **Update the expense utility functions**
+5. **Update the `createExpense` utility function**
 
-Add the following code to `app/modules/expenses.server.ts`:
-
-```typescript
-type ExpenseLogCreateData = Pick<Expense, 'title' | 'description' | 'amount' | 'currencyCode'>;
-
-async function createExpenseLog(
-  userId: string,
-  expenseId: string,
-  { title, description, amount, currencyCode }: ExpenseLogCreateData,
-) {
-  return db.expenseLog.create({
-    data: {
-      title,
-      description,
-      amount,
-      currencyCode,
-      user: { connect: { id: userId } },
-      expense: { connect: { id: expenseId } },
-    },
-  });
-}
-```
-
-Update the existing `createExpense` and `updateExpense` functions in `app/modules/expenses.server.ts`.
+Update the existing `createExpense` function in `app/modules/expenses.server.ts`:
 
 ```typescript
-export async function createExpense({ title, description, amount, attachment, userId }: ExpenseCreateData) {
-  const expense = await db.expense.create({
+export function createExpense({ title, description, amount, attachment, userId }: ExpenseCreateData) {
+  return db.expense.create({
     data: {
       title,
       description,
@@ -434,76 +411,60 @@ export async function createExpense({ title, description, amount, attachment, us
           id: userId,
         },
       },
+      logs: {
+        create: {
+          title,
+          description,
+          amount,
+          currencyCode: 'USD',
+          user: { connect: { id: userId } },
+        },
+      },
     },
   });
-  /**
-   * We create an expense log entry for the newly created expense.
-   * This is an async side effect that we don't want to block the response on.
-   *
-   * Note that we cannot guarantee that the expense log entry will be included
-   * in the next loader re-validation (expenseLog may still be creating when we
-   * re-fetch the loader data after creating an expense).
-   */
-  createExpenseLog(userId, expense.id, { title, description, amount, currencyCode: 'USD' });
-  return expense;
 }
 ```
 
-The `createExpense` function now also creates a `ExpenseLog` object upon expense creation. Since the `ExpenseLog` object depends on the expense identifier, we have to first create the expense object. To avoid more blocking time, we do not await the creation of the `ExpenseLog` object but rather treat it as an async side effect.
+The `createExpense` function now also creates a `ExpenseLog` object upon expense creation. Note that we create the `expense` and `expenseLog` objects in a single transaction. This ensures that the `expenseLog` object is only created if the `expense` object is successfully created.
+
+6. **Update the `updateExpense` utility function**
+
+Next, update the existing `updateExpense` functions in `app/modules/expenses.server.ts`.
 
 ```typescript
-export async function updateExpense({ id, title, description, amount, attachment, userId }: ExpenseUpdateData) {
-  const expense = await db.expense.update({
+export function updateExpense({ id, title, description, amount, attachment, userId }: ExpenseUpdateData) {
+  return db.expense.update({
     where: { id_userId: { id, userId } },
-    data: { title, description, amount, attachment },
-  });
-  /**
-   * We create an expense log entry with the updated expense data.
-   * This is an async side effect that we don't want to block the response on.
-   *
-   * Note that we cannot guarantee that the expense log entry will be included
-   * in the next loader re-validation (expenseLog may still be creating when we
-   * re-fetch the loader data after updating the expense).
-   */
-  createExpenseLog(userId, expense.id, expense);
-  return expense;
-}
-```
-
-Similarly, the `updateExpense` function now also creates a `ExpenseLog` object. To avoid more blocking time, we again treat the creation of the `ExpenseLog` object as an async side effect.
-
-6. **Update the invoice utility functions**
-
-Add the following code to `app/modules/invoices.server.ts`:
-
-```typescript
-type InvoiceLogCreateData = Pick<Invoice, 'title' | 'description' | 'amount' | 'currencyCode'>;
-
-async function createInvoiceLog(
-  userId: string,
-  invoiceId: string,
-  { title, description, amount, currencyCode }: InvoiceLogCreateData,
-) {
-  return db.invoiceLog.create({
     data: {
       title,
       description,
       amount,
-      currencyCode,
-      user: { connect: { id: userId } },
-      invoice: { connect: { id: invoiceId } },
+      attachment,
+      logs: {
+        create: {
+          title,
+          description,
+          amount,
+          currencyCode: 'USD',
+          user: { connect: { id: userId } },
+        },
+      },
     },
   });
 }
 ```
+
+Similarly, the `updateExpense` function now also creates a `ExpenseLog` object. We again use a single transaction to ensure that the `expenseLog` object is only created if the `expense` object is successfully updated.
+
+7. **Update the invoice utility functions**
 
 Follow the same pattern as with the expense utilities and update the existing `createInvoice` and `updateInvoice` functions in `app/modules/invoices.server.ts`.
 
 `createInvoice` changes:
 
 ```typescript
-export async function createInvoice({ title, description, amount, attachment, userId }: InvoiceCreateData) {
-  const invoice = await db.invoice.create({
+export function createInvoice({ title, description, amount, attachment, userId }: InvoiceCreateData) {
+  return db.invoice.create({
     data: {
       title,
       description,
@@ -515,39 +476,42 @@ export async function createInvoice({ title, description, amount, attachment, us
           id: userId,
         },
       },
+      logs: {
+        create: {
+          title,
+          description,
+          amount,
+          currencyCode: 'USD',
+          user: { connect: { id: userId } },
+        },
+      },
     },
   });
-  /**
-   * We create an invoice log entry for the newly created invoice.
-   * This is an async side effect that we don't want to block the response on.
-   *
-   * Note that we cannot guarantee that the invoice log entry will be included
-   * in the next loader re-validation (invoiceLog may still be creating when we
-   * re-fetch the loader data after creating an invoice).
-   */
-  createInvoiceLog(userId, invoice.id, { title, description, amount, currencyCode: 'USD' });
-  return invoice;
 }
 ```
 
 `updateInvoice` changes:
 
 ```typescript
-export async function updateInvoice({ id, title, description, amount, attachment, userId }: InvoiceUpdateData) {
-  const invoice = await db.invoice.update({
+export function updateInvoice({ id, title, description, amount, attachment, userId }: InvoiceUpdateData) {
+  return db.invoice.update({
     where: { id_userId: { id, userId } },
-    data: { title, description, amount, attachment },
+    data: {
+      title,
+      description,
+      amount,
+      attachment,
+      logs: {
+        create: {
+          title,
+          description,
+          amount,
+          currencyCode: 'USD',
+          user: { connect: { id: userId } },
+        },
+      },
+    },
   });
-  /**
-   * We create an invoice log entry with the updated invoice data.
-   * This is an async side effect that we don't want to block the response on.
-   *
-   * Note that we cannot guarantee that the invoice log entry will be included
-   * in the next loader re-validation (invoiceLog may still be creating when we
-   * re-fetch the loader data after updating the invoice).
-   */
-  createInvoiceLog(userId, invoice.id, invoice);
-  return invoice;
 }
 ```
 

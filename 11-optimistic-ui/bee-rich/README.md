@@ -95,7 +95,7 @@ So far, we validated our `FormData`by using `if` statements. Now, we will add a 
 Create a new `app/modules/expenses.server.ts` file and add the following code to the  file:
 
 ```ts
-import type { Expense, Prisma } from '@prisma/client';
+import type { Expense } from '@prisma/client';
 import zod from 'zod';
 
 import { deleteAttachment } from '~/modules/attachments.server';
@@ -127,7 +127,7 @@ export async function deleteExpense(id: string, userId: string) {
   }
 }
 
-type ExpenseUpdateData = Prisma.ExpenseUpdateInput & Prisma.ExpenseIdUserIdCompoundUniqueInput;
+type ExpenseUpdateData = ExpenseCreateData & Pick<Expense, 'id'>;
 
 export function updateExpense({ id, title, description, amount, attachment, userId }: ExpenseUpdateData) {
   return db.expense.update({
@@ -138,7 +138,10 @@ export function updateExpense({ id, title, description, amount, attachment, user
 
 export function removeAttachmentFromExpense(id: string, userId: string, fileName: string) {
   deleteAttachment(fileName);
-  return updateExpense({ id, userId, attachment: null });
+  return db.expense.update({
+    where: { id_userId: { id, userId } },
+    data: { attachment: null },
+  });
 }
 
 const expenseSchema = zod.object({
@@ -170,14 +173,12 @@ The code includes the following reusable functions:
 - `removeAttachmentFromExpense` - Removes an attachment from an expense.
 - `parseExpense` - Parses the form data from the expense form using `zod`.
 
-Note that we take advantage of Prisma's type definitions to define the `ExpenseUpdateData` type. Prisma provides several helper types within the `Prisma` namespace.
-
 3. **Implement invoice helper functions**
 
 Create a new `app/modules/invoices.server.ts` file and add the following code:
 
 ```ts
-import type { Invoice, Prisma } from '@prisma/client';
+import type { Invoice } from '@prisma/client';
 import zod from 'zod';
 
 import { deleteAttachment } from '~/modules/attachments.server';
@@ -209,7 +210,7 @@ export async function deleteInvoice(id: string, userId: string) {
   }
 }
 
-type InvoiceUpdateData = Prisma.InvoiceUpdateInput & Prisma.InvoiceIdUserIdCompoundUniqueInput;
+type InvoiceUpdateData = InvoiceCreateData & Pick<Invoice, 'id'>;
 
 export function updateInvoice({ id, title, description, amount, attachment, userId }: InvoiceUpdateData) {
   return db.invoice.update({
@@ -220,7 +221,10 @@ export function updateInvoice({ id, title, description, amount, attachment, user
 
 export function removeAttachmentFromInvoice(id: string, userId: string, fileName: string) {
   deleteAttachment(fileName);
-  return updateInvoice({ id, userId, attachment: null });
+  return db.invoice.update({
+    where: { id_userId: { id, userId } },
+    data: { attachment: null },
+  });
 }
 
 const invoiceSchema = zod.object({

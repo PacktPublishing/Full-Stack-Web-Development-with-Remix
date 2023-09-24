@@ -1,4 +1,4 @@
-import type { Expense, Prisma } from '@prisma/client';
+import type { Expense } from '@prisma/client';
 import zod from 'zod';
 
 import { deleteAttachment } from '~/modules/attachments.server';
@@ -30,7 +30,7 @@ export async function deleteExpense(id: string, userId: string) {
   }
 }
 
-type ExpenseUpdateData = Prisma.ExpenseUpdateInput & Prisma.ExpenseIdUserIdCompoundUniqueInput;
+type ExpenseUpdateData = ExpenseCreateData & Pick<Expense, 'id'>;
 
 export function updateExpense({ id, title, description, amount, attachment, userId }: ExpenseUpdateData) {
   return db.expense.update({
@@ -41,7 +41,10 @@ export function updateExpense({ id, title, description, amount, attachment, user
 
 export function removeAttachmentFromExpense(id: string, userId: string, fileName: string) {
   deleteAttachment(fileName);
-  return updateExpense({ id, userId, attachment: null });
+  return db.expense.update({
+    where: { id_userId: { id, userId } },
+    data: { attachment: null },
+  });
 }
 
 const expenseSchema = zod.object({

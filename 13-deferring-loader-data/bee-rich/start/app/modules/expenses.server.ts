@@ -1,4 +1,4 @@
-import type { Expense, Prisma } from '@prisma/client';
+import type { Expense } from '@prisma/client';
 import zod from 'zod';
 
 import { deleteAttachment } from '~/modules/attachments.server';
@@ -6,8 +6,8 @@ import { db } from '~/modules/db.server';
 
 type ExpenseCreateData = Pick<Expense, 'title' | 'description' | 'amount' | 'attachment' | 'userId'>;
 
-export async function createExpense({ title, description, amount, attachment, userId }: ExpenseCreateData) {
-  const expense = await db.expense.create({
+export function createExpense({ title, description, amount, attachment, userId }: ExpenseCreateData) {
+  return db.expense.create({
     data: {
       title,
       description,
@@ -19,18 +19,17 @@ export async function createExpense({ title, description, amount, attachment, us
           id: userId,
         },
       },
+      logs: {
+        create: {
+          title,
+          description,
+          amount,
+          currencyCode: 'USD',
+          user: { connect: { id: userId } },
+        },
+      },
     },
   });
-  /**
-   * We create an expense log entry for the newly created expense.
-   * This is an async side effect that we don't want to block the response on.
-   *
-   * Note that we cannot guarantee that the expense log entry will be included
-   * in the next loader re-validation (expenseLog may still be creating when we
-   * re-fetch the loader data after creating an expense).
-   */
-  createExpenseLog(userId, expense.id, { title, description, amount, currencyCode: 'USD' });
-  return expense;
 }
 
 export async function deleteExpense(id: string, userId: string) {
@@ -40,28 +39,35 @@ export async function deleteExpense(id: string, userId: string) {
   }
 }
 
-type ExpenseUpdateData = Prisma.ExpenseUpdateInput & Prisma.ExpenseIdUserIdCompoundUniqueInput;
+type ExpenseUpdateData = ExpenseCreateData & Pick<Expense, 'id'>;
 
-export async function updateExpense({ id, title, description, amount, attachment, userId }: ExpenseUpdateData) {
-  const expense = await db.expense.update({
+export function updateExpense({ id, title, description, amount, attachment, userId }: ExpenseUpdateData) {
+  return db.expense.update({
     where: { id_userId: { id, userId } },
-    data: { title, description, amount, attachment },
+    data: {
+      title,
+      description,
+      amount,
+      attachment,
+      logs: {
+        create: {
+          title,
+          description,
+          amount,
+          currencyCode: 'USD',
+          user: { connect: { id: userId } },
+        },
+      },
+    },
   });
-  /**
-   * We create an expense log entry with the updated expense data.
-   * This is an async side effect that we don't want to block the response on.
-   *
-   * Note that we cannot guarantee that the expense log entry will be included
-   * in the next loader re-validation (expenseLog may still be creating when we
-   * re-fetch the loader data after updating the expense).
-   */
-  createExpenseLog(userId, expense.id, expense);
-  return expense;
 }
 
 export function removeAttachmentFromExpense(id: string, userId: string, fileName: string) {
   deleteAttachment(fileName);
-  return updateExpense({ id, userId, attachment: null });
+  return db.expense.update({
+    where: { id_userId: { id, userId } },
+    data: { attachment: null },
+  });
 }
 
 const expenseSchema = zod.object({
@@ -82,23 +88,4 @@ export function parseExpense(formData: FormData) {
     attachment = null;
   }
   return { title, description, amount: amountNumber, attachment };
-}
-
-type ExpenseLogCreateData = Pick<Expense, 'title' | 'description' | 'amount' | 'currencyCode'>;
-
-async function createExpenseLog(
-  userId: string,
-  expenseId: string,
-  { title, description, amount, currencyCode }: ExpenseLogCreateData,
-) {
-  return db.expenseLog.create({
-    data: {
-      title,
-      description,
-      amount,
-      currencyCode,
-      user: { connect: { id: userId } },
-      expense: { connect: { id: expenseId } },
-    },
-  });
 }
