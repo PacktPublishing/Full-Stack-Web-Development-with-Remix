@@ -17,12 +17,6 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const headers = () => {
-  return {
-    'Cache-Control': 'max-age=300000',
-  };
-};
-
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const email = formData.get('email');
