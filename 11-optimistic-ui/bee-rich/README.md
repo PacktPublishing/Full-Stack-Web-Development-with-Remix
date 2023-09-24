@@ -4,7 +4,7 @@ In this chapter, we will learn how to implement optimistic UI with Remix.
 
 ## Getting started
 
-Congratulations on making it this far! You have learned a lot about Remix and have built a fully functional application. In the following chapters, we will focus on advanced topics. Before we get started, let's refactor our application to make it easier to work with.
+Congratulations on making it this far! You have learned a lot about Remix and have built a fully functional application. In the following chapters, we will focus on advanced topics. Before we get started, let's refactor our application a bit to make it easier to work with.
 
 If you want to reuse your code from the previous chapter, then follow this guide to get to the starting point of this chapter. Otherwise, feel free to checkout the code in the [start](./start/) folder and dive right into _Chapter 11, Optimistic UI_.
 
@@ -70,13 +70,14 @@ You can also update the seed data in `prisma/seed.ts`.
 
 Remix is not opinionated about how you structure your code. So far, we mostly used the `/routes` folder for everything from querying the database to rendering the UI. The co-location is convenient, but now might be a good time to create some abstractions and refactor our code to make it easier to work with.
 
-You can find a diff of all the changes in [this commit](https://github.com/PacktPublishing/Full-Stack-Web-Development-with-Remix/commit/ad0cee6f31b0ecd3581089808777d024d6797d3b).
+We will:
 
-### Improve data validation with zod
+- Move the database queries into separate files.
+- Use a data validation library to validate the form data.
 
-So far, we validated our `FormData`by using simple `if` statements. Now, we will add a data validation library.
+Let's get started!
 
-[Zod](https://www.npmjs.com/package/zod) is a TypeScript-first schema declaration and validation library. Zod lets us define schemas to validate our data. Zod automatically infers the type of the parsed data, which provides a great developer experience.
+1. **Install zod**
 
 Install `zod`:
 
@@ -84,48 +85,31 @@ Install `zod`:
 npm install zod
 ```
 
-### Reusable data mutations
+So far, we validated our `FormData`by using `if` statements. Now, we will add a data validation library. 
 
-First, let's create reusable functions for mutating and validating our expense and invoice data.
+[Zod](https://www.npmjs.com/package/zod) is a TypeScript-first schema declaration and validation library. Zod lets us define schemas to validate our data. Zod automatically infers the type of the parsed data, which provides a great developer experience.
 
-1. **Create a `server` folder**
 
-Create a new folder in the `/app` folder called `/server`. Alternatively, you can call the folder whatever you like. We chose `/server` to communicate that the code in this folder only runs on the server.
+2. **Implement expense helper functions**
 
-2. **Create new file**
-
-In the new `server` folder, create two files called `expenses.server.ts` and `invoices.server.ts`. We will use these files to store our reusable data mutations.
-
-The `.server` extension tells the compiler not to include the code in the client bundle.
-
-3. **Implement the expense functions**
-
-Add the following code to the `app/server/expenses.server.ts` file.
+Create a new `app/modules/expenses.server.ts` file and add the following code to the  file:
 
 ```ts
-import type { Expense, Prisma } from "@prisma/client";
-import zod from "zod";
-import { db } from "~/db.server";
-import { deleteAttachment } from "~/attachments.server";
+import type { Expense, Prisma } from '@prisma/client';
+import zod from 'zod';
 
-type ExpenseCreateData = Pick<
-  Expense,
-  "title" | "description" | "amount" | "attachment" | "userId"
->;
+import { deleteAttachment } from '~/modules/attachments.server';
+import { db } from '~/modules/db.server';
 
-export function createExpense({
-  title,
-  description,
-  amount,
-  attachment,
-  userId,
-}: ExpenseCreateData) {
+type ExpenseCreateData = Pick<Expense, 'title' | 'description' | 'amount' | 'attachment' | 'userId'>;
+
+export function createExpense({ title, description, amount, attachment, userId }: ExpenseCreateData) {
   return db.expense.create({
     data: {
       title,
       description,
       amount,
-      currencyCode: "USD",
+      currencyCode: 'USD',
       attachment,
       user: {
         connect: {
@@ -137,36 +121,22 @@ export function createExpense({
 }
 
 export async function deleteExpense(id: string, userId: string) {
-  const expense = await db.expense.delete({
-    where: { id_userId: { id, userId } },
-  });
+  const expense = await db.expense.delete({ where: { id_userId: { id, userId } } });
   if (expense.attachment) {
     deleteAttachment(expense.attachment);
   }
 }
 
-type ExpenseUpdateData = Prisma.ExpenseUpdateInput &
-  Prisma.ExpenseIdUserIdCompoundUniqueInput;
+type ExpenseUpdateData = Prisma.ExpenseUpdateInput & Prisma.ExpenseIdUserIdCompoundUniqueInput;
 
-export function updateExpense({
-  id,
-  title,
-  description,
-  amount,
-  attachment,
-  userId,
-}: ExpenseUpdateData) {
+export function updateExpense({ id, title, description, amount, attachment, userId }: ExpenseUpdateData) {
   return db.expense.update({
     where: { id_userId: { id, userId } },
     data: { title, description, amount, attachment },
   });
 }
 
-export function removeAttachmentFromExpense(
-  id: string,
-  userId: string,
-  fileName: string
-) {
+export function removeAttachmentFromExpense(id: string, userId: string, fileName: string) {
   deleteAttachment(fileName);
   return updateExpense({ id, userId, attachment: null });
 }
@@ -182,10 +152,10 @@ export function parseExpense(formData: FormData) {
   const { title, description, amount } = expenseSchema.parse(data);
   const amountNumber = Number.parseFloat(amount);
   if (Number.isNaN(amountNumber)) {
-    throw Error("Invalid amount");
+    throw Error('Invalid amount');
   }
-  let attachment = formData.get("attachment");
-  if (!attachment || typeof attachment !== "string") {
+  let attachment = formData.get('attachment');
+  if (!attachment || typeof attachment !== 'string') {
     attachment = null;
   }
   return { title, description, amount: amountNumber, attachment };
@@ -202,34 +172,26 @@ The code includes the following reusable functions:
 
 Note that we take advantage of Prisma's type definitions to define the `ExpenseUpdateData` type. Prisma provides several helper types within the `Prisma` namespace.
 
-4. **Implement the invoice functions**
+3. **Implement invoice helper functions**
 
-Add the following code to the `app/server/invoices.server.ts` file.
+Create a new `app/modules/invoices.server.ts` file and add the following code:
 
 ```ts
-import type { Invoice, Prisma } from "@prisma/client";
-import zod from "zod";
-import { deleteAttachment } from "~/attachments.server";
-import { db } from "~/db.server";
+import type { Invoice, Prisma } from '@prisma/client';
+import zod from 'zod';
 
-type InvoiceCreateData = Pick<
-  Invoice,
-  "title" | "description" | "amount" | "attachment" | "userId"
->;
+import { deleteAttachment } from '~/modules/attachments.server';
+import { db } from '~/modules/db.server';
 
-export function createInvoice({
-  title,
-  description,
-  amount,
-  attachment,
-  userId,
-}: InvoiceCreateData) {
+type InvoiceCreateData = Pick<Invoice, 'title' | 'description' | 'amount' | 'attachment' | 'userId'>;
+
+export function createInvoice({ title, description, amount, attachment, userId }: InvoiceCreateData) {
   return db.invoice.create({
     data: {
       title,
       description,
       amount,
-      currencyCode: "USD",
+      currencyCode: 'USD',
       attachment,
       user: {
         connect: {
@@ -241,36 +203,22 @@ export function createInvoice({
 }
 
 export async function deleteInvoice(id: string, userId: string) {
-  const invoice = await db.invoice.delete({
-    where: { id_userId: { id, userId } },
-  });
+  const invoice = await db.invoice.delete({ where: { id_userId: { id, userId } } });
   if (invoice.attachment) {
     deleteAttachment(invoice.attachment);
   }
 }
 
-type InvoiceUpdateData = Prisma.InvoiceUpdateInput &
-  Prisma.InvoiceIdUserIdCompoundUniqueInput;
+type InvoiceUpdateData = Prisma.InvoiceUpdateInput & Prisma.InvoiceIdUserIdCompoundUniqueInput;
 
-export function updateInvoice({
-  id,
-  title,
-  description,
-  amount,
-  attachment,
-  userId,
-}: InvoiceUpdateData) {
+export function updateInvoice({ id, title, description, amount, attachment, userId }: InvoiceUpdateData) {
   return db.invoice.update({
     where: { id_userId: { id, userId } },
     data: { title, description, amount, attachment },
   });
 }
 
-export function removeAttachmentFromInvoice(
-  id: string,
-  userId: string,
-  fileName: string
-) {
+export function removeAttachmentFromInvoice(id: string, userId: string, fileName: string) {
   deleteAttachment(fileName);
   return updateInvoice({ id, userId, attachment: null });
 }
@@ -286,44 +234,41 @@ export function parseInvoice(formData: FormData) {
   const { title, description, amount } = invoiceSchema.parse(data);
   const amountNumber = Number.parseFloat(amount);
   if (Number.isNaN(amountNumber)) {
-    throw Error("Invalid amount");
+    throw Error('Invalid amount');
   }
-  let attachment = formData.get("attachment");
-  if (!attachment || typeof attachment !== "string") {
+  let attachment = formData.get('attachment');
+  if (!attachment || typeof attachment !== 'string') {
     attachment = null;
   }
   return { title, description, amount: amountNumber, attachment };
 }
 ```
 
-The code includes the invoice version of the functions we created in `app/server/expenses.server.ts`.
+The code includes the same functions as the `app/server/expenses.server.ts` file, but for invoice objects instead of expenses.
 
-5. **Update the create expense `action` function**
+4. **Update the create expense `action` function**
 
-Now, let's use the `parseExpense`and `createExpense` functions in `app/routes/dashboard/expenses/index.tsx`.
-
-Replace the existing `FormData` validation logic and database query in the route module's `action` function.
+Now, let's use the `parseExpense`and `createExpense` functions in `app/routes/dashboard.expenses._index.tsx`. Replace the existing `FormData` validation logic and database query in the route module's `action` function with the following code:
 
 ```ts
 export async function action({ request }: ActionFunctionArgs) {
   const userId = await requireUserId(request);
-  const formData = await unstable_parseMultipartFormData(
-    request,
-    uploadHandler
-  );
+  const formData = await unstable_parseMultipartFormData(request, uploadHandler);
   const expenseData = parseExpense(formData);
   const expense = await createExpense({ userId, ...expenseData });
   return redirect(`/dashboard/expenses/${expense.id}`);
 }
 ```
 
-6. **Update the create invoice `action` function**
+5. **Update the create invoice `action` function**
 
-Similarly, replace the existing database query in the `action` function in in `app/routes/dashboard/income/index.tsx` with `createInvoice`.
+Similarly, replace the existing database query in the `action` function in in `app/routes/dashboard.income._index.tsx` with `createInvoice` and use `parseInvoice` to validate the form data.
 
-7. **Rename expense helper functions**
+You can refer to the code in the [start](./start/) folder if you get stuck.
 
-Next, we rename the helper functions in `app/routes/dashboard/expenses/$id/index.tsx`. Currently, the functions are called:
+6. **Rename expense helper functions**
+
+Next, we rename the helper functions in `app/routes/dashboard.expenses.$id._index.tsx`. Currently, the functions are called:
 
 - deleteExpense
 - removeAttachment
@@ -337,86 +282,80 @@ Rename them to:
 
 This is to avoid name conflicts with the functions we just created. Additionally, we can think of the route helper functions as action request handlers.
 
-Adding the `handle` prefix creates a nice convention for naming these functions and communicates that they control and handle the request.
+Adding the `handle` prefix creates a nice convention for naming these functions and communicates that they control and handle requests.
 
-8. **Rename invoice helper functions**
+7. **Rename invoice helper functions**
 
-Follow the same pattern to rename the helper functions in `app/routes/dashboard/income/$id/index.tsx`.
+Follow the same pattern to rename the helper functions in `app/routes/dashboard.income.$id._index.tsx`.
 
-9. **Update the `handleDelete` expense route helper function**
+Refer to the code in the [start](./start/) folder if you get stuck.
 
-Replace the existing database query in the `handleDelete` helper function in `app/routes/dashboard/expenses/$id/index.tsx`.
+8. **Update the `handleDelete` expense route helper function**
+
+Replace the existing `handleDelete` helper function in `app/routes/dashboard.expenses.$id._index.tsx` with the following code:
 
 ```tsx
-async function handleDelete(
-  request: Request,
-  id: string,
-  userId: string
-): Promise<Response> {
-  const referer = request.headers.get("referer");
-  const redirectPath = referer || "/dashboard/expenses";
+async function handleDelete(request: Request, id: string, userId: string): Promise<Response> {
+  const referer = request.headers.get('referer');
+  const redirectPath = referer || '/dashboard/expenses';
 
   try {
     await deleteExpense(id, userId);
   } catch (err) {
-    throw new Response("Not found", { status: 404 });
+    throw new Response('Not found', { status: 404 });
   }
 
   if (redirectPath.includes(id)) {
-    return redirect("/dashboard/expenses");
+    return redirect('/dashboard/expenses');
   }
   return redirect(redirectPath);
 }
 ```
 
-10. **Update the `handleDelete` invoice route helper function**
+9. **Update the `handleDelete` invoice route helper function**
 
-Replace the existing database query in the `handleDelete` helper function in `app/routes/dashboard/income/$id/index.tsx`.
+Do the same for the `handleDelete` helper function in ``app/routes/dashboard.income.$id._index.tsx`.
 
-11. **Update the `handleUpdate` expense route helper function**
+Refer to the code in the [start](./start/) folder if you get stuck.
 
-Replace the existing database query in the `handleUpdate` helper function in `app/routes/dashboard/expenses/$id/index.tsx`.
+10. **Update the `handleUpdate` expense route helper function**
 
-Additionally, remove the existing `FormData` parsing logic and replace it with the `parseExpense` function.
+Replace the `handleUpdate` helper function in `app/routes/dashboard.expenses.$id._index.tsx` with the following code:
 
 ```tsx
-async function handleUpdate(
-  formData: FormData,
-  id: string,
-  userId: string
-): Promise<Response> {
+async function handleUpdate(formData: FormData, id: string, userId: string): Promise<Response> {
   const expenseData = parseExpense(formData);
   await updateExpense({ id, userId, ...expenseData });
   return json({ success: true });
 }
 ```
 
-12. **Update the `handleUpdate` invoice route helper function**
+Note how we manage to reduce the amount of boilerplate code in the route modules by using reusable helper functions for data validation and database queries.
 
-Also, replace the existing database query and `FormData` validation in the `handleUpdate` helper function in `app/routes/dashboard/income/$id/index.tsx`.
+11. **Update the `handleUpdate` invoice route helper function**
 
-13. **Update the `handleRemoveAttachment` expense route helper function**
+Also, replace the existing database query and `FormData` validation logic in the `handleUpdate` helper function in `app/routes/dashboard.income.$id._index.tsx`.
 
-Replace the existing database query in the `handleRemoveAttachment` helper function in `app/routes/dashboard/expenses/$id/index.tsx`.
+Refer to the code in the [start](./start/) folder if you get stuck.
+
+12. **Update the `handleRemoveAttachment` expense route helper function**
+
+Replace the existing `handleRemoveAttachment` helper function in `app/routes/dashboard/expenses/$id/index.tsx` with the following code:
 
 ```tsx
-async function handleRemoveAttachment(
-  formData: FormData,
-  id: string,
-  userId: string
-): Promise<Response> {
-  const attachmentUrl = formData.get("attachmentUrl");
-  if (!attachmentUrl || typeof attachmentUrl !== "string") {
-    throw Error("something went wrong");
+async function handleRemoveAttachment(formData: FormData, id: string, userId: string): Promise<Response> {
+  const attachmentUrl = formData.get('attachmentUrl');
+  if (!attachmentUrl || typeof attachmentUrl !== 'string') {
+    throw Error('something went wrong');
   }
-  const fileName = attachmentUrl.split("/").pop();
-  if (!fileName) throw Error("something went wrong");
-  await removeAttachmentFromExpense(fileName, id, userId);
+  const fileName = attachmentUrl.split('/').pop();
+  if (!fileName) throw Error('something went wrong');
+  await removeAttachmentFromExpense(id, userId, fileName);
   return json({ success: true });
 }
 ```
 
-14. **Update the `handleRemoveAttachment` invoice route helper function**
+13. **Update the `handleRemoveAttachment` invoice route helper function**
 
 Replace the existing database query in the `handleRemoveAttachment` helper function in `app/routes/dashboard/income/$id/index.tsx`.
 
