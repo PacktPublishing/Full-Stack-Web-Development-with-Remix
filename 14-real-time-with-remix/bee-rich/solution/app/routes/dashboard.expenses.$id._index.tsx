@@ -135,45 +135,45 @@ export default function Component() {
           {actionData?.success && 'Changes saved!'}
         </p>
       </Form>
-      <Suspense fallback="Loading expense history...">
-        <Await resolve={expenseLogs} errorElement="There was an error loading the expense history. Please try again.">
-          {(resolvedExpenseLogs) => <ExpenseLogSection expenseLogs={resolvedExpenseLogs} />}
-        </Await>
-      </Suspense>
+      <section className="my-5 w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">
+        <H3>Expense History</H3>
+        <Suspense fallback="Loading expense history...">
+          <Await resolve={expenseLogs} errorElement="There was an error loading the expense history. Please try again.">
+            {(resolvedExpenseLogs) => <ExpenseLogs expenseLogs={resolvedExpenseLogs} />}
+          </Await>
+        </Suspense>
+      </section>
       <FloatingActionLink to="/dashboard/expenses/">Add expense</FloatingActionLink>
     </>
   );
 }
 
-function ExpenseLogSection({ expenseLogs }: { expenseLogs: SerializeFrom<ExpenseLog[]> }) {
+function ExpenseLogs({ expenseLogs }: { expenseLogs: SerializeFrom<ExpenseLog[]> }) {
   return (
-    <section className="my-5 w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">
-      <H3>Expense History</H3>
-      <ul className="space-y-2 max-h-[300px] lg:max-h-max overflow-y-scroll lg:overflow-hidden py-5">
-        {expenseLogs.map((expenseLog) => (
-          <li key={expenseLog.id}>
+    <ul className="space-y-2 max-h-[300px] lg:max-h-max overflow-y-scroll lg:overflow-hidden py-5">
+      {expenseLogs.map((expenseLog) => (
+        <li key={expenseLog.id}>
+          <p>
+            <b>
+              {`${expenseLog.title} - ${Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: expenseLog.currencyCode,
+              }).format(expenseLog.amount)}`}
+            </b>
+          </p>
+          {expenseLog.description && (
             <p>
-              <b>
-                {`${expenseLog.title} - ${Intl.NumberFormat('en-US', {
-                  style: 'currency',
-                  currency: expenseLog.currencyCode,
-                }).format(expenseLog.amount)}`}
-              </b>
+              <i>{expenseLog.description}</i>
             </p>
-            {expenseLog.description && (
-              <p>
-                <i>{expenseLog.description}</i>
-              </p>
-            )}
-            <p className="text-sm text-gray-500">
-              {`${new Date(expenseLog.createdAt).toLocaleDateString()} ${new Date(
-                expenseLog.createdAt,
-              ).toLocaleTimeString()}`}
-            </p>
-          </li>
-        ))}
-      </ul>
-    </section>
+          )}
+          <p className="text-sm text-gray-500">
+            {`${new Date(expenseLog.createdAt).toLocaleDateString()} ${new Date(
+              expenseLog.createdAt,
+            ).toLocaleTimeString()}`}
+          </p>
+        </li>
+      ))}
+    </ul>
   );
 }
 

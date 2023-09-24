@@ -130,45 +130,45 @@ export default function Component() {
           {actionData?.success && 'Changes saved!'}
         </p>
       </Form>
-      <Suspense fallback="Loading expense history...">
-        <Await resolve={invoiceLogs} errorElement="There was an error loading the invoice history. Please try again.">
-          {(resolvedInvoiceLogs) => <InvoiceLogSection invoiceLogs={resolvedInvoiceLogs} />}
-        </Await>
-      </Suspense>
+      <section className="my-5 w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">
+        <H3>Invoice History</H3>
+        <Suspense fallback="Loading invoice history...">
+          <Await resolve={invoiceLogs} errorElement="There was an error loading the invoice history. Please try again.">
+            {(resolvedInvoiceLogs) => <InvoiceLogs invoiceLogs={resolvedInvoiceLogs} />}
+          </Await>
+        </Suspense>
+      </section>
       <FloatingActionLink to="/dashboard/income/">Add invoice</FloatingActionLink>
     </>
   );
 }
 
-function InvoiceLogSection({ invoiceLogs }: { invoiceLogs: SerializeFrom<InvoiceLog[]> }) {
+function InvoiceLogs({ invoiceLogs }: { invoiceLogs: SerializeFrom<InvoiceLog[]> }) {
   return (
-    <section className="my-5 w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">
-      <H3>Invoice History</H3>
-      <ul className="space-y-2 max-h-[300px] lg:max-h-max overflow-y-scroll lg:overflow-hidden py-5">
-        {invoiceLogs.map((invoiceLog) => (
-          <li key={invoiceLog.id}>
+    <ul className="space-y-2 max-h-[300px] lg:max-h-max overflow-y-scroll lg:overflow-hidden py-5">
+      {invoiceLogs.map((invoiceLog) => (
+        <li key={invoiceLog.id}>
+          <p>
+            <b>
+              {`${invoiceLog.title} - ${Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: invoiceLog.currencyCode,
+              }).format(invoiceLog.amount)}`}
+            </b>
+          </p>
+          {invoiceLog.description && (
             <p>
-              <b>
-                {`${invoiceLog.title} - ${Intl.NumberFormat('en-US', {
-                  style: 'currency',
-                  currency: invoiceLog.currencyCode,
-                }).format(invoiceLog.amount)}`}
-              </b>
+              <i>{invoiceLog.description}</i>
             </p>
-            {invoiceLog.description && (
-              <p>
-                <i>{invoiceLog.description}</i>
-              </p>
-            )}
-            <p className="text-sm text-gray-500">
-              {`${new Date(invoiceLog.createdAt).toLocaleDateString()} ${new Date(
-                invoiceLog.createdAt,
-              ).toLocaleTimeString()}`}
-            </p>
-          </li>
-        ))}
-      </ul>
-    </section>
+          )}
+          <p className="text-sm text-gray-500">
+            {`${new Date(invoiceLog.createdAt).toLocaleDateString()} ${new Date(
+              invoiceLog.createdAt,
+            ).toLocaleTimeString()}`}
+          </p>
+        </li>
+      ))}
+    </ul>
   );
 }
 
