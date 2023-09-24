@@ -27,7 +27,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       contains: searchString ? searchString : '',
     },
   };
-  const [count, expenses] = await Promise.all([
+  const [count, expenses] = await db.$transaction([
     db.expense.count({ where }),
     db.expense.findMany({
       orderBy: { createdAt: 'desc' },
