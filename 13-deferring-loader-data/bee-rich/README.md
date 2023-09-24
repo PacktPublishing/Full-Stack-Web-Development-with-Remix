@@ -425,7 +425,7 @@ export function createExpense({ title, description, amount, attachment, userId }
 }
 ```
 
-The `createExpense` function now also creates a `ExpenseLog` object upon expense creation. Note that we create the `expense` and `expenseLog` objects in a single transaction. This ensures that the `expenseLog` object is only created if the `expense` object is successfully created.
+The `createExpense` function now also creates a `ExpenseLog` object upon expense creation. Note that we create the `expense` and `expenseLog` objects in a single transaction using [Prisma's nested writes](https://www.prisma.io/docs/concepts/components/prisma-client/transactions#nested-writes). This ensures that the `expense` and `expenseLog` objects either succeed or fail together.
 
 6. **Update the `updateExpense` utility function**
 
@@ -454,7 +454,7 @@ export function updateExpense({ id, title, description, amount, attachment, user
 }
 ```
 
-Similarly, the `updateExpense` function now also creates a `ExpenseLog` object. We again use a single transaction to ensure that the `expenseLog` object is only created if the `expense` object is successfully updated.
+Similarly, the `updateExpense` function now also creates a `ExpenseLog` object. We again use a single transaction to ensure that the `expenseLog` object is only created if the `expense` object is successfully updated (and wise versa).
 
 7. **Update the invoice utility functions**
 
