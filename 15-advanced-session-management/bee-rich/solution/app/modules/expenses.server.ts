@@ -21,6 +21,14 @@ export async function createExpense({ title, description, amount, attachment, us
       },
     },
   });
+  /**
+   * We create an expense log entry for the newly created expense.
+   * This is an async side effect that we don't want to block the response on.
+   *
+   * Note that we cannot guarantee that the expense log entry will be included
+   * in the next loader re-validation (expenseLog may still be creating when we
+   * re-fetch the loader data after creating an expense).
+   */
   createExpenseLog(userId, expense.id, { title, description, amount, currencyCode: 'USD' });
   return expense;
 }
@@ -39,6 +47,14 @@ export async function updateExpense({ id, title, description, amount, attachment
     where: { id_userId: { id, userId } },
     data: { title, description, amount, attachment },
   });
+  /**
+   * We create an expense log entry with the updated expense data.
+   * This is an async side effect that we don't want to block the response on.
+   *
+   * Note that we cannot guarantee that the expense log entry will be included
+   * in the next loader re-validation (expenseLog may still be creating when we
+   * re-fetch the loader data after updating the expense).
+   */
   createExpenseLog(userId, expense.id, expense);
   return expense;
 }

@@ -4,7 +4,7 @@ In this chapter, we will learn how to defer loader data to enhance the user expe
 
 ## Getting started
 
-Before we get started, we have to update BeeRich. We want to add a changelog for expense and invoice data to allow users to review past changes and also revert back to previous versions.
+Before we get started, we have to update BeeRich. We want to add a changelog for expense and invoice data. The changelog will allow users to view changes made over time.
 
 If you want to reuse your code from the previous chapter, then follow this guide to get to the starting point of this chapter. Otherwise, feel free to checkout the code in the [start](./start/) folder and dive right into _Chapter 13, Deferring Loader Data_.
 
@@ -68,7 +68,7 @@ You can also update the seed data in `prisma/seed.ts`.
 
 ## Adding changelogs for expenses and invoices
 
-In this chapter, we want add changelogs to BeeRich. This will allow users to review and reset changes made over time.
+In this chapter, we want add changelogs to BeeRich. This will allow users to review changes made over time.
 
 1. **Add the `ExpenseLog` and `InvoiceLog` schemas**
 
@@ -107,6 +107,8 @@ model InvoiceLog {
   @@unique([id, userId])
 }
 ```
+
+Note that we specify the `onDelete` behavior for the `user`, `expense`, and `invoice` relations. This ensures that the changelog data is deleted when the user, expense, or invoice is deleted.
 
 2. **Update the `User`, `Expense`, and `Invoice` schemas**
 
@@ -164,185 +166,155 @@ model User {
 Update the `prisma/seed.ts` script to include `ExpenseLog` and `InvoiceLog` mock data.
 
 ```typescript
-import type { Expense, Invoice, User } from "@prisma/client";
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
+import type { Expense, Invoice, User } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const db = new PrismaClient();
 
 const expenses = [
   {
-    title: "Groceries",
+    title: 'Groceries',
     amount: 50,
-    currencyCode: "USD",
-    date: "2022-12-05",
+    currencyCode: 'USD',
+    date: '2022-12-05',
   },
   {
-    title: "Gym Membership",
+    title: 'Gym Membership',
     amount: 20,
-    currencyCode: "USD",
-    date: "2022-12-03",
+    currencyCode: 'USD',
+    date: '2022-12-03',
   },
   {
-    title: "Movies",
+    title: 'Movies',
     amount: 20,
-    currencyCode: "USD",
-    date: "2022-12-02",
+    currencyCode: 'USD',
+    date: '2022-12-02',
   },
   {
-    title: "Mobile Service",
+    title: 'Mobile Service',
     amount: 55,
-    currencyCode: "USD",
-    date: "2022-11-01",
+    currencyCode: 'USD',
+    date: '2022-11-01',
   },
   {
-    title: "Rent December",
+    title: 'Rent December',
     amount: 1000,
-    currencyCode: "USD",
-    date: "2022-12-01",
+    currencyCode: 'USD',
+    date: '2022-12-01',
   },
   {
-    title: "Groceries",
+    title: 'Groceries',
     amount: 55,
-    currencyCode: "USD",
-    date: "2022-12-01",
+    currencyCode: 'USD',
+    date: '2022-12-01',
   },
   {
-    title: "Takeout",
+    title: 'Takeout',
     amount: 55,
-    currencyCode: "USD",
-    date: "2022-11-30",
+    currencyCode: 'USD',
+    date: '2022-11-30',
   },
   {
-    title: "Gym Membership",
+    title: 'Gym Membership',
     amount: 20,
-    currencyCode: "USD",
-    date: "2022-11-03",
+    currencyCode: 'USD',
+    date: '2022-11-03',
   },
   {
-    title: "Groceries",
+    title: 'Groceries',
     amount: 15,
-    currencyCode: "USD",
-    date: "2022-11-02",
+    currencyCode: 'USD',
+    date: '2022-11-02',
   },
   {
-    title: "Mobile Service",
+    title: 'Mobile Service',
     amount: 55,
-    currencyCode: "USD",
-    date: "2022-11-01",
+    currencyCode: 'USD',
+    date: '2022-11-01',
   },
   {
-    title: "Rent November",
+    title: 'Rent November',
     amount: 1000,
-    currencyCode: "USD",
-    date: "2022-11-01",
+    currencyCode: 'USD',
+    date: '2022-11-01',
   },
   {
-    title: "Groceries",
+    title: 'Groceries',
     amount: 55,
-    currencyCode: "USD",
-    date: "2022-10-30",
+    currencyCode: 'USD',
+    date: '2022-10-30',
   },
   {
-    title: "Groceries",
+    title: 'Groceries',
     amount: 55,
-    currencyCode: "USD",
-    date: "2022-10-15",
+    currencyCode: 'USD',
+    date: '2022-10-15',
   },
   {
-    title: "Dinner",
+    title: 'Dinner',
     amount: 40,
-    currencyCode: "USD",
-    date: "2022-10-11",
+    currencyCode: 'USD',
+    date: '2022-10-11',
   },
   {
-    title: "Gym Membership",
+    title: 'Gym Membership',
     amount: 20,
-    currencyCode: "USD",
-    date: "2022-10-03",
+    currencyCode: 'USD',
+    date: '2022-10-03',
   },
   {
-    title: "Groceries",
+    title: 'Groceries',
     amount: 25,
-    currencyCode: "USD",
-    date: "2022-10-02",
+    currencyCode: 'USD',
+    date: '2022-10-02',
   },
   {
-    title: "Mobile Service",
+    title: 'Mobile Service',
     amount: 55,
-    currencyCode: "USD",
-    date: "2022-10-01",
+    currencyCode: 'USD',
+    date: '2022-10-01',
   },
   {
-    title: "Rent October",
+    title: 'Rent October',
     amount: 1000,
-    currencyCode: "USD",
-    date: "2022-10-01",
+    currencyCode: 'USD',
+    date: '2022-10-01',
   },
   {
-    title: "Groceries",
+    title: 'Groceries',
     amount: 55,
-    currencyCode: "USD",
-    date: "2022-10-01",
+    currencyCode: 'USD',
+    date: '2022-10-01',
   },
 ];
 
 const income = [
   {
-    title: "Salary December",
+    title: 'Salary December',
     amount: 2500,
-    currencyCode: "USD",
-    date: "2022-12-30",
+    currencyCode: 'USD',
+    date: '2022-12-30',
   },
   {
-    title: "Salary November",
+    title: 'Salary November',
     amount: 2500,
-    currencyCode: "USD",
-    date: "2022-11-30",
+    currencyCode: 'USD',
+    date: '2022-11-30',
   },
   {
-    title: "Salary October",
+    title: 'Salary October',
     amount: 2500,
-    currencyCode: "USD",
-    date: "2022-10-30",
+    currencyCode: 'USD',
+    date: '2022-10-30',
   },
   {
-    title: "Salary September",
+    title: 'Salary September',
     amount: 2500,
-    currencyCode: "USD",
-    date: "2022-09-30",
+    currencyCode: 'USD',
+    date: '2022-09-30',
   },
 ];
-
-async function seed() {
-  const start = performance.now();
-  const user = await db.user.create({
-    data: {
-      name: "John Doe",
-      email: "john.doe@example.com",
-      password: await bcrypt.hash("BeeRich", 10),
-    },
-  });
-  const expensePromises = Promise.all(
-    expenses.map((expense) => createExpense(expense, user))
-  );
-  const invoicePromises = Promise.all(
-    income.map((income) => createInvoice(income, user))
-  );
-  const [createdExpenses, createdInvoices] = await Promise.all([
-    expensePromises,
-    invoicePromises,
-  ]);
-  const expenseLogPromises = createdExpenses.map((expense) =>
-    createExpenseLog(expense)
-  );
-  const invoiceLogPromises = createdInvoices.map((invoice) =>
-    createInvoiceLog(invoice)
-  );
-  await Promise.all([...expenseLogPromises, ...invoiceLogPromises]);
-  const end = performance.now();
-  console.log(`🚀 Seeded the database. Done in ${Math.round(end - start)}ms`);
-}
 
 function createExpense(expenseData: (typeof expenses)[number], user: User) {
   return db.expense.create({
@@ -368,14 +340,7 @@ function createInvoice(incomeData: (typeof income)[number], user: User) {
   });
 }
 
-function createExpenseLog({
-  userId,
-  id,
-  title,
-  description,
-  currencyCode,
-  amount,
-}: Expense) {
+function createExpenseLog({ userId, id, title, description, currencyCode, amount }: Expense) {
   return db.expenseLog.create({
     data: {
       title,
@@ -388,14 +353,7 @@ function createExpenseLog({
   });
 }
 
-function createInvoiceLog({
-  userId,
-  id,
-  title,
-  description,
-  currencyCode,
-  amount,
-}: Invoice) {
+function createInvoiceLog({ userId, id, title, description, currencyCode, amount }: Invoice) {
   return db.invoiceLog.create({
     data: {
       title,
@@ -408,14 +366,23 @@ function createInvoiceLog({
   });
 }
 
-seed()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await db.$disconnect();
-  });
+console.log('🌱 Seeding the database...');
+const start = performance.now();
+const user = await db.user.create({
+  data: {
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    password: await bcrypt.hash('BeeRich', 10),
+  },
+});
+const expensePromises = Promise.all(expenses.map((expense) => createExpense(expense, user)));
+const invoicePromises = Promise.all(income.map((income) => createInvoice(income, user)));
+const [createdExpenses, createdInvoices] = await Promise.all([expensePromises, invoicePromises]);
+const expenseLogPromises = createdExpenses.map((expense) => createExpenseLog(expense));
+const invoiceLogPromises = createdInvoices.map((invoice) => createInvoiceLog(invoice));
+await Promise.all([...expenseLogPromises, ...invoiceLogPromises]);
+const end = performance.now();
+console.log(`🚀 Seeded the database. Done in ${Math.round(end - start)}ms`);
 ```
 
 The script now iterates over every created expense and invoice object to create associated expense and invoice log objects.
@@ -428,18 +395,15 @@ Run `npm run update:db` to push the latest schema changes to the SQLite database
 
 5. **Update the expense utility functions**
 
-Add the following code to `app/server/expenses.server.ts`:
+Add the following code to `app/modules/expenses.server.ts`:
 
 ```typescript
-type ExpenseLogCreateData = Pick<
-  Expense,
-  "title" | "description" | "amount" | "currencyCode"
->;
+type ExpenseLogCreateData = Pick<Expense, 'title' | 'description' | 'amount' | 'currencyCode'>;
 
 async function createExpenseLog(
   userId: string,
   expenseId: string,
-  { title, description, amount, currencyCode }: ExpenseLogCreateData
+  { title, description, amount, currencyCode }: ExpenseLogCreateData,
 ) {
   return db.expenseLog.create({
     data: {
@@ -454,22 +418,16 @@ async function createExpenseLog(
 }
 ```
 
-Update the existing `createExpense` and `updateExpense` functions in `app/server/expenses.server.ts`.
+Update the existing `createExpense` and `updateExpense` functions in `app/modules/expenses.server.ts`.
 
 ```typescript
-export async function createExpense({
-  title,
-  description,
-  amount,
-  attachment,
-  userId,
-}: ExpenseCreateData) {
+export async function createExpense({ title, description, amount, attachment, userId }: ExpenseCreateData) {
   const expense = await db.expense.create({
     data: {
       title,
       description,
       amount,
-      currencyCode: "USD",
+      currencyCode: 'USD',
       attachment,
       user: {
         connect: {
@@ -478,12 +436,15 @@ export async function createExpense({
       },
     },
   });
-  createExpenseLog(userId, expense.id, {
-    title,
-    description,
-    amount,
-    currencyCode: "USD",
-  });
+  /**
+   * We create an expense log entry for the newly created expense.
+   * This is an async side effect that we don't want to block the response on.
+   *
+   * Note that we cannot guarantee that the expense log entry will be included
+   * in the next loader re-validation (expenseLog may still be creating when we
+   * re-fetch the loader data after creating an expense).
+   */
+  createExpenseLog(userId, expense.id, { title, description, amount, currencyCode: 'USD' });
   return expense;
 }
 ```
@@ -491,18 +452,19 @@ export async function createExpense({
 The `createExpense` function now also creates a `ExpenseLog` object upon expense creation. Since the `ExpenseLog` object depends on the expense identifier, we have to first create the expense object. To avoid more blocking time, we do not await the creation of the `ExpenseLog` object but rather treat it as an async side effect.
 
 ```typescript
-export async function updateExpense({
-  id,
-  title,
-  description,
-  amount,
-  attachment,
-  userId,
-}: ExpenseUpdateData) {
+export async function updateExpense({ id, title, description, amount, attachment, userId }: ExpenseUpdateData) {
   const expense = await db.expense.update({
     where: { id_userId: { id, userId } },
     data: { title, description, amount, attachment },
   });
+  /**
+   * We create an expense log entry with the updated expense data.
+   * This is an async side effect that we don't want to block the response on.
+   *
+   * Note that we cannot guarantee that the expense log entry will be included
+   * in the next loader re-validation (expenseLog may still be creating when we
+   * re-fetch the loader data after updating the expense).
+   */
   createExpenseLog(userId, expense.id, expense);
   return expense;
 }
@@ -512,18 +474,15 @@ Similarly, the `updateExpense` function now also creates a `ExpenseLog` object. 
 
 6. **Update the invoice utility functions**
 
-Add the following code to `app/server/invoices.server.ts`:
+Add the following code to `app/modules/invoices.server.ts`:
 
 ```typescript
-type InvoiceLogCreateData = Pick<
-  Invoice,
-  "title" | "description" | "amount" | "currencyCode"
->;
+type InvoiceLogCreateData = Pick<Invoice, 'title' | 'description' | 'amount' | 'currencyCode'>;
 
 async function createInvoiceLog(
   userId: string,
   invoiceId: string,
-  { title, description, amount, currencyCode }: InvoiceLogCreateData
+  { title, description, amount, currencyCode }: InvoiceLogCreateData,
 ) {
   return db.invoiceLog.create({
     data: {
@@ -538,24 +497,18 @@ async function createInvoiceLog(
 }
 ```
 
-Follow the same pattern as with the expense utilities and update the existing `createInvoice` and `updateInvoice` functions in `app/server/invoices.server.ts`.
+Follow the same pattern as with the expense utilities and update the existing `createInvoice` and `updateInvoice` functions in `app/modules/invoices.server.ts`.
 
 `createInvoice` changes:
 
 ```typescript
-export async function createInvoice({
-  title,
-  description,
-  amount,
-  attachment,
-  userId,
-}: InvoiceCreateData) {
+export async function createInvoice({ title, description, amount, attachment, userId }: InvoiceCreateData) {
   const invoice = await db.invoice.create({
     data: {
       title,
       description,
       amount,
-      currencyCode: "USD",
+      currencyCode: 'USD',
       attachment,
       user: {
         connect: {
@@ -564,12 +517,15 @@ export async function createInvoice({
       },
     },
   });
-  createInvoiceLog(userId, invoice.id, {
-    title,
-    description,
-    amount,
-    currencyCode: "USD",
-  });
+  /**
+   * We create an invoice log entry for the newly created invoice.
+   * This is an async side effect that we don't want to block the response on.
+   *
+   * Note that we cannot guarantee that the invoice log entry will be included
+   * in the next loader re-validation (invoiceLog may still be creating when we
+   * re-fetch the loader data after creating an invoice).
+   */
+  createInvoiceLog(userId, invoice.id, { title, description, amount, currencyCode: 'USD' });
   return invoice;
 }
 ```
@@ -577,18 +533,19 @@ export async function createInvoice({
 `updateInvoice` changes:
 
 ```typescript
-export async function updateInvoice({
-  id,
-  title,
-  description,
-  amount,
-  attachment,
-  userId,
-}: InvoiceUpdateData) {
+export async function updateInvoice({ id, title, description, amount, attachment, userId }: InvoiceUpdateData) {
   const invoice = await db.invoice.update({
     where: { id_userId: { id, userId } },
     data: { title, description, amount, attachment },
   });
+  /**
+   * We create an invoice log entry with the updated invoice data.
+   * This is an async side effect that we don't want to block the response on.
+   *
+   * Note that we cannot guarantee that the invoice log entry will be included
+   * in the next loader re-validation (invoiceLog may still be creating when we
+   * re-fetch the loader data after updating the invoice).
+   */
   createInvoiceLog(userId, invoice.id, invoice);
   return invoice;
 }

@@ -84,14 +84,15 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const userId = await requireUserId(request);
   const { id } = params;
   if (!id) throw Error('id route parameter must be defined');
-  const invoice = await db.invoice.findUnique({ where: { id_userId: { id, userId } } });
-  if (!invoice) throw new Response('Not found', { status: 404 });
+  // Start invoice logs query first before we await the invoice query
   const invoiceLogs = db.invoiceLog
     .findMany({
       orderBy: { createdAt: 'desc' },
       where: { invoiceId: id, userId },
     })
-    .then((invoice) => invoice);
+    .then((invoiceLogs) => invoiceLogs);
+  const invoice = await db.invoice.findUnique({ where: { id_userId: { id, userId } } });
+  if (!invoice) throw new Response('Not found', { status: 404 });
   return defer({ invoice, invoiceLogs });
 }
 

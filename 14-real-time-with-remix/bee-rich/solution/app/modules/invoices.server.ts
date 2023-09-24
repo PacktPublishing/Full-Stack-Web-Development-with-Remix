@@ -21,6 +21,14 @@ export async function createInvoice({ title, description, amount, attachment, us
       },
     },
   });
+  /**
+   * We create an invoice log entry for the newly created invoice.
+   * This is an async side effect that we don't want to block the response on.
+   *
+   * Note that we cannot guarantee that the invoice log entry will be included
+   * in the next loader re-validation (invoiceLog may still be creating when we
+   * re-fetch the loader data after creating an invoice).
+   */
   createInvoiceLog(userId, invoice.id, { title, description, amount, currencyCode: 'USD' });
   return invoice;
 }
@@ -39,6 +47,14 @@ export async function updateInvoice({ id, title, description, amount, attachment
     where: { id_userId: { id, userId } },
     data: { title, description, amount, attachment },
   });
+  /**
+   * We create an invoice log entry with the updated invoice data.
+   * This is an async side effect that we don't want to block the response on.
+   *
+   * Note that we cannot guarantee that the invoice log entry will be included
+   * in the next loader re-validation (invoiceLog may still be creating when we
+   * re-fetch the loader data after updating the invoice).
+   */
   createInvoiceLog(userId, invoice.id, invoice);
   return invoice;
 }

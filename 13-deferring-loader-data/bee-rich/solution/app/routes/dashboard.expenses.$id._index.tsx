@@ -84,14 +84,15 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const userId = await requireUserId(request);
   const { id } = params;
   if (!id) throw Error('id route parameter must be defined');
-  const expense = await db.expense.findUnique({ where: { id_userId: { id, userId } } });
-  if (!expense) throw new Response('Not found', { status: 404 });
+  // Start expense logs query first before we await the expense query
   const expenseLogs = db.expenseLog
     .findMany({
       orderBy: { createdAt: 'desc' },
       where: { expenseId: id, userId },
     })
-    .then((expense) => expense);
+    .then((expenseLogs) => expenseLogs);
+  const expense = await db.expense.findUnique({ where: { id_userId: { id, userId } } });
+  if (!expense) throw new Response('Not found', { status: 404 });
   return defer({ expense, expenseLogs });
 }
 
