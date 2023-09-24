@@ -92,7 +92,8 @@ export default function Component() {
   const isSubmitting =
     navigation.state !== 'idle' && navigation.formAction === `/dashboard/expenses/${expense.id}?index`;
   const actionData = useActionData<typeof action>();
-  const isUploadingAttachment = !!navigation.formData?.get('attachment');
+  const attachment = navigation.formData?.get('attachment');
+  const isUploadingAttachment = attachment instanceof File && attachment.name !== '';
   const isRemovingAttachment = navigation.formData?.get('intent') === 'remove-attachment';
   return (
     <>
