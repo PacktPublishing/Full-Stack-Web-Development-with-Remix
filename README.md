@@ -48,9 +48,7 @@ Run the following command in a terminal to bootstrap the application:
 npx create-remix@2 --template PacktPublishing/Full-Stack-Web-Development-with-Remix/03-deployment-targets-adapters-and-stacks/bee-rich
 ```
 
-Follow the instructions in the terminal to create the application.
-
-Note that the created application is nothing but a copy of the template from _Chapter 3, Deployment Targets, Adapters, and Stacks_. Refer to the `README.md` file in the bootstrapped application folder or [here](./03-deployment-targets-adapters-and-stacks/bee-rich/README.md) for more information about how to work with BeeRich.
+After following the instructions in the terminal, navigate to the newly created project folder and open the `README.md` file for further instructions.
 
 ## Troubleshooting and FAQ
 
