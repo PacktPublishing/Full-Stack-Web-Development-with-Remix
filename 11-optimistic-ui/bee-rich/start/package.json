@@ -15,7 +15,7 @@
     "build:db": "npx prisma generate",
     "update:db": "npx prisma db push",
     "update:remix": "npm i @remix-run/express@2 @remix-run/node@2 @remix-run/react@2 @remix-run/dev@2 @remix-run/eslint-config@2 @remix-run/css-bundle@2",
-    "seed": "bun prisma/seed.ts",
+    "seed": "npx ts-node-esm prisma/seed.ts",
     "reset:db": "rimraf ./prisma/dev.db && npm run update:db && npm run seed",
     "dev": "run-p \"dev:*\"",
     "dev:remix": "remix dev --manual -c \"node server.js\"",
@@ -63,6 +63,7 @@
     "prisma": "^5.3.1",
     "rimraf": "^5.0.1",
     "tailwindcss": "^3.3.3",
+    "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   },
   "engines": {
