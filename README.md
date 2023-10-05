@@ -7,7 +7,7 @@ Learn how Remix can supercharge your React development.
 ### Getting started with Remix
 
 1. The Era of Full Stack Web Frameworks
-2.  [Creating a new Remix App](02-creating-a-new-remix-app)
+2.  [Creating a New Remix App](02-creating-a-new-remix-app)
 3.  [Deployment Targets, Adapters, and Stacks](03-deployment-targets-adapters-and-stacks)
 4.  [Routing in Remix](04-routing-in-remix/)
 
@@ -17,7 +17,7 @@ Learn how Remix can supercharge your React development.
 6.  [Enhancing the User Experience](06-enhancing-the-user-experience/)
 7.  [Error Handling in Remix](07-error-handling-in-remix/)
 8.  [Session Management](08-session-management/)
-9.  [Assets and Meta Data Handling](09-assets-and-meta-data-handling/)
+9.  [Assets and Metadata Handling](09-assets-and-meta-data-handling/)
 10. [Working with File Uploads](10-working-with-file-uploads/)
 
 ### Advanced topics of full stack web development with Remix
@@ -49,6 +49,18 @@ npx create-remix@2 --template PacktPublishing/Full-Stack-Web-Development-with-Re
 ```
 
 After following the instructions in the terminal, navigate to the newly created project folder and open the `README.md` file for further instructions.
+
+### Later versions of BeeRich
+
+Each chapter iterates on the previous one. If you want to check out a later version of BeeRich, you can find a `start/` and `solution/` version of BeeRich in each chapter folder. 
+
+First, clone this repository:
+
+```sh
+https://github.com/PacktPublishing/Full-Stack-Web-Development-with-Remix.git
+```
+
+Then, open the `start/` or `solution/` folder in your editor and review the `README.md` file for further instructions.
 
 ## Troubleshooting and FAQ
 
