@@ -99,7 +99,7 @@ You can find the extension in the [VSCode marketplace](https://marketplace.visua
   "format:db": "npx prisma format",
   "build:db": "npx prisma generate",
   "update:db": "npx prisma db push",
-  "seed": "bun prisma/seed.ts",
+  "seed": "npx ts-node --esm prisma/seed.ts",
   "reset:db": "rimraf ./prisma/dev.db && npm run update:db && npm run seed"
 }
 ```
