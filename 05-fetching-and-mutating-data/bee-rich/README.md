@@ -167,7 +167,7 @@ Usually you can import the Prisma client directly from `@prisma/client`. However
 Create a new file `db.server.ts` in the `app` folder and add the following code:
 
 ```ts
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
 let db: PrismaClient;
 
@@ -179,7 +179,7 @@ declare global {
 // this is needed because in development we don't want to restart
 // the server with every change, but we want to make sure we don't
 // create a new connection to the DB with every change either.
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === 'production') {
   db = new PrismaClient();
 } else {
   if (!global.__db) {
@@ -189,6 +189,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 export { db };
+
 ```
 
 You can find more information about this wrapper in the database section of the [Remix Jokes App Tutorial](https://remix.run/docs/en/v1/tutorials/jokes#connect-to-the-database).
@@ -198,151 +199,151 @@ You can find more information about this wrapper in the database section of the 
 Create a new file `seed.ts` in the `prisma` folder and add the following code:
 
 ```ts
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
 const db = new PrismaClient();
 
 const expenses = [
   {
-    title: "Groceries",
+    title: 'Groceries',
     amount: 50,
-    currencyCode: "USD",
-    date: "2022-12-05",
+    currencyCode: 'USD',
+    date: '2022-12-05',
   },
   {
-    title: "Gym Membership",
+    title: 'Gym Membership',
     amount: 20,
-    currencyCode: "USD",
-    date: "2022-12-03",
+    currencyCode: 'USD',
+    date: '2022-12-03',
   },
   {
-    title: "Movies",
+    title: 'Movies',
     amount: 20,
-    currencyCode: "USD",
-    date: "2022-12-02",
+    currencyCode: 'USD',
+    date: '2022-12-02',
   },
   {
-    title: "Mobile Service",
+    title: 'Mobile Service',
     amount: 55,
-    currencyCode: "USD",
-    date: "2022-11-01",
+    currencyCode: 'USD',
+    date: '2022-11-01',
   },
   {
-    title: "Rent December",
+    title: 'Rent December',
     amount: 1000,
-    currencyCode: "USD",
-    date: "2022-12-01",
+    currencyCode: 'USD',
+    date: '2022-12-01',
   },
   {
-    title: "Groceries",
+    title: 'Groceries',
     amount: 55,
-    currencyCode: "USD",
-    date: "2022-12-01",
+    currencyCode: 'USD',
+    date: '2022-12-01',
   },
   {
-    title: "Takeout",
+    title: 'Takeout',
     amount: 55,
-    currencyCode: "USD",
-    date: "2022-11-30",
+    currencyCode: 'USD',
+    date: '2022-11-30',
   },
   {
-    title: "Gym Membership",
+    title: 'Gym Membership',
     amount: 20,
-    currencyCode: "USD",
-    date: "2022-11-03",
+    currencyCode: 'USD',
+    date: '2022-11-03',
   },
   {
-    title: "Groceries",
+    title: 'Groceries',
     amount: 15,
-    currencyCode: "USD",
-    date: "2022-11-02",
+    currencyCode: 'USD',
+    date: '2022-11-02',
   },
   {
-    title: "Mobile Service",
+    title: 'Mobile Service',
     amount: 55,
-    currencyCode: "USD",
-    date: "2022-11-01",
+    currencyCode: 'USD',
+    date: '2022-11-01',
   },
   {
-    title: "Rent November",
+    title: 'Rent November',
     amount: 1000,
-    currencyCode: "USD",
-    date: "2022-11-01",
+    currencyCode: 'USD',
+    date: '2022-11-01',
   },
   {
-    title: "Groceries",
+    title: 'Groceries',
     amount: 55,
-    currencyCode: "USD",
-    date: "2022-10-30",
+    currencyCode: 'USD',
+    date: '2022-10-30',
   },
   {
-    title: "Groceries",
+    title: 'Groceries',
     amount: 55,
-    currencyCode: "USD",
-    date: "2022-10-15",
+    currencyCode: 'USD',
+    date: '2022-10-15',
   },
   {
-    title: "Dinner",
+    title: 'Dinner',
     amount: 40,
-    currencyCode: "USD",
-    date: "2022-10-11",
+    currencyCode: 'USD',
+    date: '2022-10-11',
   },
   {
-    title: "Gym Membership",
+    title: 'Gym Membership',
     amount: 20,
-    currencyCode: "USD",
-    date: "2022-10-03",
+    currencyCode: 'USD',
+    date: '2022-10-03',
   },
   {
-    title: "Groceries",
+    title: 'Groceries',
     amount: 25,
-    currencyCode: "USD",
-    date: "2022-10-02",
+    currencyCode: 'USD',
+    date: '2022-10-02',
   },
   {
-    title: "Mobile Service",
+    title: 'Mobile Service',
     amount: 55,
-    currencyCode: "USD",
-    date: "2022-10-01",
+    currencyCode: 'USD',
+    date: '2022-10-01',
   },
   {
-    title: "Rent October",
+    title: 'Rent October',
     amount: 1000,
-    currencyCode: "USD",
-    date: "2022-10-01",
+    currencyCode: 'USD',
+    date: '2022-10-01',
   },
   {
-    title: "Groceries",
+    title: 'Groceries',
     amount: 55,
-    currencyCode: "USD",
-    date: "2022-10-01",
+    currencyCode: 'USD',
+    date: '2022-10-01',
   },
 ];
 
 const income = [
   {
-    title: "Salary December",
+    title: 'Salary December',
     amount: 2500,
-    currencyCode: "USD",
-    date: "2022-12-30",
+    currencyCode: 'USD',
+    date: '2022-12-30',
   },
   {
-    title: "Salary November",
+    title: 'Salary November',
     amount: 2500,
-    currencyCode: "USD",
-    date: "2022-11-30",
+    currencyCode: 'USD',
+    date: '2022-11-30',
   },
   {
-    title: "Salary October",
+    title: 'Salary October',
     amount: 2500,
-    currencyCode: "USD",
-    date: "2022-10-30",
+    currencyCode: 'USD',
+    date: '2022-10-30',
   },
   {
-    title: "Salary September",
+    title: 'Salary September',
     amount: 2500,
-    currencyCode: "USD",
-    date: "2022-09-30",
+    currencyCode: 'USD',
+    date: '2022-09-30',
   },
 ];
 
@@ -368,13 +369,14 @@ function createInvoice(incomeData: (typeof income)[number]) {
   });
 }
 
-console.log("🌱 Seeding the database...");
+console.log('🌱 Seeding the database...');
 const start = performance.now();
 const expensePromises = expenses.map((expense) => createExpense(expense));
 const invoicePromises = income.map((income) => createInvoice(income));
 await Promise.all([...expensePromises, ...invoicePromises]);
 const end = performance.now();
 console.log(`🚀 Seeded the database. Done in ${Math.round(end - start)}ms`);
+
 ```
 
 This script is used to seed the database with sample data. We can execute the script by running the following command:
