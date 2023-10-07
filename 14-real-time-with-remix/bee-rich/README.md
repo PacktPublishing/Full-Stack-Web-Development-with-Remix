@@ -61,7 +61,7 @@ This is optional, but can be helpful for testing.
 
 Test credentials:
 
-- Email: john.doe@example.com'
+- Email: john.doe@example.com
 - Password: BeeRich
 
 You can also update the seed data in `prisma/seed.ts`.
