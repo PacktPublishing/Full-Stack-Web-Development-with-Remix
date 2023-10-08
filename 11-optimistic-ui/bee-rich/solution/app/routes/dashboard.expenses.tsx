@@ -2,7 +2,6 @@ import type { LoaderFunctionArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { Form, Outlet, useLoaderData, useLocation, useNavigation, useParams } from '@remix-run/react';
 import { clsx } from 'clsx';
-import { useRef } from 'react';
 
 import { SearchInput } from '~/components/forms';
 import { H1 } from '~/components/headings';
@@ -33,15 +32,14 @@ export default function Component() {
   const expenses = useLoaderData<typeof loader>();
   const { id } = useParams();
   const location = useLocation();
-  const ref = useRef<HTMLFormElement>(null);
   return (
     <div className="w-full">
       <H1>Your expenses</H1>
       <div className="mt-10 w-full flex flex-col-reverse lg:flex-row">
         <section className="lg:p-8 w-full lg:max-w-2xl">
           <h2 className="sr-only">All expenses</h2>
-          <Form ref={ref} method="GET" action={location.pathname}>
-            <SearchInput name="q" type="search" label="Search by title" formRef={ref} />
+          <Form method="GET" action={location.pathname}>
+            <SearchInput name="q" type="search" label="Search by title" />
           </Form>
           <ul className="flex flex-col">
             {expenses.map((expense) => (

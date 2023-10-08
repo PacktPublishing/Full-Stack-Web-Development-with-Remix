@@ -60,13 +60,13 @@ function useDebounce(delay: number, initialValue = ''): [string, React.Dispatch<
 }
 
 type SearchInputProps = InputProps & {
-  formRef: React.RefObject<HTMLFormElement>;
   defaultValue?: string;
 };
 
-export function SearchInput({ formRef, defaultValue, ...props }: SearchInputProps) {
+export function SearchInput({ defaultValue, ...props }: SearchInputProps) {
   const [debouncedValue, setValue] = useDebounce(500, defaultValue);
   const submit = useSubmit();
+  const formRef = useRef<HTMLFormElement | null>();
   const debouncedValueRef = useRef(debouncedValue);
 
   useEffect(() => {
@@ -79,7 +79,16 @@ export function SearchInput({ formRef, defaultValue, ...props }: SearchInputProp
     }
   }, [debouncedValue, formRef, submit]);
 
-  return <Input {...props} defaultValue={debouncedValue} onChange={(e) => setValue(e.target.value)} />;
+  return (
+    <Input
+      {...props}
+      defaultValue={defaultValue}
+      onChange={(e) => {
+        setValue(e.target.value);
+        formRef.current = e.target.form;
+      }}
+    />
+  );
 }
 
 type FormProps = RemixFormProps;
