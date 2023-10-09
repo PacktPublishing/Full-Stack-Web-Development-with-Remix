@@ -28,7 +28,7 @@ async function handleDelete(request: Request, id: string, userId: string): Promi
   try {
     await deleteInvoice(id, userId);
   } catch (err) {
-    throw new Response('Not found', { status: 404 });
+    return json({ success: false });
   }
 
   if (redirectPath.includes(id)) {
