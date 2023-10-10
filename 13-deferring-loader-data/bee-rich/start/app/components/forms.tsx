@@ -83,6 +83,7 @@ export function SearchInput({ defaultValue, ...props }: SearchInputProps) {
     <Input
       {...props}
       defaultValue={defaultValue}
+      key={defaultValue}
       onChange={(e) => {
         formRef.current = e.target.form;
         setValue(e.target.value);
