@@ -86,7 +86,7 @@ export default function Component() {
             ))}
           </ul>
           {showPagination && (
-            <Form method="GET" action="/dashboard/income" className="flex justify-between">
+            <Form method="GET" action={location.pathname} className="flex justify-between pb-10">
               <input type="hidden" name="q" value={searchQuery} />
               <Button type="submit" name="page" value={pageNumber - 1} disabled={pageNumber === 1}>
                 Previous
