@@ -23,8 +23,8 @@ If you feel this book is for you, get your [copy](https://www.amazon.com/dp/1801
 <a href="https://www.packtpub.com/?utm_source=github&utm_medium=banner&utm_campaign=GitHubBanner"><img src="https://raw.githubusercontent.com/PacktPublishing/GitHub/master/GitHub.png" 
 alt="https://www.packtpub.com/" border="5" /></a>
 
-
 ## Instructions and Navigations
+
 All of the code is organized into folders. 
 
 **Following is what you need for this book:**
@@ -49,6 +49,7 @@ The code for each chapter can be found in the corresponding folder. For example,
 BeeRich is a dashboard-like application that mimics both personal and enterprise use cases. BeeRich is a personal finance management application that helps you stay on top of your bee - pardon me - bookkeeping. Well, at least that’s the goal. In every chapter, we will add more code to this application.
 
 We kick off the BeeRich development journey in _Chapter 3, Deployment Targets, Adapters, and Stacks_. You can find the BeeRich Remix template [here](/03-deployment-targets-adapters-and-stacks/bee-rich/).
+
 ### Getting started with BeeRich
 
 Run the following command in a terminal to bootstrap the application:
@@ -84,10 +85,11 @@ If you see an **Application Error** while running the application, it is most li
 
 
 ### Related products <Other books you may enjoy>
+
 * Building Micro Frontends with React 18 [[Packt]](https://www.packtpub.com/product/building-micro-frontends-with-react-18/9781804610961) [[Amazon]](https://www.amazon.com/dp/1804610968)
 
 * React 18 Design Patterns and Best Practices, 4e [[Packt]](https://www.packtpub.com/product/react-18-design-patterns-and-best-practices-fourth-edition/9781803233109) [[Amazon]](https://www.amazon.com/dp/1803233109)
 
 ## Get to Know the Author
-**Andre Landgraf**
-is a full stack developer from Germany. He graduated with an MS in Information Systems from the Technical University of Munich and was also awarded an MS in Computer Science from Sofia University in Palo Alto. Andre currently lives in Cupertino, California, and he works as a Software Engineer at LinkedIn. Andre loves learning, writing, and speaking about all things web. In his free time, he tutors aspiring developers and builds for the web.
+
+**Andre Landgraf** is a full stack developer from Germany. He graduated with an MS in Information Systems from the Technical University of Munich and was also awarded an MS in Computer Science from Sofia University in Palo Alto. Andre currently lives in Cupertino, California, and he works as a Software Engineer at LinkedIn. Andre loves learning, writing, and speaking about all things web. In his free time, he tutors aspiring developers and builds for the web.
