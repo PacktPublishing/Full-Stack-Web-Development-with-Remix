@@ -4,25 +4,39 @@
 
 **Welcome!** BeeRich is a dashboard-like application that mimics both personal and enterprise use cases. BeeRich is a personal finance management application that helps you stay on top of your beekeep - pardon me - bookkeeping. Well, at least that’s the goal. There is nothing much there yet. In every chapter, we will add more code to this application.
 
-Starting with _Chapter 4, Routing in Remix_, there will be a `bee-rich/start` and `bee-rich/solution` folder in each chapter folder. Usually, you want to work on your local copy of BeeRich. However, if you get stuck, you can always refer to the `bee-rich/solution` folder to see the final code for the chapter and fallback to the `bee-rich/start` folder to reset the code to the starting point.
+Starting with _Chapter 4, Routing in Remix_, there will be a `bee-rich/start` and `bee-rich/solution` folder in each chapter folder. Usually, you want to work on your local copy of BeeRich. However, if you get stuck, you can always refer to the `bee-rich/solution` folder to see the final code for the chapter and fallback to the `bee-rich/start` folder to reset the code to the current chapter's starting point.
 
 Each `bee-rich` folder contains a `README.md` file that contains a **Getting started** section (just like this one!). Additionally, there might be additional sections to help you get started with the chapter.
 
-### Bootstrapping BeeRich
+### Bootstrapping the initial version of BeeRich
 
-To get started with BeeRich, you can either copy-paste the BeeRich application from the chapter's `bee-rich/start` folder or you can use `create-remix` to bootstrap BeeRich.
-
-#### BeeRich template
-
-To bootstrap the base BeeRich application, run the following command:
+Run the following command in a terminal to bootstrap the application:
 
 ```sh
 npx create-remix@2 --template PacktPublishing/Full-Stack-Web-Development-with-Remix/03-deployment-targets-adapters-and-stacks/bee-rich
 ```
 
-This uses the BeeRich template from _Chapter 3, Deployment Targets, Adapters, and Stacks_.
+This uses the BeeRich template from _Chapter 3, Deployment Targets, Adapters, and Stacks_. After following the instructions in the terminal, navigate to the newly created project folder and follow the `Run the application` instructions below
 
-#### BeeRich chapter code
+### Bootstrapping later versions of BeeRich
+
+Each chapter iterates on the previous one. If you want to check out a later version of BeeRich, you can find a `start/` and `solution/` version of BeeRich in each chapter folder. We recommend you to work on your local copy of BeeRich, adding the code from each chapter to your local copy. However, if you get stuck, you can always reset the code by checking out the code from the chapters start or solution folder.
+
+To get a later version of BeeRich, you can either clone this repository or you can use `create-remix` to bootstrap BeeRich.
+
+#### Cloning this repository
+
+First, clone this repository:
+
+```sh
+https://github.com/PacktPublishing/Full-Stack-Web-Development-with-Remix.git
+```
+
+Then, open the `start/` or `solution/` folder that you are interested in in your editor. Then follow the instructions in the book and the `README.md` file of the chapter.
+
+We recommend not opening the entire repository as this may be confusing. Instead, open the `start/` or `solution/` folder of the chapter you are interested in directly as a project in your editor. Next, review the `Run the application` instructions below.
+
+#### Use `create-remix` to bootstrap a specific version of BeeRich
 
 To bootstrap the BeeRich application for a specific chapter, run the following command:
 
@@ -30,13 +44,15 @@ To bootstrap the BeeRich application for a specific chapter, run the following c
 npx create-remix@2 --template PacktPublishing/Full-Stack-Web-Development-with-Remix/:chapter-name/bee-rich/start
 ```
 
-Replace `:chapter-name` with the name of the chapter. For example, to bootstrap the BeeRich application for _Chapter 4, Routing in Remix_, run the following command:
+Replace `:chapter-name` with the name of the chapter folder name in this repository. For example, to bootstrap the BeeRich application for _Chapter 4, Routing in Remix_, run the following command:
 
 ```sh
 npx create-remix@2 --template PacktPublishing/Full-Stack-Web-Development-with-Remix/04-routing-in-remix/bee-rich/start
 ```
 
 You can also replace `start` with `solution` to bootstrap the BeeRich application with the final code for the chapter.
+
+Next, review the `Run the application` instructions.
 
 ### Run the application
 
@@ -79,10 +95,16 @@ SESSION_SECRET="[A secret string]"
 
 ### Dependencies
 
+Important dependencies we will work with in this book:
+
 - [clsx](https://www.npmjs.com/package/clsx): A helper for constructing className strings conditionally.
+- [prisma](https://www.prisma.io/): A modern database toolkit for TypeScript and Node.js.
 - [tailwindcss](https://tailwindcss.com/): A utility-first CSS framework.
+- [zod](https://www.npmjs.com/package/zod): A TypeScript-first schema declaration and validation library.
 
 ### Scripts
+
+Scripts the initial version of BeeRich comes with:
 
 - `npm run routes` - prints the routes hierarchy
 - `npm run typecheck` - runs the TypeScript compiler to check for type errors
@@ -127,15 +149,17 @@ You can also install the [ESLint VSCode extension](https://marketplace.visualstu
 
 Follow the instructions in _Chapter 3, Deployment Targets, Adapters, and Stacks_ to get started with BeeRich.
 
-If you want to set up BeeRich yourself, you can follow the following instructions.
+If you want to set up BeeRich yourself, you can follow the following instructions below to get to the starting point for _Chapter 4, Routing in Remix_.
 
-1. **Use the Remix CLI to create a new Remix project**
+1. **Use the Remix CLI to create a new Express.js Remix project**
+
+We use the [create-remix](https://www.npmjs.com/package/create-remix) CLI to create a new Remix project. Use the following command to select Remix's Express.js template and create a new project folder called `bee-rich`:
 
 ```bash
-npx create-remix@latest ./bee-rich
+npx create-remix@2 --template remix-run/remix/templates/express ./bee-rich
 ```
 
-- Select [TypeScript](https://www.typescriptlang.org/) and the Express.js Server as your deployment target.
+Follow the instructions in the terminal to set up the project, initialize the git repository, and install the dependencies.
 
 Please refer to _Chapter 2, Creating a new Remix app_ for more information about the `create-remix` script. You can also refer to the [REMIX_README.md](./REMIX_README.md) file for more information about how to work with Remix and the Express.js starter template.
 
@@ -146,28 +170,52 @@ We use [Prettier](https://prettier.io/) and [ESLint](https://eslint.org/) to for
 - Install the following packages:
 
 ```bash
-npm install --save-dev eslint prettier eslint-config-prettier eslint-plugin-html eslint-plugin-jsx-a11y eslint-plugin-prettier eslint-plugin-react
+npm i --save-dev prettier@^2.8.8 eslint@^8.49.0 eslint-config-prettier@^8.10.0 eslint-plugin-html@^7.1.0 eslint-plugin-import@^2.28.1 eslint-plugin-jsx-a11y@^6.7.1 eslint-plugin-prettier@^4.2.1 eslint-plugin-react@^7.33.2 eslint-plugin-simple-import-sort@^10.0.0
 ```
 
-- Copy-paste the Prettier and ESLint configurations from the [.prettierrc](./.prettierrc.js) and [.eslintrc](./.eslintrc.js) files in the root of this repository into your project.
+- Create the following files in the root of your project:
+  - `.prettierrc.js`
+  - `.eslintrc.js`
+  - `.eslintignore`
+
+- Copy-paste the Prettier and ESLint configurations in [.prettierrc](./.prettierrc.js) and [.eslintrc](./.eslintrc.js) into the respective files in your project.
+
+- Copy-paste the content of the [.eslintignore](./.eslintignore) file into your project's `.eslintignore` file.
 
 Please feel free to alter the Prettier configuration and add more ESLint packages and rules based on your own preferences.
 
-- Copy-paste the [.vscode/settings.json](./.vscode/settings.json) file from the root of this repository into your project.
+- You can also install the [ESLint VSCode extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) to fix all lint and format violations on file save. For that, copy-paste the following content into the .vscode/settings.json file in the root of your project:
+
+```json
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "[markdown][javascript][javascriptreact][typescript][typescriptreact]": {
+    "editor.formatOnSave": false
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
+```
 
 3. **Set up Tailwind CSS**
 
 [Tailwind CSS](https://tailwindcss.com/) is a utility-first CSS framework. We will use Tailwind to compose powerful designs right in our markup.
 
-- Please follow the instructions in the Remix documentation to set up [Tailwind CSS](https://remix.run/docs/en/v1/guides/styling#tailwind-css).
+- Please follow [the instructions in the Remix documentation](https://remix.run/docs/en/2/styling/tailwind) to set up Tailwind CSS.
 - Next, copy-paste the additional Tailwind CSS configuration from the [tailwind.config.js](./tailwind.config.js) file in the root of this repository into your project.
-- Add the following line to the `/.gitignore` file:
+- Update the code in the `app/root.tsx` file in your project as follows:
 
-```txt
-/app/styles/tailwind.css
+```tsx
+- import { cssBundleHref } from "@remix-run/css-bundle";
++ import tailwindCSS from './styles/tailwind.css';
+
++ export const links: LinksFunction = () => [{ rel: 'stylesheet', href: tailwindCSS }];
+- export const links: LinksFunction = () => [
+-   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
+- ];
 ```
-
-This prevents the generated Tailwind CSS file from being committed to your repository.
 
 4. **Install clsx**
 
@@ -185,19 +233,27 @@ We use [rimraf](https://www.npmjs.com/package/rimraf) to delete files and folder
 npm install rimraf --save-dev
 ```
 
-6. **Reusable UI components**
+6. **Install npm-run-all**
+
+We use [npm-run-all](https://www.npmjs.com/package/npm-run-all) to run multiple npm scripts in parallel.
+
+```bash
+npm install npm-run-all --save-dev
+```
+
+7. **Reusable UI components**
 
 BeeRich is scaffolded with a few reusable UI components. You can find them in the `app/components` folder. These will help us build the UI faster.
 
 - Copy-paste the `app/components` folder from the root of this repository into your project.
 
-7. **Existing routes**
+8. **Existing routes**
 
 BeeRich starts off with a few updates to the `app/root.tsx` and `app/routes/index.tsx` files.
 
 - Compare your `app/root.tsx` and `app/routes/index.tsx` files with the ones in the root of this repository. Then copy-paste the changes into your project.
 
-8. **The demo route**
+9. **The demo route**
 
 BeeRich starts off with a demo route that showcases the UI components. You can find the demo route in the `app/routes/demo.tsx` file.
 
@@ -205,7 +261,7 @@ BeeRich starts off with a demo route that showcases the UI components. You can f
 
 To inspect the demo route, run `npm run dev` and visit the demo page at [http://localhost:3000/demo](http://localhost:3000/demo).
 
-9. **Copy-paste the favicon.ico**
+10. **Copy-paste the favicon.ico**
 
 BeeRich uses a custom favicon. You can find the favicon in the `public/favicon.ico` file.
 
