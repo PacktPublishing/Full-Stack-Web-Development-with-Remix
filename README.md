@@ -100,5 +100,5 @@ If you see an **Application Error** while running the application, it is most li
 
 **Andre Landgraf** is a full stack developer from Germany. He graduated with an MS in Information Systems from the Technical University of Munich and was also awarded an MS in Computer Science from Sofia University in Palo Alto. Andre currently lives in Cupertino, California, and he works as a Software Engineer at LinkedIn. Andre loves learning, writing, and speaking about all things web. In his free time, he tutors aspiring developers and builds for the web.
 
-You can find Andre on Twitter [@andrelandgraf](https://twitter.com/AndreLandgraf94) and on LinkedIn [linkedin.com/in/andrelandgraf](https://www.linkedin.com/in/andre-landgraf/).
+You can find Andre on [Twitter](https://twitter.com/AndreLandgraf94) and on [LinkedIn](https://www.linkedin.com/in/andre-landgraf/).
 
