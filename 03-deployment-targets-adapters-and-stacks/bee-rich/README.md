@@ -289,4 +289,14 @@ Copy and replace the scripts in your `package.json` file with the following scri
 
 You can also find the scripts in the `package.json` file in the root of this repository [here](./package.json).
 
+12. **Update the tsconfig.json file**
+
+Add the following `compilerOptions` to your `tsconfig.json` file:
+
+```json
+  "module": "ES2022",
+```
+
+This is needed to make our seed script work, which we will add in _Chapter 5, Fetching and Mutating Data_.
+
 Awesome! You are all set up. You can now start working on the chapter! 🥳
