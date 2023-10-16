@@ -1,6 +1,8 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ['./app/**/*.{ts,tsx,jsx,js}'],
+import type { Config } from 'tailwindcss';
+import defaultTheme from 'tailwindcss/defaultTheme';
+
+export default {
+  content: ['./app/**/*.{js,jsx,ts,tsx}'],
   darkMode: 'media', // or 'media' or 'class'
   theme: {
     extend: {
@@ -11,19 +13,19 @@ module.exports = {
         secondary: '#C4C4C4',
         secondaryAccent: '#9CA3AF',
         background: '#F5F5F5',
-        backgroundPrimary: '#FFFFFF',
         darkPrimary: '#803805',
         darkPrimaryAccent: '#8A3C05',
         darkAccent: '#DEBF79',
         darkSecondary: '#444D5A',
         darkSecondaryAccent: '#4C505C',
         darkBackground: '#222222',
-        darkBackgroundPrimary: '#1F1F1F',
-        darkShadow: '#000000',
         text: '#222222',
         darkText: '#F5F5F5',
       },
     },
+    fontFamily: {
+      sans: ['Ubuntu', ...defaultTheme.fontFamily.sans],
+    },
   },
   plugins: [],
-};
+} satisfies Config;

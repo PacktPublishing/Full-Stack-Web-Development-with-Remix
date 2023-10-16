@@ -149,7 +149,7 @@ You can also install the [ESLint VSCode extension](https://marketplace.visualstu
 
 Follow the instructions in _Chapter 3, Deployment Targets, Adapters, and Stacks_ to get started with BeeRich.
 
-If you want to set up BeeRich yourself, you can follow the following instructions below to get to the starting point for _Chapter 4, Routing in Remix_.
+If you want to set up BeeRich from scratch, you can follow the following instructions below to get to the starting point of _Chapter 4, Routing in Remix_. Note that this is not required to follow the book. You can always use the BeeRich template from _Chapter 3, Deployment Targets, Adapters, and Stacks_ to bootstrap the application.
 
 1. **Use the Remix CLI to create a new Express.js Remix project**
 
@@ -174,17 +174,16 @@ npm i --save-dev prettier@^2.8.8 eslint@^8.49.0 eslint-config-prettier@^8.10.0 e
 ```
 
 - Create the following files in the root of your project:
-  - `.prettierrc.js`
-  - `.eslintrc.js`
+  - `.prettierrc.cjs`
   - `.eslintignore`
 
-- Copy-paste the Prettier and ESLint configurations in [.prettierrc](./.prettierrc.js) and [.eslintrc](./.eslintrc.js) into the respective files in your project.
+- Copy-paste the Prettier and ESLint configurations from the `.prettierrc.cjs` and `.eslintrc.cjs` files in the root of this repository into your project.
 
 - Copy-paste the content of the [.eslintignore](./.eslintignore) file into your project's `.eslintignore` file.
 
 Please feel free to alter the Prettier configuration and add more ESLint packages and rules based on your own preferences.
 
-- You can also install the [ESLint VSCode extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) to fix all lint and format violations on file save. For that, copy-paste the following content into the .vscode/settings.json file in the root of your project:
+- You can also install the [ESLint VSCode extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) to fix all lint and format violations on file save. For that, copy-paste the following content into the .vscode/settings.json file in the root of your project (VS Code Workspace settings):
 
 ```json
 {
@@ -204,10 +203,11 @@ Please feel free to alter the Prettier configuration and add more ESLint package
 [Tailwind CSS](https://tailwindcss.com/) is a utility-first CSS framework. We will use Tailwind to compose powerful designs right in our markup.
 
 - Please follow [the instructions in the Remix documentation](https://remix.run/docs/en/2/styling/tailwind) to set up Tailwind CSS.
-- Next, copy-paste the additional Tailwind CSS configuration from the [tailwind.config.js](./tailwind.config.js) file in the root of this repository into your project.
+- Next, copy-paste the additional Tailwind CSS configuration from the [tailwind.config.ts](./tailwind.config.ts) file in the root of this repository into your project.
+- Move the `tailwind.css` file into a new `app/styles` folder for better organization.
 - Update the code in the `app/root.tsx` file in your project as follows:
 
-```tsx
+```diff
 - import { cssBundleHref } from "@remix-run/css-bundle";
 + import tailwindCSS from './styles/tailwind.css';
 
@@ -249,9 +249,9 @@ BeeRich is scaffolded with a few reusable UI components. You can find them in th
 
 8. **Existing routes**
 
-BeeRich starts off with a few updates to the `app/root.tsx` and `app/routes/index.tsx` files.
+BeeRich starts off with a few updates to the `app/root.tsx` and `app/routes/_index.tsx` files.
 
-- Compare your `app/root.tsx` and `app/routes/index.tsx` files with the ones in the root of this repository. Then copy-paste the changes into your project.
+- Compare your `app/root.tsx` and `app/routes/_index.tsx` files with the ones in the root of this repository. Then copy-paste the changes into your project.
 
 9. **The demo route**
 
@@ -266,5 +266,27 @@ To inspect the demo route, run `npm run dev` and visit the demo page at [http://
 BeeRich uses a custom favicon. You can find the favicon in the `public/favicon.ico` file.
 
 - Copy-paste the `public/favicon.ico` file into your project.
+
+11. **Copy-paste the scripts**
+
+Copy and replace the scripts in your `package.json` file with the following scripts:
+
+```json
+"scripts": {
+  "routes": "remix routes",
+  "typecheck": "tsc",
+  "format": "run-s format:*",
+  "format:lint": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
+  "clean": "rimraf ./node_modules .cache ./build ./public/build && npm i",
+  "build": "run-s \"build:*\"",
+  "build:remix": "remix build",
+  "update:remix": "npm i @remix-run/express@2 @remix-run/node@2 @remix-run/react@2 @remix-run/dev@2 @remix-run/eslint-config@2 @remix-run/css-bundle@2",
+  "dev": "run-p \"dev:*\"",
+  "dev:remix": "remix dev --manual -c \"node server.js\"",
+  "start": "cross-env NODE_ENV=production node ./server.js"
+}
+```
+
+You can also find the scripts in the `package.json` file in the root of this repository [here](./package.json).
 
 Awesome! You are all set up. You can now start working on the chapter! 🥳
