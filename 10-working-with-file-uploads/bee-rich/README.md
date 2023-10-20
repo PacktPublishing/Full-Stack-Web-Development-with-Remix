@@ -74,7 +74,7 @@ In the laster chapter, we experimented with route-scoped CSS files and added som
 
 Delete the `app/styles/login.css` file from your project.
 
-2. **Remove the `login.css` import from the `app/routes/__layout/login.tsx`**
+2. **Remove the `login.css` import from `app/routes/_layout/login.tsx`**
 
 ```diff
 - import loginCSS from '~/styles/login.css';
@@ -84,7 +84,7 @@ Delete the `app/styles/login.css` file from your project.
 
 Also, remove the `LinksFunction` type import as it is no longer needed.
 
-3. **Remove the `app/routes/robots[.txt.].tsx` file**
+3. **Remove the `app/routes/robots[.txt].tsx` file**
 
 We moved the content of the `robots.txt` file into `app/routes/robots[.txt.].tsx` to practice working with resource routes. However, since the content for the `robots.txt` is static, let's create a `robots.txt` file in the `/public` folder instead.
 
