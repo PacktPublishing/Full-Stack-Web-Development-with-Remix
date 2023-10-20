@@ -230,9 +230,9 @@ export async function deleteInvoice(id: string, userId: string) {
 type InvoiceUpdateData = {
   id: string;
   userId: string;
-  title?: string;
-  description?: string;
-  amount?: number;
+  title: string;
+  description: string;
+  amount: number;
   attachment?: string;
 };
 
