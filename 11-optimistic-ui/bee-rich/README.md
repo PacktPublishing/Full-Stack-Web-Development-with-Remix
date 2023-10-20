@@ -135,9 +135,9 @@ export async function deleteExpense(id: string, userId: string) {
 type ExpenseUpdateData = {
   id: string;
   userId: string;
-  title?: string;
-  description?: string;
-  amount?: number;
+  title: string;
+  description: string;
+  amount: number;
   attachment?: string;
 };
 
