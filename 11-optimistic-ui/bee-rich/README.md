@@ -95,13 +95,18 @@ So far, we validated our `FormData`by using `if` statements. Now, we will add a 
 Create a new `app/modules/expenses.server.ts` file and add the following code to the  file:
 
 ```ts
-import type { Expense } from '@prisma/client';
 import zod from 'zod';
 
 import { deleteAttachment } from '~/modules/attachments.server';
 import { db } from '~/modules/db.server';
 
-type ExpenseCreateData = Pick<Expense, 'title' | 'description' | 'amount' | 'attachment' | 'userId'>;
+type ExpenseCreateData = {
+  title: string;
+  description: string;
+  amount: number;
+  userId: string;
+  attachment?: string;
+};
 
 export function createExpense({ title, description, amount, attachment, userId }: ExpenseCreateData) {
   return db.expense.create({
@@ -127,7 +132,14 @@ export async function deleteExpense(id: string, userId: string) {
   }
 }
 
-type ExpenseUpdateData = ExpenseCreateData & Pick<Expense, 'id'>;
+type ExpenseUpdateData = {
+  id: string;
+  userId: string;
+  title?: string;
+  description?: string;
+  amount?: number;
+  attachment?: string;
+};
 
 export function updateExpense({ id, title, description, amount, attachment, userId }: ExpenseUpdateData) {
   return db.expense.update({
@@ -157,9 +169,9 @@ export function parseExpense(formData: FormData) {
   if (Number.isNaN(amountNumber)) {
     throw Error('Invalid amount');
   }
-  let attachment = formData.get('attachment');
+  let attachment: FormDataEntryValue | null | undefined = formData.get('attachment');
   if (!attachment || typeof attachment !== 'string') {
-    attachment = null;
+    attachment = undefined;
   }
   return { title, description, amount: amountNumber, attachment };
 }
@@ -178,13 +190,18 @@ The code includes the following reusable functions:
 Create a new `app/modules/invoices.server.ts` file and add the following code:
 
 ```ts
-import type { Invoice } from '@prisma/client';
 import zod from 'zod';
 
 import { deleteAttachment } from '~/modules/attachments.server';
 import { db } from '~/modules/db.server';
 
-type InvoiceCreateData = Pick<Invoice, 'title' | 'description' | 'amount' | 'attachment' | 'userId'>;
+type InvoiceCreateData = {
+  title: string;
+  description: string;
+  amount: number;
+  userId: string;
+  attachment?: string;
+};
 
 export function createInvoice({ title, description, amount, attachment, userId }: InvoiceCreateData) {
   return db.invoice.create({
@@ -210,7 +227,14 @@ export async function deleteInvoice(id: string, userId: string) {
   }
 }
 
-type InvoiceUpdateData = InvoiceCreateData & Pick<Invoice, 'id'>;
+type InvoiceUpdateData = {
+  id: string;
+  userId: string;
+  title?: string;
+  description?: string;
+  amount?: number;
+  attachment?: string;
+};
 
 export function updateInvoice({ id, title, description, amount, attachment, userId }: InvoiceUpdateData) {
   return db.invoice.update({
@@ -240,9 +264,9 @@ export function parseInvoice(formData: FormData) {
   if (Number.isNaN(amountNumber)) {
     throw Error('Invalid amount');
   }
-  let attachment = formData.get('attachment');
+  let attachment: FormDataEntryValue | null | undefined = formData.get('attachment');
   if (!attachment || typeof attachment !== 'string') {
-    attachment = null;
+    attachment = undefined;
   }
   return { title, description, amount: amountNumber, attachment };
 }

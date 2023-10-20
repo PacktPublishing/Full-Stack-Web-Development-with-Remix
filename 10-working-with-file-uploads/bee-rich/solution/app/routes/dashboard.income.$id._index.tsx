@@ -47,9 +47,9 @@ async function updateInvoice(formData: FormData, id: string, userId: string): Pr
   if (Number.isNaN(amountNumber)) {
     throw Error('something went wrong');
   }
-  let attachment = formData.get('attachment');
+  let attachment: FormDataEntryValue | null | undefined = formData.get('attachment');
   if (!attachment || typeof attachment !== 'string') {
-    attachment = null;
+    attachment = undefined;
   }
   await db.invoice.update({
     where: { id_userId: { id, userId } },

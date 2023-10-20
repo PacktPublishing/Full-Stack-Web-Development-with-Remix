@@ -1,10 +1,15 @@
-import type { Expense } from '@prisma/client';
 import zod from 'zod';
 
 import { deleteAttachment } from '~/modules/attachments.server';
 import { db } from '~/modules/db.server';
 
-type ExpenseCreateData = Pick<Expense, 'title' | 'description' | 'amount' | 'attachment' | 'userId'>;
+type ExpenseCreateData = {
+  title: string;
+  description: string;
+  amount: number;
+  userId: string;
+  attachment?: string;
+};
 
 export function createExpense({ title, description, amount, attachment, userId }: ExpenseCreateData) {
   return db.expense.create({
@@ -30,7 +35,14 @@ export async function deleteExpense(id: string, userId: string) {
   }
 }
 
-type ExpenseUpdateData = ExpenseCreateData & Pick<Expense, 'id'>;
+type ExpenseUpdateData = {
+  id: string;
+  userId: string;
+  title: string;
+  description: string;
+  amount: number;
+  attachment?: string;
+};
 
 export function updateExpense({ id, title, description, amount, attachment, userId }: ExpenseUpdateData) {
   return db.expense.update({
@@ -60,9 +72,9 @@ export function parseExpense(formData: FormData) {
   if (Number.isNaN(amountNumber)) {
     throw Error('Invalid amount');
   }
-  let attachment = formData.get('attachment');
+  let attachment: FormDataEntryValue | null | undefined = formData.get('attachment');
   if (!attachment || typeof attachment !== 'string') {
-    attachment = null;
+    attachment = undefined;
   }
   return { title, description, amount: amountNumber, attachment };
 }
