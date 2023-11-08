@@ -31,7 +31,8 @@ This book is for React developers looking to adopt Remix for their next project.
 
 ## Technical requirements
 
-To follow along, you will need a computer that can run Node.js. All common operation systems should suffice. Please install both Node.js and npm on your machine. An editor such as VS Code is recommended.
+To follow along, you will need a computer that can run Node.js. All common operation systems should suffice. Please install both Node.js (version 18 or higher) and npm on your machine. An editor such as VS Code is recommended.
+
 You can download Node.js and npm here: https://nodejs.org/en/download/.
 
 ## How to approach the content of the book?
