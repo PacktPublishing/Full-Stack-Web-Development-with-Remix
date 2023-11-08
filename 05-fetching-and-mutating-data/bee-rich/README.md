@@ -164,7 +164,7 @@ Create a `modules` folder in `app`. We will use this folder to organize new feat
 
 Usually you can import the Prisma client directly from `@prisma/client`. However, for it to work with Remix in development, we need to add a wrapper that stores the client in a cached variable.
 
-Create a new file `db.server.ts` in the `app` folder and add the following code:
+Create a new file `db.server.ts` in `app/modules` and add the following code:
 
 ```ts
 import { PrismaClient } from '@prisma/client';
