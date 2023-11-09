@@ -24,11 +24,15 @@ Steps to reproduce the behavior:
 
 A clear and concise description of what you expected to happen.
 
+**Actual behavior**
+
+A clear and concise description of what you should happen.
+
 **Screenshots**
 
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
+**Environment (if applicable):**
  
  - OS: [e.g. iOS]
  - Browser [e.g. chrome, safari]
@@ -36,4 +40,6 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional context**
 
-Add any other context about the problem here.
+- Chapter: [e.g. 1]
+- Page: [e.g. 10]
+- Link to relevant README/code: [e.g. https://github.com/PacktPublishing/Full-Stack-Web-Development-with-Remix/blob/main/02-creating-a-new-remix-app/README.md]
