@@ -77,9 +77,11 @@ We kick off the BeeRich development journey in _Chapter 3, Deployment Targets, A
 
 ## Troubleshooting and FAQ
 
+Are you stuck, have a question, or want to report a bug? Please check for [open issues](https://github.com/PacktPublishing/Full-Stack-Web-Development-with-Remix/issues) or [open an issue](https://github.com/PacktPublishing/Full-Stack-Web-Development-with-Remix/issues/new/choose) in this repository. Plus, check out the FAQs below for quick answers.
+
 ### Why do some links in the book point to a outdated version of the Remix documentation?
 
-Remix and its documentation are constantly evolving. Similarly to pinning code dependencies to specific versions to avoid unexpected breaking changes in our code, we pin the links in the book to specific versions of the Remix documentation. Most links point to the latest version of the Remix documentation for v2 (`/2/`). Other links are pinned to a specific version (e.g., `/2.0.0/`, `/v1/`), for instance, if the content is likely to change in the future or not part of the latest version of the docs. Even though the links may seem outdated, we ensure all referenced content is relevant to the current version of Remix and your learning experience.
+Remix and its documentation are constantly evolving. Similarly to pinning code dependencies to specific versions to avoid unexpected breaking changes in code, we pin the links in the book to specific versions of the Remix documentation. Most links point to the latest version of the Remix documentation for v2 (`/2/`). Other links are pinned to a specific version (e.g., `/2.0.0/`, `/v1/`), for instance, if the content is likely to change in the future or not part of the latest version of the docs. Even though the links may seem outdated, we ensure all referenced content is relevant to the current version of Remix and your learning experience.
 
 As always, you get the most out of the content of this book if you do additional research. Read through the referenced content of the documentation and then explore the latest version of the docs, as well. The more you familiarize yourself with the Remix documentation the better!
 

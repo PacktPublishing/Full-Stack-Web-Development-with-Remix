@@ -2,7 +2,7 @@
 name: Ask a question
 about: Get help if you are stuck or have a question
 title: ''
-labels: ''
+labels: question
 assignees: ''
 
 ---
