@@ -2,6 +2,12 @@
 
 In this chapter, we explore Remix's adapter architecture and how it enables us to deploy our application to different deployment targets. The chapter also includes an overview of popular deployment targets and hosting providers and what to consider when picking a server environment for your Remix project. We will also introduce you to Remix Stacks, a Remix feature that allows you to bootstrap your application with a specific stack. Finally, we will introduce you to BeeRich, the demo application used throughout this book.
 
+## Technical requirements
+
+To follow along, you will need a computer that can run Node.js. All common operation systems should suffice. Please install both Node.js (version 18 or higher) and npm on your machine. An editor such as VS Code is recommended.
+
+You can download Node.js and npm here: https://nodejs.org/en/download/.
+
 ## Switching adapters
 
 You can find the Cloudflare Workers version of the "Hello World!" app [here](./cloudflare-workers/).
