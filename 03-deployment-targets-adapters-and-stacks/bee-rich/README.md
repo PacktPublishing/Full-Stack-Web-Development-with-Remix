@@ -67,7 +67,7 @@ This will start the development server on port `3000`. You can now open the appl
 
 #### Chapter 5
 
-Once we add the database in Chapter 5, you will need to run the following commands to set up the database and running the application:
+Once we add the database in Chapter 5, you will need to run the following commands to set up the database and run the application:
 
 ```
 npm install
@@ -83,6 +83,15 @@ DATABASE_URL="file:./dev.db"
 ```
 
 If there are issues with the database setup, you can run `npm run reset:db` to reset the database.
+
+Run `npm run seed` to populate the database with seed data.
+
+Test credentials:
+
+- Email: john.doe@example.com
+- Password: BeeRich
+
+You can also make changes to the seed data in `prisma/seed.ts`.
 
 #### Chapter 8
 
