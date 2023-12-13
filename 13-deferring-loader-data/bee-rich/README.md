@@ -516,3 +516,9 @@ export function updateInvoice({ id, title, description, amount, attachment, user
 ```
 
 Awesome! We are now ready to jump into _Chapter 13, Deferring Loader Data_. 🚀
+
+## 🐞 Bugs 🐛
+
+### Deferring loader data does not work when navigating between different expense details pages
+
+Note that there is a small bug in the code in the book. After finishing the chapter, you may notice that deferring the loader data does not work when navigating between different expense details pages. Luckily, there is an easy fix! Finish the chapter and then refer to this bug issue to understand the problem and learn how to fix it: https://github.com/PacktPublishing/Full-Stack-Web-Development-with-Remix/issues/129.
