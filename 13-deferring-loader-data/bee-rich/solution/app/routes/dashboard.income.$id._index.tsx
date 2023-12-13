@@ -133,7 +133,7 @@ export default function Component() {
       </Form>
       <section className="my-5 w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">
         <H3>Invoice History</H3>
-        <Suspense fallback="Loading invoice history...">
+        <Suspense fallback="Loading invoice history..." key={invoice.id}>
           <Await resolve={invoiceLogs} errorElement="There was an error loading the invoice history. Please try again.">
             {(resolvedInvoiceLogs) => <InvoiceLogs invoiceLogs={resolvedInvoiceLogs} />}
           </Await>

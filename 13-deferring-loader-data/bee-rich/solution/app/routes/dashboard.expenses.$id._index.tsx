@@ -134,7 +134,7 @@ export default function Component() {
       </Form>
       <section className="my-5 w-full m-auto lg:max-w-3xl flex flex-col items-center justify-center gap-5">
         <H3>Expense History</H3>
-        <Suspense fallback="Loading expense history...">
+        <Suspense fallback="Loading expense history..." key={expense.id}>
           <Await resolve={expenseLogs} errorElement="There was an error loading the expense history. Please try again.">
             {(resolvedExpenseLogs) => <ExpenseLogs expenseLogs={resolvedExpenseLogs} />}
           </Await>
