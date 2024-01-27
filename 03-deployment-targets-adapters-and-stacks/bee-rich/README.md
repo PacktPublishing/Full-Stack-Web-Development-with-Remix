@@ -84,7 +84,7 @@ DATABASE_URL="file:./dev.db"
 
 If there are issues with the database setup, you can run `npm run reset:db` to reset the database.
 
-Run `npm run seed` to populate the database with seed data.
+Run `npm run seed` to populate the database with seed data. This is optional, but can be helpful for testing. Note that with the current setup, you can only seed the database once. After that, `npm run seed` will fail on the unique email constraint during the test user creation.
 
 Test credentials:
 

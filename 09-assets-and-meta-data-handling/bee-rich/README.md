@@ -56,8 +56,8 @@ npm run reset:db
 ```bash
 npm run seed
 ```
-
-This is optional, but can be helpful for testing.
+ 
+This is optional, but can be helpful for testing. Note that with the current setup, you can only seed the database once. After that, `npm run seed` will fail on the unique email constraint during the test user creation.
 
 Test credentials:
 
